@@ -8,12 +8,12 @@
 
 #### Key Dates
 
-| Name | Date | Deliverable |
-| --- | --- | --- |
-| Project Proposal | dd Month | Written proposal (plan) |
-| Preliminary Report | dd Month | Written report |
-| Final Report | dd Month | Written report |
-| Presentation | dd Month | Oral presentation |
+| Name               | Date     | Deliverable             |
+| ------------------ | -------- | ----------------------- |
+| Project Proposal   | dd Month | Written proposal (plan) |
+| Preliminary Report | dd Month | Written report          |
+| Final Report       | dd Month | Written report          |
+| Presentation       | dd Month | Oral presentation       |
 
 
 **Budget Information:** Expenses paid from ...
@@ -31,9 +31,9 @@ ENGR 489 project advertisement here.*
 
 #### Roles and Responsibilities
 
-| Name | Organisation | Role | Contact | Email |
-| ---- | ------------ | ---- | ------- | ----- |
-| *Student Name* | *School* | Project Manager | *Phone number* |  |
-| *Supervisor Name* | ECS | Project Supervisor | *Phone number* |  |
-| *Collaborator Name* | *Organisation* | *Industry Collaborator* | *Phone number* |  |
+| Name                | Organisation   | Role                    | Contact        | Email |
+| ------------------- | -------------- | ----------------------- | -------------- | ----- |
+| *Student Name*      | *School*       | Project Manager         | *Phone number* |       |
+| *Supervisor Name*   | ECS            | Project Supervisor      | *Phone number* |       |
+| *Collaborator Name* | *Organisation* | *Industry Collaborator* | *Phone number* |       |
 
