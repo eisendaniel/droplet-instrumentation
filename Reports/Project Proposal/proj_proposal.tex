@@ -7,6 +7,9 @@
 
 \usepackage{float} % lets you have non-floating floats
 \usepackage{url} % for typesetting urls
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{hyperref}
 
 \renewcommand{\thesection}{\arabic{section}}
 
@@ -17,7 +20,7 @@
 
 % % These are standard LaTeX definitions for the document
 % %
-\title{Instrumentation System for Liquid Drop Impact and Evaporation \\ 8 pages MAX}
+\title{Instrumentation System for Liquid Drop Impact and Evaporation}
 \author{Daniel Eisen}
 
 % % This file can be used for creating a wide range of reports
@@ -56,15 +59,14 @@
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
 \begin{abstract}
-    This document gives some ideas about how to write a project
-    proposal, and provides a template for a proposal. You should discuss
-    your proposal with your supervisor.
+  This document gives some ideas about how to write a project
+  proposal, and provides a template for a proposal. You should discuss
+  your proposal with your supervisor.
 \end{abstract}
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
 \maketitle
-
 \tableofcontents
 
 % we want a list of the figures we defined
@@ -77,63 +79,96 @@
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
 \section{Introduction}
+\textit{Will be an executive summery of following sections, mention who's research this fits into, requirement for budget to cover manufacturing cost etc, and that Will will be a contributor to an auxiliary project that affects this.}
 
 \section{The Problem}
 This project is concerned with the development of a instrumentation rig for the study of droplet impact and drying. It is primarily/initially motivated by the powdered milk production process, specifically the behaviour of the drying and collision of concentrated milk droplets. Furthermore, the research, and developed method and procedure can be applicable to various industries. \\
 
 To effectively investigate the behaviour, a variety of aspects can be tracked and characterised during a microscale equivalent lab process, from differing temperatures, substrates, volume, and concentrations. \\
 
-Currently there is an existing platform for the dispensing of droplets and data capture using high speed cameras and other various sensors. It
+Currently there is an existing platform for the dispensing of droplets and data capture using high speed cameras and other various sensors. It has limitations due to manual control of starting the cameras capture and temperature capturing as well as requiring the operator to position and dispense the droplet by hand. \\
 
 This project will therefore, focus on the design and evaluation of the third generation of this platform with the aim to design and integrate various new subsystems and evaluate their performance against the criteria of improving the reliability and repeatability of the experiments as much as possible.
-
-
 
 \section{Proposed Solution}
 
 Evaluate current systems results and identify its short comings. Produce evaluation data and bibliography (est. x wks)
 \begin{itemize}
-    \item Repeatability of [Drop position,Drop volume (size),Contact angle] and correlate and/or see how the variation in these parameters effects the observed temperature profile and physical behaviours of the droplet throughout the evaporation process.
-    \item Identify other sources of variation, such as humidity etc and their weight of influence (whether perusing a solution is worthwhile)\\
-    \item Compare with similar solutions in literature to gain more insight into required design consideration and constraints.
+  \item Repeatability of dispensed droplet parameters (position, volume (size), contact angle) and correlate and/or see how the variation in these parameters effects the observed temperature profile and physical behaviours of the droplet throughout the evaporation process.
+  \item Identify other sources of variation, such as humidity etc and their weight of influence (whether perusing a solution is worthwhile)
+  \item Compare with similar solutions in literature to gain more insight into required design consideration and constraints.
 \end{itemize}
+
+
+
+\subsection{Base Deliverables}
+\begin{itemize}
+  \item Mechanical designs to hold, centre, and clamp the substrate stack (fig \ref{fig::old_rig}) together.
+  \item Synchronous data collection, ie cameras, temperature, droplet
+  \item Investigate different droplet release possibly electronic pipette \textit{other I've forgotten}
+  \item Control Code
+  \item \dots
+\end{itemize}
+
+\subsection{Stretch Goals}
+\begin{itemize}
+  \item Motorised droplet stage
+  \item Atmospheric control enclosure
+  \item \dots
+\end{itemize}
+
+\begin{figure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[height=.75\linewidth]{Figures/Full_rig_top.jpg}
+    \caption{Full Top View}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[height=.75\linewidth]{Figures/substrate_stack.jpg}
+    \caption{Substrate Stack close-up}
+  \end{subfigure}
+  \caption{Previous Rig Assembly (bar top camera)}
+  \label{fig::old_rig}
+  \end{figure}
 
 \subsection{Milestones}
 \begin{itemize}
-    \item
-    \item
-    \item
+  \item \dots
 \end{itemize}
 
 \subsection{Timeline}
 \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Gantt-chart_filler.png}
-    \caption{Example Gantt Chart filler, will be replaced with actual timeline}
+  \centering
+  \includegraphics[width=0.5\textwidth]{Figures/Gantt-chart_filler.png}
+  \caption{Example Gantt Chart filler, will be replaced with actual timeline}
 \end{figure}
 
 \section{Evaluating your Solution}
-
-
+The work done will be evaluated based on the comparative performance of the development subsystems to improve reliability and repeatability of experimental data and how the work provides a significant contribution the process. 
 
 \section{Resource Requirements}
 
+
 \subsection{Facilities and Tools}
 \begin{itemize}
-    \item Labs AM219 and LB207
-    \item Computer with SolidWorks, LabView, \textit{other data processing tools}
-    \item Electronics Test bench (PSU, signal gen, scope etc)
-    \item Access to fab workshop
+  \item Labs AM219 and LB207
+  \item Computer with SolidWorks, LabView, \textit{other data processing tools}
+  \item Electronics Test bench (PSU, signal gen, scope etc)
+  \item Access to fab workshop
 \end{itemize}
 
-\subsection{Budget }
+\subsection{Budget}
+We are starting with an initial budgetary restriction of \$500 to cover workshop manufacturing cost, cost of acquiring components, PCB design (for possible interfacing with electronic pipette). 
 
-\subsection{COVID Alert Level Management}
+Note that most base components have been already acquired and there is the possibility to access further funding from the research project if absolutely necessary and will have to discussed.  
+
+\section{COVID-19 Alert Level Management}
 Level and planned work that can be achieved and undertaken at the various levels.
-\subsubsection*{Level 1}
-\subsubsection*{Level 2}
-\subsubsection*{Level 3}
-\subsubsection*{Level 4}
+\subsection{Level 1}
+\subsection{Level 2}
+\subsection{Level 3}
+\subsection{Level 4}
 
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
