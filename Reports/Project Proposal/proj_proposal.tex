@@ -6,8 +6,9 @@
 \documentclass[11pt, a4paper, twoside, openright]{report}
 
 \usepackage{float} % lets you have non-floating floats
-
 \usepackage{url} % for typesetting urls
+
+\renewcommand{\thesection}{\arabic{section}}
 
 %  We don't want figures to float so we define
 %
@@ -55,16 +56,16 @@
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
 \begin{abstract}
-  This document gives some ideas about how to write a project
-  proposal, and provides a template for a proposal. You should discuss
-  your proposal with your supervisor.
+    This document gives some ideas about how to write a project
+    proposal, and provides a template for a proposal. You should discuss
+    your proposal with your supervisor.
 \end{abstract}
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
 \maketitle
 
-%\tableofcontents
+\tableofcontents
 
 % we want a list of the figures we defined
 %\listof{fig}{Figures}
@@ -75,64 +76,65 @@
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 
-\section*{1. Introduction}
+\section{Introduction}
 
-In this section you should include a very brief introduction to the problem to the problem and the project.
+\section{The Problem}
+This project is concerned with the development of a instrumentation rig for the study of droplet impact and drying. It is primarily/initially motivated by the powdered milk production process, specifically the behaviour of the drying and collision of concentrated milk droplets. Furthermore, the research, and developed method and procedure can be applicable to various industries. \\
 
-Your project proposal should cover the following points:
+To effectively investigate the behaviour, a variety of aspects can be tracked and characterised during a microscale equivalent lab process, from differing temperatures, substrates, volume, and concentrations. \\
 
+Currently there is an existing platform for the dispensing of droplets and data capture using high speed cameras and other various sensors. It
+
+This project will therefore, focus on the design and evaluation of the third generation of this platform with the aim to design and integrate various new subsystems and evaluate their performance against the criteria of improving the reliability and repeatability of the experiments as much as possible.
+
+
+
+\section{Proposed Solution}
+
+Evaluate current systems results and identify its short comings. Produce evaluation data and bibliography (est. x wks)
 \begin{itemize}
-  \item the engineering problem that you are going to solve;
-  \item how you plan to solve your problem;
-  \item how you intend to evaluate your solution; and
-  \item any resource requirements for your project such as software, hardware or other resources that will be needed in the course of the project.
+    \item Repeatability of [Drop position,Drop volume (size),Contact angle] and correlate and/or see how the variation in these parameters effects the observed temperature profile and physical behaviours of the droplet throughout the evaporation process.
+    \item Identify other sources of variation, such as humidity etc and their weight of influence (whether perusing a solution is worthwhile)\\
+    \item Compare with similar solutions in literature to gain more insight into required design consideration and constraints.
 \end{itemize}
 
-Your proposal should be not more than than 3 pages long.
-
-\section*{2. The Problem}
-
-In this section you should give a brief description of the problem itself. You want to briefly explain the problem, why it is important to solve the problem and define your project aims. After reading this section, the reader should understand why it is a problem, believe that it is important to solve and have a clear idea of the aims of your project.
-
-When describing the aims of the project, you should avoid vague, unmeasurable words like `analyse', `investigate', `describe', and use specific, measurable words like `implement', `demonstrate', `show', `prove'.
-
-For example:
-
+\subsection{Milestones}
 \begin{itemize}
-  \item[\bf Good] The aim of this project is to implement and evaluate a management system for network switches;
-\end{itemize}
-is much better than:
-\begin{itemize}
-  \item[\bf Bad] The aim of this project is to investigate management systems for network switches.
+    \item
+    \item
+    \item
 \end{itemize}
 
-In the second case there is no idea of how much work is involved, and you will never know whether you have finished. You and your supervisor (and the markers of your project) may have very different ideas about what such an `investigation' involves. Of course, it is possible that the task you set yourself is not achievable, but if you are clear from the outset this is less likely, and will more easily be corrected.
+\subsection{Timeline}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Gantt-chart_filler.png}
+    \caption{Example Gantt Chart filler, will be replaced with actual timeline}
+\end{figure}
 
-\section*{3. Proposed Solution}
+\section{Evaluating your Solution}
 
-In this section you will explain how solve the problem, that is, how you intend to carry the project out. At this early stage you need to be both clear about what you are going to do and flexible enough to adapt to changing circumstances. Making an early plan will not prevent you from running into trouble, but it will help you identify possible problems early. For example, if you intended to run an experiment in HCI, you might realise early on that there would be problems gathering sufficient data to get reliable results, and that you should re-design your experiment.
 
-Part of the planning process involves producing a timetable for when the work is actually going to be done.
 
-Each part of the project should produce some output. For example you might plan on spending two weeks on background reading: the output of this will be a bibliography, and a possibly a literature survey for your report. Indeed, if you take the advice given above about having specific, measurable goals, you should describe this part of your project as:
+\section{Resource Requirements}
 
+\subsection{Facilities and Tools}
 \begin{itemize}
-  \item[\bf Good] Produce bibliography (est: 2 weeks)
+    \item Labs AM219 and LB207
+    \item Computer with SolidWorks, LabView, \textit{other data processing tools}
+    \item Electronics Test bench (PSU, signal gen, scope etc)
+    \item Access to fab workshop
 \end{itemize}
-rather than
-\begin{itemize}
-  \item[\bf Bad] Background reading (est: 2 weeks)
-\end{itemize}
 
-Note that the methodology you outline here is dependent upon the type of project and engineering area. You must talk to your supervisor about this.
+\subsection{Budget }
 
-\section*{4. Evaluating your Solution}
+\subsection{COVID Alert Level Management}
+Level and planned work that can be achieved and undertaken at the various levels.
+\subsubsection*{Level 1}
+\subsubsection*{Level 2}
+\subsubsection*{Level 3}
+\subsubsection*{Level 4}
 
-In this section you will explain how you will evaluate your solution once you have built it. The method of evaluation will be domain specific. Your supervisor should provide guidance as to what is an appropriate form of evaluation. For example, user testing for a HCI project or performance measurement for a Network Engineering project. 
-
-\section*{5. Resource Requirements}
-
-In this section you will detail any resource requirements such as hardware, software or access to subjects.
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
 \backmatter
