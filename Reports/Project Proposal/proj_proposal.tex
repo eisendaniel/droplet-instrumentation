@@ -78,6 +78,11 @@
 \section{Introduction}
 \textit{Will be an executive summery of following sections, mention who's research this fits into, requirement for budget to cover manufacturing cost etc, and that Will will be a contributor to an auxiliary project that affects this.}
 
+
+
+
+
+
 \section{The Problem}
 This project is concerned with the development of a instrumentation rig for the study of droplet impact and drying. It is primarily/initially motivated by the powdered milk production process, specifically the behaviour of the drying and collision of concentrated milk droplets. Furthermore, the research, and developed method and procedure can be applicable to various industries. \\
 
@@ -85,61 +90,79 @@ To effectively investigate the behaviour, a variety of aspects can be tracked an
 
 Currently there is an existing platform for the dispensing of droplets and data capture using high speed cameras and other various sensors. It has limitations due to manual control of starting the cameras capture and temperature capturing as well as requiring the operator to position and dispense the droplet by hand. \\
 
-This project will therefore, focus on the design and evaluation of the third generation of this platform with the aim to design and integrate various new subsystems and evaluate their performance against the criteria of improving the reliability and repeatability of the experiments as much as possible.
+This project will therefore, focus on the development of the third generation of this platform with the aim to design and integrate various new subsystems and evaluate their performance against the existing platform with the main project goal of having a more stable, repeatable testing platform that will not only yield more usable data but streamline the experimental process.
 
-\subsection{Background and Applications}
-...
+\subsection{Existing Process}
+The current procedure as of the project beginning is a manual process. There is currently no securing bracket of any kind for the substrate sample and heater stack, the cameras and other sensors are turned on one by one and most importantly the droplet is rotated above a mark in the substrate and dispensed via syringe by hand.
 
+The droplet then falls onto the substrate, monitored by 2 high speed cameras (profile and overhead) and the temperature of the substrate is measured via an embedded thermocouple camera a time series waveform of the experiment.
+
+We hypothesis that this method contributes a large amount of variation into the collected data that could be masking the parameter space of interest, and limiting the granularity at which conclusions can be drawn about process of impact and evaporation.
+
+\newpage
 \section{Proposed Solution}
+The primary driving principle for both the design and evaluation of this next generation is a focus on \textit{increasing reliability of the process by designing new and/or improving existing subsystems of the rig}. 
 
-Evaluate current systems results and identify its short comings. Produce evaluation data and bibliography (est. x wks)
+To be able to quantify success in that aspect and evaluations of current systems results is needed to  identify its short comings. Therefore, one of the first steps is to produce an report detailing such aspects.
 \begin{itemize}
   \item Repeatability of dispensed droplet parameters (position, volume (size), contact angle) and correlate and/or see how the variation in these parameters effects the observed temperature profile and physical behaviours of the droplet throughout the evaporation process.
   \item Identify other sources of variation, such as humidity etc and their weight of influence (whether perusing a solution is worthwhile)
   \item Compare with similar solutions in literature to gain more insight into required design consideration and constraints.
 \end{itemize}
 
+Alongside this, the first step is a mechanical design of a bracket and clamp assembly to hold and centre a aluminium heatspeader, Peltier heater, and substrate to the sample stage (fig \ref{fig::old_rig}).
+
+From this, the primary effort will go into the droplet dispensing stage. Possibly integrating an electronic pipette and motorised stage XY  rotation to address the consistency problems. Constraints that will have to be overcame are the reduce volume capacity (syringe: ~12-15ml to max 10ml) and refilling from a reservoir.
+
+The above represent the base deliverables, but the project may be extended with data collection automation and synchronisation, and more environmental monitoring and control.
+
+\begin{figure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[height=.5\linewidth]{Figures/Full_rig_top.jpg}
+    \caption{Full Top View}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[height=.5\linewidth]{Figures/substrate_stack.jpg}
+    \caption{Substrate Stack close-up}
+  \end{subfigure}
+  \caption{Previous Rig Assembly (bar top camera)}
+  \label{fig::old_rig}
+\end{figure}
 
 
 \subsection{Base Deliverables}
 \begin{itemize}
-  \item Mechanical designs to hold, centre, and clamp the substrate stack (fig \ref{fig::old_rig}) together.
-  \item Eva
-  \item (Main) Improve stability of droplet release stage - possibly electronic pipette, motorized stage etc
+  \item Mechanical designs to hold, centre, and clamp the substrate stack  together (1-2 weeks).
+  \item Produce evaluation document based on generation 2 performance (2-3 weeks)
+  \item (Main) Improved Droplet Delivery stage; dispensing control, motorised stage.
 \end{itemize}
 
 \subsection{Stretch Goals}
 \begin{itemize}
   \item Synchronous data collection, i.e. cameras, temperature, droplet
-  \item Atmospheric control enclosure
-  \item \dots
+  \item Measure and control environmental factors
 \end{itemize}
 
-\begin{figure}
-  \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[height=.75\linewidth]{Figures/Full_rig_top.jpg}
-    \caption{Full Top View}
-  \end{subfigure}%
-  \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[height=.75\linewidth]{Figures/substrate_stack.jpg}
-    \caption{Substrate Stack close-up}
-  \end{subfigure}
-  \caption{Previous Rig Assembly (bar top camera)}
-  \label{fig::old_rig}
-  \end{figure}
-
-\newpage
 \subsection{Timeline}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.5\textwidth]{Figures/Gantt-chart_filler.png}
-  \caption{Example Gantt Chart filler, will be replaced with actual timeline}
+  \includegraphics[width=\textwidth]{Figures/Gantt-chart_filler.png}
 \end{figure}
 
+\newpage
 \section{Evaluating your Solution}
-The work done will be evaluated based on the comparative performance of the development subsystems to improve reliability and repeatability of experimental data and how the work provides a significant contribution the process. 
+To evaluate the success, the produced evaluation document on generation 2 will serve as the primary comparison. Each subsystem; mechanical brackets, droplet dispensing, temperature measurements will be tested individually to quantise their contribution and as a gradually integrated whole.
+
+The preliminary evaluation criteria (subject  to change with the discretion of the previous generation analysis) include consistency and repeatability of the following:
+\begin{itemize}
+  \item Dispensed volume
+  \item Impact characteristics (centre, angle, etc)
+  \item Uncontrolled temperature variation
+\end{itemize}
+
+
 
 \section{Resource Requirements}
 
@@ -152,10 +175,11 @@ The work done will be evaluated based on the comparative performance of the deve
 \end{itemize}
 
 \subsection{Health and Safety}
+The project does not necessitate
 \begin{itemize}
-  \item Lab Introduction
+  \item Lab Induction (LM207)
   \item Peltier Heaters
-  \item Basic electric concerns etc
+  \item Basic electronic safety
 \end{itemize}
 
 
@@ -165,15 +189,10 @@ It is worth noting that the instrumentation platform is largely constructed with
 Given this, the project has estimated a budgetary restriction of \$400.
 \begin{itemize}
   \item \$200 to cover workshop manufacturing costs of mechanical designs
-  \item \$200 for the purchase stepper motors and auxiliary components, PCB design and manufacture and all other electronic component costing. 
+  \item \$200 for the purchase stepper motors and auxiliary components, PCB design and manufacture and all other electronic component costing.
 \end{itemize}
 
 \section{COVID-19 Alert Level Management}
-Level and planned work that can be achieved and undertaken at the various levels.
-\subsection{Level 1}
-\subsection{Level 2}
-\subsection{Level 3}
-\subsection{Level 4}
 
 
 % %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %%
