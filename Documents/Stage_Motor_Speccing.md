@@ -20,6 +20,7 @@ robotshop.com - another large selection of servos and steppers.
 ## Driving Options
 
 ###  Hall Encoder Brushed N20 motors
+e.g https://www.servocity.com/90-rpm-micro-gear-motor-w-encoder/
 * $USD 12-20
 * 90-4900RPM
 * Drive a worm gear to rotate platform
@@ -29,6 +30,7 @@ robotshop.com - another large selection of servos and steppers.
 * https://www.servocity.com/27-1-worm-gear-set-1-4-bore-worm-hub-mount-worm-gear/
 
 ### Servo driving
+e.g. https://www.servocity.com/hs-311-servo/
 * When driving with a uC, wide signal ~200 degrees
 * Pulse to position
 * Nylon - wear/no backlash
