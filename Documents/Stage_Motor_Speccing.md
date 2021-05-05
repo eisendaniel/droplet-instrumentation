@@ -4,7 +4,7 @@ Applying motorisation and actuation to the droplet dispensing process and suppor
 
 ## Suppliers
 
-servocity.com - they have a variety of servos and motors, as well as 
+servocity.com -   they have a variety of servos and motors, as well as 
 mechanical mounting options. note these are largely imperial 
 measurements. (mil, inchs, feet etc)
 
@@ -20,6 +20,7 @@ robotshop.com - another large selection of servos and steppers.
 ## Driving Options
 
 ###  Hall Encoder Brushed N20 motors
+
 e.g https://www.servocity.com/90-rpm-micro-gear-motor-w-encoder/
 * $USD 12-20
 * 90-4900RPM
