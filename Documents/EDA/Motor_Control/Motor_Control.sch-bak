@@ -1,0 +1,372 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L RF_Module:ESP32-WROOM-32 U?
+U 1 1 60B9CB5A
+P 6800 4050
+F 0 "U?" H 6800 5631 50  0000 C CNN
+F 1 "ESP32-WROOM-32" H 6800 5540 50  0000 C CNN
+F 2 "RF_Module:ESP32-WROOM-32" H 6800 2550 50  0001 C CNN
+F 3 "https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf" H 6500 4100 50  0001 C CNN
+	1    6800 4050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Driver_Motor:Pololu_Breakout_DRV8825 A?
+U 1 1 60BA2527
+P 9050 2250
+F 0 "A?" H 9050 3031 50  0000 C CNN
+F 1 "Pololu_Breakout_DRV8825" H 9050 2940 50  0000 C CNN
+F 2 "Module:Pololu_Breakout-16_15.2x20.3mm" H 9250 1450 50  0001 L CNN
+F 3 "https://www.pololu.com/product/2982" H 9150 1950 50  0001 C CNN
+	1    9050 2250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60BA5B36
+P 6350 1750
+F 0 "#PWR?" H 6350 1500 50  0001 C CNN
+F 1 "GND" H 6355 1577 50  0000 C CNN
+F 2 "" H 6350 1750 50  0001 C CNN
+F 3 "" H 6350 1750 50  0001 C CNN
+	1    6350 1750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+VDC #PWR?
+U 1 1 60BA6690
+P 6350 1250
+F 0 "#PWR?" H 6350 1150 50  0001 C CNN
+F 1 "+VDC" H 6350 1525 50  0000 C CNN
+F 2 "" H 6350 1250 50  0001 C CNN
+F 3 "" H 6350 1250 50  0001 C CNN
+	1    6350 1250
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 60BA7DB3
+P 6950 1500
+F 0 "C?" H 7068 1546 50  0000 L CNN
+F 1 "CP" H 7068 1455 50  0000 L CNN
+F 2 "" H 6988 1350 50  0001 C CNN
+F 3 "~" H 6950 1500 50  0001 C CNN
+	1    6950 1500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 60BA81F8
+P 6600 1500
+F 0 "C?" H 6718 1546 50  0000 L CNN
+F 1 "CP" H 6718 1455 50  0000 L CNN
+F 2 "" H 6638 1350 50  0001 C CNN
+F 3 "~" H 6600 1500 50  0001 C CNN
+	1    6600 1500
+	1    0    0    -1  
+$EndComp
+NoConn ~ 8650 1850
+$Comp
+L power:+VDC #PWR?
+U 1 1 60BBCA80
+P 9050 1350
+F 0 "#PWR?" H 9050 1250 50  0001 C CNN
+F 1 "+VDC" H 9050 1625 50  0000 C CNN
+F 2 "" H 9050 1350 50  0001 C CNN
+F 3 "" H 9050 1350 50  0001 C CNN
+	1    9050 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 60BBC613
+P 8550 1850
+F 0 "#PWR?" H 8550 1700 50  0001 C CNN
+F 1 "+3V3" H 8565 2023 50  0000 C CNN
+F 2 "" H 8550 1850 50  0001 C CNN
+F 3 "" H 8550 1850 50  0001 C CNN
+	1    8550 1850
+	1    0    0    -1  
+$EndComp
+NoConn ~ 8650 2850
+$Comp
+L power:GND #PWR?
+U 1 1 60BC3DF9
+P 8600 3200
+F 0 "#PWR?" H 8600 2950 50  0001 C CNN
+F 1 "GND" H 8605 3027 50  0000 C CNN
+F 2 "" H 8600 3200 50  0001 C CNN
+F 3 "" H 8600 3200 50  0001 C CNN
+	1    8600 3200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8650 2250 8600 2250
+Wire Wire Line
+	8600 2250 8600 3100
+Wire Wire Line
+	8600 3100 9050 3100
+Wire Wire Line
+	9050 3100 9050 3050
+Wire Wire Line
+	9050 3100 9150 3100
+Wire Wire Line
+	9150 3100 9150 3050
+Connection ~ 9050 3100
+Wire Wire Line
+	8600 3200 8600 3100
+Connection ~ 8600 3100
+Wire Wire Line
+	8650 2650 8550 2650
+Wire Wire Line
+	8550 2650 8550 2050
+Wire Wire Line
+	8550 2050 8650 2050
+Wire Wire Line
+	8650 2750 8550 2750
+Wire Wire Line
+	8550 2750 8550 2650
+Connection ~ 8550 2650
+Wire Wire Line
+	8650 1950 8550 1950
+Wire Wire Line
+	8550 1950 8550 2050
+Connection ~ 8550 2050
+Wire Wire Line
+	8550 1950 8550 1850
+Connection ~ 8550 1950
+Wire Wire Line
+	9050 1350 9050 1650
+$Comp
+L Driver_Motor:Pololu_Breakout_DRV8825 A?
+U 1 1 60BC6775
+P 9050 4400
+F 0 "A?" H 9050 5181 50  0000 C CNN
+F 1 "Pololu_Breakout_DRV8825" H 9050 5090 50  0000 C CNN
+F 2 "Module:Pololu_Breakout-16_15.2x20.3mm" H 9250 3600 50  0001 L CNN
+F 3 "https://www.pololu.com/product/2982" H 9150 4100 50  0001 C CNN
+	1    9050 4400
+	1    0    0    -1  
+$EndComp
+NoConn ~ 8650 4000
+$Comp
+L power:+VDC #PWR?
+U 1 1 60BC6786
+P 9050 3500
+F 0 "#PWR?" H 9050 3400 50  0001 C CNN
+F 1 "+VDC" H 9050 3775 50  0000 C CNN
+F 2 "" H 9050 3500 50  0001 C CNN
+F 3 "" H 9050 3500 50  0001 C CNN
+	1    9050 3500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR?
+U 1 1 60BC6790
+P 8550 4000
+F 0 "#PWR?" H 8550 3850 50  0001 C CNN
+F 1 "+3V3" H 8565 4173 50  0000 C CNN
+F 2 "" H 8550 4000 50  0001 C CNN
+F 3 "" H 8550 4000 50  0001 C CNN
+	1    8550 4000
+	1    0    0    -1  
+$EndComp
+NoConn ~ 8650 5000
+$Comp
+L power:GND #PWR?
+U 1 1 60BC679B
+P 8600 5350
+F 0 "#PWR?" H 8600 5100 50  0001 C CNN
+F 1 "GND" H 8605 5177 50  0000 C CNN
+F 2 "" H 8600 5350 50  0001 C CNN
+F 3 "" H 8600 5350 50  0001 C CNN
+	1    8600 5350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8650 4400 8600 4400
+Wire Wire Line
+	8600 4400 8600 5250
+Wire Wire Line
+	8600 5250 9050 5250
+Wire Wire Line
+	9050 5250 9050 5200
+Wire Wire Line
+	9050 5250 9150 5250
+Wire Wire Line
+	9150 5250 9150 5200
+Connection ~ 9050 5250
+Wire Wire Line
+	8600 5350 8600 5250
+Connection ~ 8600 5250
+Wire Wire Line
+	8650 4800 8550 4800
+Wire Wire Line
+	8550 4800 8550 4200
+Wire Wire Line
+	8550 4200 8650 4200
+Wire Wire Line
+	8650 4900 8550 4900
+Wire Wire Line
+	8550 4900 8550 4800
+Connection ~ 8550 4800
+Wire Wire Line
+	8650 4100 8550 4100
+Wire Wire Line
+	8550 4100 8550 4200
+Connection ~ 8550 4200
+Wire Wire Line
+	8550 4100 8550 4000
+Connection ~ 8550 4100
+Wire Wire Line
+	9050 3500 9050 3800
+Wire Wire Line
+	6350 1250 6350 1300
+Wire Wire Line
+	6350 1300 6600 1300
+Wire Wire Line
+	6950 1300 6950 1350
+Wire Wire Line
+	6600 1350 6600 1300
+Connection ~ 6600 1300
+Wire Wire Line
+	6600 1300 6950 1300
+Wire Wire Line
+	6350 1750 6350 1700
+Wire Wire Line
+	6350 1700 6600 1700
+Wire Wire Line
+	6950 1700 6950 1650
+Wire Wire Line
+	6600 1650 6600 1700
+Connection ~ 6600 1700
+Wire Wire Line
+	6600 1700 6950 1700
+$Comp
+L power:+3V3 #PWR?
+U 1 1 60BE7BAC
+P 6150 2500
+F 0 "#PWR?" H 6150 2350 50  0001 C CNN
+F 1 "+3V3" H 6165 2673 50  0000 C CNN
+F 2 "" H 6150 2500 50  0001 C CNN
+F 3 "" H 6150 2500 50  0001 C CNN
+	1    6150 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 60BE91DC
+P 6800 5500
+F 0 "#PWR?" H 6800 5250 50  0001 C CNN
+F 1 "GND" H 6805 5327 50  0000 C CNN
+F 2 "" H 6800 5500 50  0001 C CNN
+F 3 "" H 6800 5500 50  0001 C CNN
+	1    6800 5500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6800 2650 6800 2600
+Wire Wire Line
+	6800 2600 6150 2600
+Wire Wire Line
+	6150 2600 6150 2500
+Wire Wire Line
+	6200 2850 6150 2850
+Wire Wire Line
+	6150 2850 6150 2600
+Connection ~ 6150 2600
+Wire Wire Line
+	6800 5500 6800 5450
+Text GLabel 8500 2350 0    50   Input ~ 0
+R_STEP
+Text GLabel 8500 2450 0    50   Input ~ 0
+R_DIR
+Text GLabel 8500 4500 0    50   Input ~ 0
+Z_STEP
+Text GLabel 8500 4600 0    50   Input ~ 0
+Z_DIR
+Wire Wire Line
+	8500 4500 8650 4500
+Wire Wire Line
+	8500 4600 8650 4600
+Wire Wire Line
+	8500 2350 8650 2350
+Wire Wire Line
+	8500 2450 8650 2450
+$Comp
+L Motor:Stepper_Motor_bipolar M?
+U 1 1 60B988BE
+P 9900 2550
+F 0 "M?" H 10088 2674 50  0000 L CNN
+F 1 "Stepper_Motor_bipolar" H 10088 2583 50  0000 L CNN
+F 2 "" H 9910 2540 50  0001 C CNN
+F 3 "http://www.infineon.com/dgdl/Application-Note-TLE8110EE_driving_UniPolarStepperMotor_V1.1.pdf?fileId=db3a30431be39b97011be5d0aa0a00b0" H 9910 2540 50  0001 C CNN
+	1    9900 2550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9450 2550 9600 2550
+Wire Wire Line
+	9600 2550 9600 2650
+Wire Wire Line
+	9450 2450 9600 2450
+Wire Wire Line
+	9450 2250 9800 2250
+Wire Wire Line
+	9450 2150 10000 2150
+Wire Wire Line
+	10000 2150 10000 2250
+$Comp
+L Motor:Stepper_Motor_bipolar M?
+U 1 1 60C05853
+P 9900 4700
+F 0 "M?" H 10088 4824 50  0000 L CNN
+F 1 "Stepper_Motor_bipolar" H 10088 4733 50  0000 L CNN
+F 2 "" H 9910 4690 50  0001 C CNN
+F 3 "http://www.infineon.com/dgdl/Application-Note-TLE8110EE_driving_UniPolarStepperMotor_V1.1.pdf?fileId=db3a30431be39b97011be5d0aa0a00b0" H 9910 4690 50  0001 C CNN
+	1    9900 4700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9450 4700 9600 4700
+Wire Wire Line
+	9600 4700 9600 4800
+Wire Wire Line
+	9450 4600 9600 4600
+Wire Wire Line
+	9450 4400 9800 4400
+Wire Wire Line
+	9450 4300 10000 4300
+Wire Wire Line
+	10000 4300 10000 4400
+Text GLabel 7500 4150 2    50   Input ~ 0
+R_STEP
+Text GLabel 7500 4050 2    50   Input ~ 0
+R_DIR
+Text GLabel 7500 3350 2    50   Input ~ 0
+Z_STEP
+Text GLabel 7500 3950 2    50   Input ~ 0
+Z_DIR
+Wire Wire Line
+	7500 4150 7400 4150
+Wire Wire Line
+	7500 4050 7400 4050
+Wire Wire Line
+	7500 3350 7400 3350
+Wire Wire Line
+	7500 3950 7400 3950
+$EndSCHEMATC
