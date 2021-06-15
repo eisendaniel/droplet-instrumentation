@@ -17,6 +17,31 @@ const int REV_STEPS = 200 * STEP_DIV;
 ESP_FlexyStepper r_stage;
 ESP_FlexyStepper z_stage;
 
+void initial_input()
+{
+    // Get next command from Serial (add 1 for final 0)
+    char input[INPUT_SIZE + 1];
+    byte size = Serial.readBytes(input, INPUT_SIZE);
+    // Add the final 0 to end the C string
+    input[size] = 0;
+
+    int value = 0;
+    while (strcmp(input, "stop"))
+    {
+        Serial.println("Input next instruction");
+
+        if (strchr(input, ':'))
+        {
+            if (!strcmp(strtok(input, ":"), "adjust"))
+            {
+                value = atoi(strtok(0, ":"));
+                r_stage.moveRelativeInSteps(value);
+            }
+        }
+        Serial.printf("Adjustment value: %d\n", value);
+    }
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -32,33 +57,6 @@ void setup()
 
     z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
     z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
-
-    Serial.println("Adjust Start point...");
-
-    // Calculate based on max input size expected for one command
-
-    // Get next command from Serial (add 1 for final 0)
-    char input[INPUT_SIZE + 1];
-    byte size = Serial.readBytes(input, INPUT_SIZE);
-    // Add the final 0 to end the C string
-    input[size] = 0;
-
-    int value = 0;
-    while (strcmp(input, "stop"))
-    {
-        printf("Input next instruction...\n");
-        scanf("%s", input);
-
-        if (strchr(input, ':'))
-        {
-            if (!strcmp(strtok(input, ":"), "adjust"))
-            {
-                value = atoi(strtok(0, ":"));
-                r_stage.moveRelativeInSteps(value);
-            }
-        }
-        printf("Adjustment value: %d\n", value);
-    }
 }
 
 void loop()
