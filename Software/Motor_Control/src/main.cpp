@@ -21,25 +21,45 @@ void initial_input()
 {
     // Get next command from Serial (add 1 for final 0)
     char input[INPUT_SIZE + 1];
-    byte size = Serial.readBytes(input, INPUT_SIZE);
-    // Add the final 0 to end the C string
-    input[size] = 0;
-
-    int value = 0;
-    while (strcmp(input, "stop"))
+    char *command;
+    while (strncmp(input, "stop", 4))
     {
-        Serial.println("Input next instruction");
+        Serial.println("\nInput next instruction");
+        while (!Serial.available())
+            ;
+        byte size = Serial.readBytes(input, INPUT_SIZE);
+        input[size] = 0;
 
-        if (strchr(input, ':'))
+        if (strchr(input, ' '))
         {
-            if (!strcmp(strtok(input, ":"), "adjust"))
+            command = strtok(input, " ");
+
+            if (!strcmp(command, "adj"))
             {
-                value = atoi(strtok(0, ":"));
-                r_stage.moveRelativeInSteps(value);
+                int steps = atoi(strtok(0, " "));
+                r_stage.moveRelativeInSteps(steps);
+                Serial.printf("Adjusted %d steps\n", steps);
+            }
+            else if (!strcmp(command, "rot"))
+            {
+                float rots = atof(strtok(0, " "));
+                r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
+                Serial.printf("Rotated %.4f revolutions\n", rots);
             }
         }
-        Serial.printf("Adjustment value: %d\n", value);
     }
+    Serial.println("Stopped");
+}
+
+void programed_moves()
+{
+    r_stage.moveRelativeInSteps(REV_STEPS / 4);
+    r_stage.moveRelativeInSteps(0);
+    delay(1000);
+
+    r_stage.moveRelativeInSteps(-(REV_STEPS / 4));
+    r_stage.moveRelativeInSteps(0);
+    delay(1000);
 }
 
 void setup()
@@ -57,15 +77,11 @@ void setup()
 
     z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
     z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
+
+    initial_input();
 }
 
 void loop()
 {
-    r_stage.moveRelativeInSteps(REV_STEPS / 4);
-    r_stage.moveRelativeInSteps(0);
-    delay(1000);
-
-    r_stage.moveRelativeInSteps(-(REV_STEPS / 4));
-    r_stage.moveRelativeInSteps(0);
-    delay(1000);
+    // programed_moves();
 }
