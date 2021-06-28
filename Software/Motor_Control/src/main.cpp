@@ -21,6 +21,7 @@ void initial_input()
 {
     // Get next command from Serial (add 1 for final 0)
     char input[INPUT_SIZE + 1];
+    char *motor;
     char *command;
     while (strncmp(input, "stop", 4))
     {
@@ -33,17 +34,32 @@ void initial_input()
         if (strchr(input, ' '))
         {
             command = strtok(input, " ");
+            motor = strtok(0, " ");
 
             if (!strcmp(command, "adj"))
             {
                 int steps = atoi(strtok(0, " "));
-                r_stage.moveRelativeInSteps(steps);
+                if (!strcmp(motor, "R"))
+                {
+                    r_stage.moveRelativeInSteps(steps);
+                }
+                else if (!strcmp(motor, "Z"))
+                {
+                    z_stage.moveRelativeInSteps(steps);
+                }
                 Serial.printf("Adjusted %d steps\n", steps);
             }
             else if (!strcmp(command, "rot"))
             {
                 float rots = atof(strtok(0, " "));
-                r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
+                if (!strcmp(motor, "R"))
+                {
+                    r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
+                }
+                else if (!strcmp(motor, "Z"))
+                {
+                    z_stage.moveRelativeInSteps(long(REV_STEPS * rots));
+                }
                 Serial.printf("Rotated %.4f revolutions\n", rots);
             }
         }
