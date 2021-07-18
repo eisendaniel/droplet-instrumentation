@@ -1,4 +1,3 @@
-
 #include <ESP_FlexyStepper.h>
 
 #define INPUT_SIZE 30
@@ -6,8 +5,8 @@
 // IO pin assignments
 const int R_MOTOR_STEP_PIN = 19;
 const int R_MOTOR_DIRECTION_PIN = 18;
-const int Z_MOTOR_STEP_PIN = 5;
-const int Z_MOTOR_DIRECTION_PIN = 17;
+const int Z_MOTOR_STEP_PIN = 23;
+const int Z_MOTOR_DIRECTION_PIN = 22;
 
 //motor config
 const int STEP_DIV = 32;
@@ -17,65 +16,95 @@ const int REV_STEPS = 200 * STEP_DIV;
 ESP_FlexyStepper r_stage;
 ESP_FlexyStepper z_stage;
 
-void initial_input()
+void process_command(char *input)
 {
-    // Get next command from Serial (add 1 for final 0)
-    char input[INPUT_SIZE + 1];
+    char *end_token;
     char *motor;
     char *command;
-    while (strncmp(input, "stop", 4))
+
+    if (strchr(input, ' '))
     {
-        Serial.println("\nInput next instruction");
-        while (!Serial.available())
-            ;
-        byte size = Serial.readBytes(input, INPUT_SIZE);
-        input[size] = 0;
-
-        if (strchr(input, ' '))
+        command = strtok_r(input, " ", &end_token);
+        if (!strcmp(command, "ADJ")) //adjust a motor in steps
         {
-            command = strtok(input, " ");
-            motor = strtok(0, " ");
-
-            if (!strcmp(command, "adj"))
+            motor = strtok_r(NULL, " ", &end_token);
+            int steps = atoi(strtok_r(0, " ", &end_token));
+            if (!strcmp(motor, "R"))
             {
-                int steps = atoi(strtok(0, " "));
-                if (!strcmp(motor, "R"))
-                {
-                    r_stage.moveRelativeInSteps(steps);
-                }
-                else if (!strcmp(motor, "Z"))
-                {
-                    z_stage.moveRelativeInSteps(steps);
-                }
-                Serial.printf("Adjusted %d steps\n", steps);
+                r_stage.moveRelativeInSteps(steps);
             }
-            else if (!strcmp(command, "rot"))
+            else if (!strcmp(motor, "Z"))
             {
-                float rots = atof(strtok(0, " "));
-                if (!strcmp(motor, "R"))
-                {
-                    r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
-                }
-                else if (!strcmp(motor, "Z"))
-                {
-                    z_stage.moveRelativeInSteps(long(REV_STEPS * rots));
-                }
-                Serial.printf("Rotated %.4f revolutions\n", rots);
+                z_stage.moveRelativeInSteps(steps);
             }
+            Serial.printf("Adjusted %s by %d steps\n", motor, steps);
+        }
+        else if (!strcmp(command, "R")) //rotate stage
+        {
+            float rots = atof(strtok_r(NULL, " ", &end_token));
+            r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
+            Serial.printf("Rotated %.4f revolutions\n", rots);
+        }
+        else if (!strcmp(command, "Z"))
+        {
+            float mm = atof(strtok_r(NULL, " ", &end_token)); //
+            z_stage.moveRelativeInSteps(long(REV_STEPS * -2.0 * mm));
+            Serial.printf("Moved Z %.4f mm\n", mm);
+        }
+        else if (!strcmp(command, "DEL"))
+        {
+            int ms = atoi(strtok_r(NULL, " ", &end_token));
+            delay(ms);
+            Serial.printf("Delayed %d ms\n", ms);
         }
     }
-    Serial.println("Stopped");
 }
 
-void programed_moves()
+void read_command()
 {
-    r_stage.moveRelativeInSteps(REV_STEPS / 4);
-    r_stage.moveRelativeInSteps(0);
-    delay(1000);
+    char input[INPUT_SIZE + 1];
+    Serial.println("\nInput next instruction");
+    while (!Serial.available())
+        ;
+    byte size = Serial.readBytes(input, INPUT_SIZE);
+    input[size] = 0;
 
-    r_stage.moveRelativeInSteps(-(REV_STEPS / 4));
-    r_stage.moveRelativeInSteps(0);
-    delay(1000);
+    if (strncmp(input, "SEQ", 3))
+    { //not sequence
+        process_command(input);
+    }
+    else //read and send sequence
+    {
+        //read
+        Serial.println("Start sequence sequence on commands");
+        char buffer[512] = "";
+        while (1)
+        {
+            if (!strncmp(input, "END", 3))
+            {
+                break;
+            }
+            while (!Serial.available())
+                ;
+            byte size = Serial.readBytes(input, INPUT_SIZE);
+            input[size] = 0;
+            strcat(buffer, input);
+            Serial.println("Input next command in sequence");
+        }
+
+        //process
+        char *end_str;
+        char *token = strtok_r(buffer, ";", &end_str);
+        while (token != NULL)
+        {
+            if (!strncmp(token, "END", 3))
+            {
+                break;
+            }
+            process_command(token);
+            token = strtok_r(NULL, ";", &end_str);
+        }
+    }
 }
 
 void setup()
@@ -93,11 +122,9 @@ void setup()
 
     z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
     z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
-
-    initial_input();
 }
 
 void loop()
 {
-    // programed_moves();
+    read_command();
 }
