@@ -16,19 +16,19 @@ const int REV_STEPS = 200 * STEP_DIV;
 ESP_FlexyStepper r_stage;
 ESP_FlexyStepper z_stage;
 
-void process_command(char *input)
+void execute_command(char *input)
 {
-    char *end_token;
+    char *end_instr;
     char *motor;
     char *command;
 
     if (strchr(input, ' '))
     {
-        command = strtok_r(input, " ", &end_token);
+        command = strtok_r(input, " ", &end_instr);
         if (!strcmp(command, "ADJ")) //adjust a motor in steps
         {
-            motor = strtok_r(NULL, " ", &end_token);
-            int steps = atoi(strtok_r(0, " ", &end_token));
+            motor = strtok_r(NULL, " ", &end_instr);
+            int steps = atoi(strtok_r(0, " ", &end_instr));
             if (!strcmp(motor, "R"))
             {
                 r_stage.moveRelativeInSteps(steps);
@@ -41,19 +41,19 @@ void process_command(char *input)
         }
         else if (!strcmp(command, "R")) //rotate stage
         {
-            float rots = atof(strtok_r(NULL, " ", &end_token));
+            float rots = atof(strtok_r(NULL, " ", &end_instr));
             r_stage.moveRelativeInSteps(long(REV_STEPS * rots));
             Serial.printf("Rotated %.4f revolutions\n", rots);
         }
         else if (!strcmp(command, "Z"))
         {
-            float mm = atof(strtok_r(NULL, " ", &end_token)); //
+            float mm = atof(strtok_r(NULL, " ", &end_instr)); //
             z_stage.moveRelativeInSteps(long(REV_STEPS * -2.0 * mm));
             Serial.printf("Moved Z %.4f mm\n", mm);
         }
         else if (!strcmp(command, "DEL"))
         {
-            int ms = atoi(strtok_r(NULL, " ", &end_token));
+            int ms = atoi(strtok_r(NULL, " ", &end_instr));
             delay(ms);
             Serial.printf("Delayed %d ms\n", ms);
         }
@@ -71,38 +71,34 @@ void read_command()
 
     if (strncmp(input, "SEQ", 3))
     { //not sequence
-        process_command(input);
+        execute_command(input);
     }
     else //read and send sequence
     {
         //read
         Serial.println("Start sequence sequence on commands");
         char buffer[512] = "";
-        while (1)
+        while (strncmp(input, "END", 3))
         {
-            if (!strncmp(input, "END", 3))
-            {
-                break;
-            }
             while (!Serial.available())
                 ;
-            byte size = Serial.readBytes(input, INPUT_SIZE);
+            size = Serial.readBytes(input, INPUT_SIZE);
             input[size] = 0;
             strcat(buffer, input);
             Serial.println("Input next command in sequence");
         }
 
         //process
-        char *end_str;
-        char *token = strtok_r(buffer, ";", &end_str);
-        while (token != NULL)
+        char *end_buf;
+        char *instr = strtok_r(buffer, ";", &end_buf);
+        while (instr != NULL)
         {
-            if (!strncmp(token, "END", 3))
+            if (!strncmp(instr, "END", 3))
             {
                 break;
             }
-            process_command(token);
-            token = strtok_r(NULL, ";", &end_str);
+            execute_command(instr);
+            instr = strtok_r(NULL, ";", &end_buf);
         }
     }
 }
