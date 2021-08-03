@@ -7,6 +7,7 @@ const int R_MOTOR_STEP_PIN = 19;
 const int R_MOTOR_DIRECTION_PIN = 18;
 const int Z_MOTOR_STEP_PIN = 23;
 const int Z_MOTOR_DIRECTION_PIN = 22;
+const int TRIGGER = 4;
 
 //motor config
 const int STEP_DIV = 32;
@@ -15,6 +16,8 @@ const int REV_STEPS = 200 * STEP_DIV;
 // create the stepper motor object
 ESP_FlexyStepper r_stage;
 ESP_FlexyStepper z_stage;
+
+bool pipette_down = true;
 
 void execute_command(char *input)
 {
@@ -57,6 +60,19 @@ void execute_command(char *input)
             delay(ms);
             Serial.printf("Delayed %d ms\n", ms);
         }
+        else if (!strcmp(command, "PIP"))
+        {
+            char *pos = strtok_r(NULL, " ", &end_instr);
+
+            if ((!strncmp(pos, "UP", 3) && pipette_down) || (!strncmp(pos, "DOWN", 4) && !pipette_down))
+            {
+                digitalWrite(TRIGGER, LOW);
+                delay(100);
+                digitalWrite(TRIGGER, HIGH);
+                Serial.printf("Triggered Pippette\n");
+                pipette_down = !pipette_down;
+            }
+        }
     }
 }
 
@@ -71,6 +87,7 @@ void read_command()
 
     if (strncmp(input, "SEQ", 3))
     { //not sequence
+        Serial.printf("Executing %s", input);
         execute_command(input);
     }
     else //read and send sequence
@@ -106,6 +123,10 @@ void read_command()
 void setup()
 {
     Serial.begin(115200);
+
+    pinMode(TRIGGER, OUTPUT);
+    digitalWrite(TRIGGER, HIGH);
+
     // connect and configure the stepper motor to its IO pins
     r_stage.connectToPins(R_MOTOR_STEP_PIN, R_MOTOR_DIRECTION_PIN);
     z_stage.connectToPins(Z_MOTOR_STEP_PIN, Z_MOTOR_DIRECTION_PIN);
