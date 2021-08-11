@@ -64,13 +64,14 @@ void execute_command(char *input)
         {
             char *pos = strtok_r(NULL, " ", &end_instr);
 
-            if ((!strncmp(pos, "UP", 3) && pipette_down) || (!strncmp(pos, "DOWN", 4) && !pipette_down))
+            if ((!strncmp(pos, "UP", 2) && pipette_down) || (!strncmp(pos, "DOWN", 4) && !pipette_down))
             {
                 digitalWrite(TRIGGER, LOW);
                 delay(100);
                 digitalWrite(TRIGGER, HIGH);
                 Serial.printf("Triggered Pippette\n");
                 pipette_down = !pipette_down;
+                delay(2000);
             }
         }
     }
@@ -131,12 +132,11 @@ void setup()
     r_stage.connectToPins(R_MOTOR_STEP_PIN, R_MOTOR_DIRECTION_PIN);
     z_stage.connectToPins(Z_MOTOR_STEP_PIN, Z_MOTOR_DIRECTION_PIN);
 
-    r_stage.setSpeedInStepsPerSecond(1 * REV_STEPS);
+    r_stage.setSpeedInStepsPerSecond(2 * REV_STEPS);
+    r_stage.setAccelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
+    r_stage.setDecelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
+
     z_stage.setSpeedInStepsPerSecond(10 * REV_STEPS);
-
-    r_stage.setAccelerationInStepsPerSecondPerSecond(10 * REV_STEPS);
-    r_stage.setDecelerationInStepsPerSecondPerSecond(10 * REV_STEPS);
-
     z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
     z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
 }
