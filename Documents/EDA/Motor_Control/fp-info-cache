@@ -1,8 +1,22 @@
-1629102835663
-MODULE_ESP32-DEVKITC-32D
-MODULE_ESP32-DEVKITC-32D
+4887400189503
+molex_sherlock
+molex_sherlock_vrthdr_2pin
 
 
 0
-38
-38
+2
+2
+molex_sherlock
+molex_sherlock_vrthdr_4pin
+
+
+0
+4
+4
+molex_sherlock
+molex_sherlock_vrthdr_6pin
+
+
+0
+6
+6

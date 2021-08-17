@@ -1,4 +1,7 @@
 (sym_lib_table
   (lib (name Motor_Control-rescue)(type Legacy)(uri ${KIPRJMOD}/Motor_Control-rescue.lib)(options "")(descr ""))
   (lib (name ESP32-DEVKITC-32D)(type Legacy)(uri ${KIPRJMOD}/lib/symbols/ESP32-DEVKITC-32D.lib)(options "")(descr ""))
+  (lib (name molex_sherlock_vrthdr_2pin)(type Legacy)(uri ${KIPRJMOD}/lib/symbols/molex_sherlock_vrthdr_2pin.lib)(options "")(descr ""))
+  (lib (name molex_sherlock_vrthdr_4pin)(type Legacy)(uri ${KIPRJMOD}/lib/symbols/molex_sherlock_vrthdr_4pin.lib)(options "")(descr ""))
+  (lib (name molex_sherlock_vrthdr_6pin)(type Legacy)(uri ${KIPRJMOD}/lib/symbols/molex_sherlock_vrthdr_6pin.lib)(options "")(descr ""))
 )

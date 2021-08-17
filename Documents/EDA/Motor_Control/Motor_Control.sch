@@ -16,61 +16,55 @@ $EndDescr
 $Comp
 L power:GND #PWR03
 U 1 1 60BA5B36
-P 6400 1850
-F 0 "#PWR03" H 6400 1600 50  0001 C CNN
-F 1 "GND" H 6405 1677 50  0000 C CNN
-F 2 "" H 6400 1850 50  0001 C CNN
-F 3 "" H 6400 1850 50  0001 C CNN
-	1    6400 1850
+P 5400 1825
+F 0 "#PWR03" H 5400 1575 50  0001 C CNN
+F 1 "GND" H 5405 1652 50  0000 C CNN
+F 2 "" H 5400 1825 50  0001 C CNN
+F 3 "" H 5400 1825 50  0001 C CNN
+	1    5400 1825
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:+VDC #PWR02
 U 1 1 60BA6690
-P 6400 1350
-F 0 "#PWR02" H 6400 1250 50  0001 C CNN
-F 1 "+VDC" H 6400 1625 50  0000 C CNN
-F 2 "" H 6400 1350 50  0001 C CNN
-F 3 "" H 6400 1350 50  0001 C CNN
-	1    6400 1350
+P 5400 1325
+F 0 "#PWR02" H 5400 1225 50  0001 C CNN
+F 1 "+VDC" H 5400 1600 50  0000 C CNN
+F 2 "" H 5400 1325 50  0001 C CNN
+F 3 "" H 5400 1325 50  0001 C CNN
+	1    5400 1325
 	1    0    0    -1  
 $EndComp
 $Comp
 L Motor_Control-rescue:CP-Device C2
 U 1 1 60BA7DB3
-P 6600 1600
-F 0 "C2" H 6718 1646 50  0000 L CNN
-F 1 "100u" H 6718 1555 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 6638 1450 50  0001 C CNN
-F 3 "~" H 6600 1600 50  0001 C CNN
-	1    6600 1600
+P 5600 1575
+F 0 "C2" H 5718 1621 50  0000 L CNN
+F 1 "100u" H 5718 1530 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 5638 1425 50  0001 C CNN
+F 3 "~" H 5600 1575 50  0001 C CNN
+	1    5600 1575
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6600 1400 6600 1450
+	5600 1375 5600 1425
 Wire Wire Line
-	6200 1450 6200 1400
+	5200 1425 5200 1375
 Wire Wire Line
-	6200 1400 6400 1400
+	5200 1375 5400 1375
 Wire Wire Line
-	6600 1800 6600 1750
+	5600 1775 5600 1725
 Wire Wire Line
-	6200 1750 6200 1800
+	5200 1725 5200 1775
 Wire Wire Line
-	6200 1800 6400 1800
+	5200 1775 5400 1775
 Wire Notes Line
-	5200 950  5200 5950
-Wire Notes Line
-	5200 2150 7700 2150
+	5200 2150 5200 5950
 Wire Notes Line
 	7700 950  7700 5950
 Wire Notes Line
 	10700 5950 10700 950 
-Wire Notes Line
-	5200 950  10700 950 
-Wire Notes Line
-	5200 5950 10700 5950
-Text Notes 7100 1100 0    50   ~ 0
+Text Notes 7125 1100 0    50   ~ 0
 Motor Supply\n
 Text Notes 10100 1100 0    50   ~ 0
 Motor Drivers\n
@@ -98,7 +92,7 @@ U 1 1 60C05853
 P 9850 5000
 F 0 "M2" H 9800 4800 50  0000 L CNN
 F 1 "Z" H 9450 4700 50  0000 L CNN
-F 2 "" H 9860 4990 50  0001 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_4pin" H 9860 4990 50  0001 C CNN
 F 3 "http://www.infineon.com/dgdl/Application-Note-TLE8110EE_driving_UniPolarStepperMotor_V1.1.pdf?fileId=db3a30431be39b97011be5d0aa0a00b0" H 9860 4990 50  0001 C CNN
 	1    9850 5000
 	1    0    0    -1  
@@ -117,7 +111,7 @@ U 1 1 60B988BE
 P 9850 2550
 F 0 "M1" H 9800 2350 50  0000 L CNN
 F 1 "R" H 9800 2250 50  0000 L CNN
-F 2 "" H 9860 2540 50  0001 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_4pin" H 9860 2540 50  0001 C CNN
 F 3 "http://www.infineon.com/dgdl/Application-Note-TLE8110EE_driving_UniPolarStepperMotor_V1.1.pdf?fileId=db3a30431be39b97011be5d0aa0a00b0" H 9860 2540 50  0001 C CNN
 	1    9850 2550
 	1    0    0    -1  
@@ -130,14 +124,6 @@ Wire Wire Line
 	8500 4900 8650 4900
 Wire Wire Line
 	8500 4800 8650 4800
-Text GLabel 8500 4900 0    50   Input ~ 0
-Z_DIR
-Text GLabel 8500 4800 0    50   Input ~ 0
-Z_STEP
-Text GLabel 8500 2450 0    50   Input ~ 0
-R_DIR
-Text GLabel 8500 2350 0    50   Input ~ 0
-R_STEP
 Connection ~ 8550 4400
 Wire Wire Line
 	8550 4400 8550 4300
@@ -333,87 +319,60 @@ F 3 "" H 8600 5650 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	9150 5650 9150 5500
-$Comp
-L Connector:Screw_Terminal_01x02 J1
-U 1 1 60F81099
-P 7200 1550
-F 0 "J1" H 7300 1550 50  0000 L CNN
-F 1 "V_MOTOR" H 7300 1450 50  0000 L CNN
-F 2 "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-2_1x02_P5.00mm_Horizontal" H 7200 1550 50  0001 C CNN
-F 3 "~" H 7200 1550 50  0001 C CNN
-	1    7200 1550
-	1    0    0    -1  
-$EndComp
 Wire Wire Line
-	7000 1550 6950 1550
+	5950 1375 5775 1375
 Wire Wire Line
-	6950 1550 6950 1400
-Wire Wire Line
-	6950 1400 6600 1400
-Wire Wire Line
-	7000 1650 6950 1650
-Wire Wire Line
-	6950 1650 6950 1800
-Wire Wire Line
-	6950 1800 6600 1800
+	5950 1775 5775 1775
 Wire Wire Line
 	7250 3950 7150 3950
 Wire Wire Line
 	7250 3850 7150 3850
-Text GLabel 7250 3950 2    50   Input ~ 0
-R_DIR
-Text GLabel 7250 3850 2    50   Input ~ 0
-R_STEP
 $Comp
 L Motor_Control-rescue:CP-Device C1
 U 1 1 60BA81F8
-P 6200 1600
-F 0 "C1" H 6318 1646 50  0000 L CNN
-F 1 "100u" H 6318 1555 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 6238 1450 50  0001 C CNN
-F 3 "~" H 6200 1600 50  0001 C CNN
-	1    6200 1600
+P 5200 1575
+F 0 "C1" H 5318 1621 50  0000 L CNN
+F 1 "100u" H 5318 1530 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 5238 1425 50  0001 C CNN
+F 3 "~" H 5200 1575 50  0001 C CNN
+	1    5200 1575
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	9500 5100 9550 5100
-Connection ~ 6600 1800
-Connection ~ 6600 1400
+Connection ~ 5600 1775
+Connection ~ 5600 1375
 Wire Wire Line
-	6400 1850 6400 1800
-Connection ~ 6400 1800
+	5400 1825 5400 1775
+Connection ~ 5400 1775
 Wire Wire Line
-	6400 1800 6600 1800
+	5400 1775 5600 1775
 Wire Wire Line
-	6400 1350 6400 1400
-Connection ~ 6400 1400
+	5400 1325 5400 1375
+Connection ~ 5400 1375
 Wire Wire Line
-	6400 1400 6600 1400
+	5400 1375 5600 1375
 $Comp
 L Connector:Barrel_Jack J2
 U 1 1 611C8652
-P 5750 1600
-F 0 "J2" H 5807 1925 50  0000 C CNN
-F 1 "Barrel_Jack" H 5807 1834 50  0000 C CNN
-F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 5800 1560 50  0001 C CNN
-F 3 "https://www.cuidevices.com/product/resource/pj-002bh.pdf" H 5800 1560 50  0001 C CNN
-	1    5750 1600
+P 4800 1575
+F 0 "J2" H 4857 1900 50  0000 C CNN
+F 1 "Barrel_Jack" H 4857 1809 50  0000 C CNN
+F 2 "Connector_BarrelJack:BarrelJack_Horizontal" H 4850 1535 50  0001 C CNN
+F 3 "https://www.cuidevices.com/product/resource/pj-002bh.pdf" H 4850 1535 50  0001 C CNN
+	1    4800 1575
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6050 1500 6100 1500
+	5100 1475 5100 1375
 Wire Wire Line
-	6100 1500 6100 1400
+	5100 1375 5200 1375
+Connection ~ 5200 1375
 Wire Wire Line
-	6100 1400 6200 1400
-Connection ~ 6200 1400
+	5100 1675 5100 1775
 Wire Wire Line
-	6050 1700 6100 1700
-Wire Wire Line
-	6100 1700 6100 1800
-Wire Wire Line
-	6100 1800 6200 1800
-Connection ~ 6200 1800
+	5100 1775 5200 1775
+Connection ~ 5200 1775
 $Comp
 L power:+3V3 #PWR01
 U 1 1 60BE7BAC
@@ -441,10 +400,6 @@ F 8 "ESP32-DEVKITC-32D" H 6350 4050 50  0001 C CNN "man part #"
 	1    6350 4050
 	1    0    0    -1  
 $EndComp
-Text GLabel 7250 3250 2    50   Input ~ 0
-Z_STEP
-Text GLabel 7250 3350 2    50   Input ~ 0
-Z_DIR
 Wire Wire Line
 	7250 3250 7150 3250
 Wire Wire Line
@@ -459,10 +414,10 @@ Connection ~ 7200 3750
 Wire Wire Line
 	7200 3750 7200 5250
 $Comp
-L power:GNDD #PWR?
+L power:GNDD #PWR0101
 U 1 1 6121E752
 P 5500 5250
-F 0 "#PWR?" H 5500 5000 50  0001 C CNN
+F 0 "#PWR0101" H 5500 5000 50  0001 C CNN
 F 1 "GNDD" H 5504 5095 50  0000 C CNN
 F 2 "" H 5500 5250 50  0001 C CNN
 F 3 "" H 5500 5250 50  0001 C CNN
@@ -477,4 +432,175 @@ Wire Wire Line
 	5550 3150 5500 3150
 Wire Wire Line
 	5500 2750 5500 3150
+Wire Wire Line
+	7150 4350 7250 4350
+Wire Wire Line
+	7150 4250 7250 4250
+Wire Wire Line
+	7150 4150 7250 4150
+Text Label 7250 3850 0    50   ~ 0
+R_STEP
+Text Label 7250 3950 0    50   ~ 0
+R_DIR
+Text Label 8500 2350 2    50   ~ 0
+R_STEP
+Text Label 8500 2450 2    50   ~ 0
+R_DIR
+Text Label 7250 3250 0    50   ~ 0
+Z_STEP
+Text Label 7250 3350 0    50   ~ 0
+Z_DIR
+Text Label 8500 4800 2    50   ~ 0
+Z_STEP
+Text Label 8500 4900 2    50   ~ 0
+Z_DIR
+Text Label 7250 4350 0    50   ~ 0
+PIP_TRIG
+Text Label 7250 4250 0    50   ~ 0
+Z_LIM
+Text Label 7250 4150 0    50   ~ 0
+R_LIM
+Wire Notes Line
+	3725 950  10700 950 
+Wire Notes Line
+	3725 5950 10700 5950
+$Comp
+L molex_sherlock_vrthdr_2pin:353620250 J1
+U 1 1 6126271A
+P 5950 1625
+F 0 "J1" H 6200 1375 60  0000 C CNN
+F 1 "Power Molex" H 6425 1800 60  0000 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_2pin" H 6350 1565 60  0001 C CNN
+F 3 "" H 5950 1625 60  0000 C CNN
+	1    5950 1625
+	1    0    0    1   
+$EndComp
+$Comp
+L Mechanical:MountingHole_Pad H2
+U 1 1 611BB4B9
+P 5775 1875
+F 0 "H2" H 5675 1832 50  0000 R CNN
+F 1 "GND" H 5675 1923 50  0000 R CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 5775 1875 50  0001 C CNN
+F 3 "~" H 5775 1875 50  0001 C CNN
+	1    5775 1875
+	-1   0    0    1   
+$EndComp
+$Comp
+L Mechanical:MountingHole_Pad H1
+U 1 1 611BAD7F
+P 5775 1275
+F 0 "H1" H 5875 1324 50  0000 L CNN
+F 1 "VDC" H 5875 1233 50  0000 L CNN
+F 2 "MountingHole:MountingHole_3.2mm_M3_Pad_Via" H 5775 1275 50  0001 C CNN
+F 3 "~" H 5775 1275 50  0001 C CNN
+	1    5775 1275
+	1    0    0    -1  
+$EndComp
+Connection ~ 5775 1375
+Wire Wire Line
+	5775 1375 5600 1375
+Connection ~ 5775 1775
+Wire Wire Line
+	5775 1775 5600 1775
+Wire Wire Line
+	5950 1625 5950 1775
+$Comp
+L molex_sherlock_vrthdr_2pin:353620250 J3
+U 1 1 6128B423
+P 4200 2950
+F 0 "J3" H 4442 2563 60  0000 C CNN
+F 1 "Pipette" H 4442 2669 60  0000 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_2pin" H 4600 2890 60  0001 C CNN
+F 3 "" H 4200 2950 60  0000 C CNN
+	1    4200 2950
+	1    0    0    1   
+$EndComp
+$Comp
+L molex_sherlock_vrthdr_2pin:353620250 J4
+U 1 1 6128C0C1
+P 4200 3975
+F 0 "J4" H 4442 3588 60  0000 C CNN
+F 1 "R Home" H 4442 3694 60  0000 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_2pin" H 4600 3915 60  0001 C CNN
+F 3 "" H 4200 3975 60  0000 C CNN
+	1    4200 3975
+	1    0    0    1   
+$EndComp
+$Comp
+L molex_sherlock_vrthdr_2pin:353620250 J5
+U 1 1 6128FFA6
+P 4200 5050
+F 0 "J5" H 4442 4663 60  0000 C CNN
+F 1 "Z Home" H 4442 4769 60  0000 C CNN
+F 2 "molex_sherlock:molex_sherlock_vrthdr_2pin" H 4600 4990 60  0001 C CNN
+F 3 "" H 4200 5050 60  0000 C CNN
+	1    4200 5050
+	1    0    0    1   
+$EndComp
+Text Label 4150 4950 2    50   ~ 0
+Z_LIM
+Text Label 4150 3875 2    50   ~ 0
+R_LIM
+Wire Wire Line
+	5950 1375 5950 1525
+Wire Notes Line
+	3725 2150 7700 2150
+Wire Notes Line
+	3725 950  3725 5950
+Text Notes 4725 2275 0    50   ~ 0
+Connectors\n
+Text Label 4150 2850 2    50   ~ 0
+PIP_TRIG
+$Comp
+L power:GNDD #PWR0102
+U 1 1 6134080F
+P 4150 3000
+F 0 "#PWR0102" H 4150 2750 50  0001 C CNN
+F 1 "GNDD" H 4154 2845 50  0000 C CNN
+F 2 "" H 4150 3000 50  0001 C CNN
+F 3 "" H 4150 3000 50  0001 C CNN
+	1    4150 3000
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0103
+U 1 1 61340F0D
+P 4150 4025
+F 0 "#PWR0103" H 4150 3775 50  0001 C CNN
+F 1 "GNDD" H 4154 3870 50  0000 C CNN
+F 2 "" H 4150 4025 50  0001 C CNN
+F 3 "" H 4150 4025 50  0001 C CNN
+	1    4150 4025
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GNDD #PWR0104
+U 1 1 61341A8F
+P 4150 5100
+F 0 "#PWR0104" H 4150 4850 50  0001 C CNN
+F 1 "GNDD" H 4154 4945 50  0000 C CNN
+F 2 "" H 4150 5100 50  0001 C CNN
+F 3 "" H 4150 5100 50  0001 C CNN
+	1    4150 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4150 2850 4200 2850
+Wire Wire Line
+	4200 2950 4150 2950
+Wire Wire Line
+	4150 2950 4150 3000
+Wire Wire Line
+	4200 3975 4150 3975
+Wire Wire Line
+	4150 3975 4150 4025
+Wire Wire Line
+	4150 3875 4200 3875
+Wire Wire Line
+	4150 4950 4200 4950
+Wire Wire Line
+	4200 5050 4150 5050
+Wire Wire Line
+	4150 5050 4150 5100
 $EndSCHEMATC

@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name MODULE_ESP32-DEVKITC-32D)(type KiCad)(uri ${KIPRJMOD}/lib/footprint/MODULE_ESP32-DEVKITC-32D.pretty)(options "")(descr ""))
+  (lib (name molex_sherlock)(type KiCad)(uri ${KIPRJMOD}/lib/footprint/molex_sherlock.pretty)(options "")(descr ""))
 )

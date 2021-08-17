@@ -24,29 +24,6 @@ X ~ 2 300 -100 100 L 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #
-# Connector_Screw_Terminal_01x02
-#
-DEF Connector_Screw_Terminal_01x02 J 0 40 Y N 1 F N
-F0 "J" 0 100 50 H V C CNN
-F1 "Connector_Screw_Terminal_01x02" 0 -200 50 H V C CNN
-F2 "" 0 0 50 H I C CNN
-F3 "" 0 0 50 H I C CNN
-$FPLIST
- TerminalBlock*:*
-$ENDFPLIST
-DRAW
-C 0 -100 25 1 1 6 N
-C 0 0 25 1 1 6 N
-S -50 50 50 -150 1 1 10 f
-P 2 1 1 6 -21 -87 13 -120 N
-P 2 1 1 6 -21 13 13 -20 N
-P 2 1 1 6 -14 -80 20 -113 N
-P 2 1 1 6 -14 20 20 -13 N
-X Pin_1 1 -200 0 150 R 50 50 1 1 P
-X Pin_2 2 -200 -100 150 R 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
 # Driver_Motor_Pololu_Breakout_DRV8825
 #
 DEF Driver_Motor_Pololu_Breakout_DRV8825 A 0 20 Y Y 1 F N
@@ -130,6 +107,22 @@ X IO25 9 -800 100 200 R 40 40 0 0 B
 ENDDRAW
 ENDDEF
 #
+# Mechanical_MountingHole_Pad
+#
+DEF Mechanical_MountingHole_Pad H 0 40 N N 1 F N
+F0 "H" 0 250 50 H V C CNN
+F1 "Mechanical_MountingHole_Pad" 0 175 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ MountingHole*Pad*
+$ENDFPLIST
+DRAW
+C 0 50 50 0 1 50 N
+X 1 1 0 -100 100 U 50 50 1 1 I
+ENDDRAW
+ENDDEF
+#
 # Motor_Control-rescue_CP-Device
 #
 DEF Motor_Control-rescue_CP-Device C 0 10 N Y 1 F N
@@ -181,6 +174,32 @@ X ~ 1 -100 300 100 D 50 50 1 1 P
 X - 2 100 300 100 D 50 50 1 1 P
 X ~ 3 -300 100 100 R 50 50 1 1 P
 X ~ 4 -300 -100 100 R 50 50 1 1 P
+ENDDRAW
+ENDDEF
+#
+# molex_sherlock_vrthdr_2pin_353620250
+#
+DEF molex_sherlock_vrthdr_2pin_353620250 J 0 10 Y N 1 L N
+F0 "J" 350 250 60 H V C CNN
+F1 "molex_sherlock_vrthdr_2pin_353620250" 400 0 60 H V C CNN
+F2 "CON_353620250" 400 -60 60 H I C CNN
+F3 "" 0 0 60 H V C CNN
+$FPLIST
+ CON_353620250
+$ENDFPLIST
+DRAW
+P 2 1 1 5 200 -200 500 -200 N
+P 2 1 1 5 200 100 200 -200 N
+P 2 1 1 5 400 -100 200 -100 N
+P 2 1 1 5 400 -100 350 -133 N
+P 2 1 1 5 400 -100 350 -67 N
+P 2 1 1 5 400 0 200 0 N
+P 2 1 1 5 400 0 350 -33 N
+P 2 1 1 5 400 0 350 33 N
+P 2 1 1 5 500 -200 500 100 N
+P 2 1 1 5 500 100 200 100 N
+X 1 1 0 0 200 R 59 59 1 1 U
+X 2 2 0 -100 200 R 59 59 1 1 U
 ENDDRAW
 ENDDEF
 #
