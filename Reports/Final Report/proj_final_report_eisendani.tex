@@ -1,20 +1,18 @@
-
 %% $RCSfile: proj_report_outline.tex,v $
 %% $Revision: 1.3 $
 %% $Date: 2016/06/10 03:41:54 $
 %% $Author: kevin $
 
-\documentclass[11pt
-              , a4paper
-              , twoside
-              , openright
-              ]{report}
-
+\documentclass[11pt, a4paper, twoside, openright]{report}
 
 \usepackage{float} % lets you have non-floating floats
-
 \usepackage{url} % for typesetting urls
-
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\titleformat{\chapter}[hang] 
+{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{} 
 %
 %  We don't want figures to float so we define
 %
@@ -23,12 +21,12 @@
 
 %% These are standard LaTeX definitions for the document
 %%                            
-\title{The Title}
-\author{The Author}
+\title{Instrumentation System for Liquid Drop Impact and Evaporation}
+\author{Daniel Eisen}
 
 %% This file can be used for creating a wide range of reports
 %%  across various Schools
-%%
+%% 
 %% Set up some things, mostly for the front page, for your specific document
 %
 % Current options are:
@@ -39,12 +37,14 @@
 %                          (see below)
 % [font|image]            Use a font or an image for the VUW logo
 %                          The font option will only work on ECS systems
-%
-\usepackage[font,ecs,mcompsci]{vuwproject}
+% 
+\usepackage[image,ecs]{vuwproject}
 
 % You should specifiy your supervisor here with
-%     \supervisor{Firstname Lastname}
+\supervisor{Gideon Gouws}
 % use \supervisors if there is more than one supervisor
+ 
+\otherdegree{Bachelor of Engineering with Honours}
 
 % Unless you've used the bschonscomp or mcompsci
 %  options above use
@@ -58,14 +58,14 @@
 
 % Make the page numbering roman, until after the contents, etc.
 \frontmatter
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
 
-A short description of the project goes here.
+    Droplet impact and evaporation presents a complex physical process worth investigating not only from a fundamental research perspective but also in its potential for industrial application. However, in order to extract usable data from this small scale, fast phenomenon in the lab producing a droplet of repeatable volume and position as well as accucartly track and collect the data (temperature, impact, evaporation) is essential in order to extract reliable and study worthy results. This procedure form the basis of this project.
+    This projects approach is to add motorised automation to droplet dispensing with aims to control for droplet volume, positional variation, contact angle and speed up the procedure and allow for greater flexibility in the experimental process.
+
 
 \end{abstract}
 
@@ -76,33 +76,24 @@ A short description of the project goes here.
 \include{acknowledge}
 
 \tableofcontents
-
 % we want a list of the figures we defined
 \listof{fig}{Figures}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \mainmatter
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% individual chapters included here
 \include{introduction}
-\include{using}
-\include{example}
-\include{conclusion}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\include{background}
+\include{work}
+\include{future}
+\include{feedback}
 
 \backmatter
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%\bibliographystyle{ieeetr}
-\bibliographystyle{acm}
+\bibliographystyle{ieeetran}
 \bibliography{sample}
-
 
 \end{document}

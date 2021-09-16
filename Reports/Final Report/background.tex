@@ -1,0 +1,47 @@
+\chapter{Background}\label{C:back}
+
+\section{Current Experimental Setup}
+The instrumentation as exists is assembled with an optical breadboard and XYZ(R) stages with micrometre controls. A central stage holds the substrate with internally mounted thermocouple. Two manual focus cameras are positioned in profile and top down views, and the droplet is dispensed manually via a syringe mounted horizontally to a XYZ+R stage.
+The current procedure is a manual process. The syringe tip is rotated above a marked point on the substrate, and hand emptied and refilled. This results in volume and positional variation between runs. This procedural variance is the focus of this project.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|}
+    \hline
+                   & \textit{Distance from Mark}          & \textit{Measured Temperature Drop} \\ \hline
+    Min Pos Offset & 0.71mm                     &-1.7901$^{\circ}C$    \\ \hline
+    Max Pos Offset &       2.01mm    &  -0.9944$^{\circ}C$    \\ \hline
+                   & \textit{Volume}            & \textit{Contact Angle}          \\ \hline
+    Shape Variance & $0.629mm^3$ & 25.894 degrees $\dagger$                \\ \hline
+    \end{tabular}
+    \caption{Variance in Setup}
+    \subcaption*{$\dagger$This excluded an outlier of an almost spherical droplet with contact angles exceeding 95 degrees. This large variation is most likely due to inconsistency in surface chemisty from washing.}
+    \end{table}
+
+Data taken from a series of five droplet runs was analysed to extract the variety in droplets and its effect on the measure temperature profile. 
+
+\section{Other Approaches}
+In literature, there exists a variety of rigs for similar experiments. These were explored to gauge a range of what factors were controlled (and measured) and with what approaches. In summary:
+\begin{itemize}
+    \item Controlled environmental factors with basic box \cite{step_book} or measured factors only \cite{measure_only}.
+    \item Controlled for droplet position and volume with hard mounted pump plus needle, but lacks environmental control or automation, and there is no top view camera \cite{non_newt} \cite{fixed_pump}.
+    \item Incorporated stepper motor driven automation, but no environmental control or monitoring \cite{motors}.
+    \item Full environmental chamber and fixed droplet pump, but single camera, has separate uncontrolled rig for top view \cite{duel_rig}.
+\end{itemize}
+
+\newpage
+\section{Background on Stepper motor control}
+This section will cover the background of controlling bipolar stepper motors via a step/direction style driver setup, as its concepts will be mentioned later in the report. This is a focused background on the key considerations and requirements when designing for and operating this specific subset, and by no means applicable to all driving and specific motor choices.
+
+The stepper motors provide precise positioning and are capable of moving their rotor to a specified position and holding that position at a wide range of load torques. This capability makes the stepper motors popular in optics, medical instruments, factory automation, and industrial equipment.
+
+The typical topology of a stepper driving system (based around the step/direction method) consists of a controller, driver, and stepper motor. The controller provides a direction signal and step pulses, while the driver converts these signals into actual electrical power and supplies them to the motor. The stepper motor moves in steps, each step covering one step angle, which can be described as the rotor displacement corresponding to one step pulse \cite{step_app}.
+
+Stepper motors typically have a step size specification (e.g. 1.8° or 200 steps per revolution), which applies to full steps. Step/direction drivers usually provide a 'microstepping' mode which increases the resolution by allowing intermediate step locations, which are achieved by energizing the coils with intermediate current levels \cite{step_book}.
+
+The last major consideration in driving steppers is controlling the start-up and stopping speeds for the controller's provided pulse train to the driver. As the motor is a mechanical device in the real world, expecting a perfect impulse response will lead to driving failure. Inertia ratio is critical to stepper motor acceleration \cite{step_book}. Too great a difference in inertia ratio between system and motor risks missed steps or stalling the coils. So when starting a stepper motor, acceleration and deceleration should happen through pulses to the motor that start slowly and gradually quicken in a process called ramping.
+
+\section{Revised Approach}
+The focus of the project is now twofold. Firstly on the automation of the process to allow for faster, pre-programmed runs to be carried out easier, and secondly to improve on the repeatability and reliability of the results by controlling the procedural factors of the experiment. 
+
+An electronic pipette will be used to dispense a precise volume, and motorised stages will be used to provide preprogramed, repeatable motion. The environmental factors however are not to be ignored, though controlling them is outside of the scope of this project. They will, however, be monitored, and this project will implement data collection of temperature, atmospheric pressure and humidity so these factors can be correlated to any remaining variation in data.  

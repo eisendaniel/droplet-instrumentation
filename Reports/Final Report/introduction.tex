@@ -1,4 +1,25 @@
 \chapter{Introduction}\label{C:intro}
-This chapter gives an introduction to the project report.
+The investigation of droplet impact and evaporation is an area of interest and application to various industries. Examples of these include milk powder spray drying, ink jet printing, and applications of evaporative cooling. This project will continue on from a previous instrumentation setup, evaluating its shortcomings, and designing the next generation. This will improve the reliability and usability of the collected data from the previous setup, and introduce methods of automating the process. 
 
-In Chapter \ref{C:us} we explain how to use this document, and the \texttt{vuwproject} style. In Chapter \ref{C:ex} we say some things about \LaTeX, and in Chapter \ref{C:con} we give our conclusions.
+This preliminary report covers the key problem of the experimental setup that the project aims to improve, and identifying the main factors that can introduce variation into the results. It will also provide an overview and evaluation of the current and previous systems, and the variability of their results, including possible sources of these inconsistencies. It will briefly cover other similar systems in literature, and what they control and how. Then the report will redefine the project scope, its objectives, and what variables it aims to control and how. Finally, it will cover what work has been done and where the current progress and results stand, as well as detailing difficulties and decisions made along the way.  
+
+\section*{The Experiment}
+
+A droplet of liquid (concentrated milk, water, or similar) is deposited on a heated substrate (stainless steel, copper, or glass). The temperature of the substrate is monitored. The progression of the droplet's impact and evaporation is captured by two cameras; above and profile view. This produces a multidimensional perception of the developing behaviour and characteristics of the droplet over time. This usually takes between 1 and 2 minutes per droplet.
+
+\subsection*{Problems}
+
+This experiment relies on the precise placement of a droplet above a temperature sensor, in a set focal plane, to measure the droplet as it progresses through it's evaporation.
+Therefore, it can be said there exists uncontrolled factors that can alter the results, affecting the final values and the repeatability of the experiment.
+These factors can be separated into environmental and procedural sources.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Environmental}} & \multicolumn{1}{c|}{\textbf{Procedural}} \\ \hline
+    Humidity                                     & Droplet Volume                          \\ \hline
+    Atmospheric Pressure                        & Droplet Position (Rel. to thermocouple) \\ \hline
+    Temperature                                  & Contact Angle (contact surface area)    \\ \hline
+    \end{tabular}
+    \end{table}
