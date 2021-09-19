@@ -9,8 +9,11 @@
 \usepackage{url} % for typesetting urls
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{hyperref}
 \usepackage{titlesec}
+
+
 \titleformat{\chapter}[hang] 
 {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{} 
 %
@@ -41,7 +44,7 @@
 \usepackage[image,ecs]{vuwproject}
 
 % You should specifiy your supervisor here with
-\supervisor{Gideon Gouws}
+\supervisor{Dr. Gideon Gouws}
 % use \supervisors if there is more than one supervisor
  
 \otherdegree{Bachelor of Engineering with Honours}
@@ -63,8 +66,8 @@
 
 \begin{abstract}
 
-    Droplet impact and evaporation presents a complex physical process worth investigating not only from a fundamental research perspective but also in its potential for industrial application. However, in order to extract usable data from this small scale, fast phenomenon in the lab producing a droplet of repeatable volume and position as well as accucartly track and collect the data (temperature, impact, evaporation) is essential in order to extract reliable and study worthy results. This procedure form the basis of this project.
-    This projects approach is to add motorised automation to droplet dispensing with aims to control for droplet volume, positional variation, contact angle and speed up the procedure and allow for greater flexibility in the experimental process.
+    \textit{Droplet impact and evaporation presents a complex physical process worth investigating not only from a fundamental research perspective but also in its potential for industrial application. However, in order to extract usable data from this small scale, fast phenomenon in the lab producing a droplet of repeatable volume and position as well as accucartly track and collect the data (temperature, impact, evaporation) is essential in order to extract reliable and study worthy results. This procedure form the basis of this project.
+    This projects approach is to add motorised automation to droplet dispensing with aims to control for droplet volume, positional variation, contact angle and speed up the procedure and allow for greater flexibility in the experimental process.}
 
 
 \end{abstract}
@@ -83,11 +86,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include{introduction}
-\include{background}
-\include{work}
-\include{future}
-\include{feedback}
+\include{introduction.tex}
+\include{background.tex}
+\include{init_evaluation.tex}
+\include{design.tex}
+\include{implementation.tex}
+\include{evaluation.tex}
+\include{conclude_future.tex}
 
 \backmatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,5 +100,7 @@
 
 \bibliographystyle{ieeetran}
 \bibliography{sample}
+
+\include{appendix.tex}
 
 \end{document}
