@@ -4,11 +4,19 @@
 //TODO rename sections to reflect work done
 \section{Mechanical Design}
 
+\begin{itemize}
+    \item Go into 3d printing/laser cutting refinement, testing and adjustment
+    \item Tolerance and dimension adjustment
+    \item Noted changed and drawback from design  
+\end{itemize}
+
 \subsection{Rotating Pipette Mount}
 
 \subsection{Z micrometer Control}
 
 \section{Software}
+
+//Insert Serial Command Table (maybe only appendix)
 
 \subsection{Motorised Dispensing Controller}
 ESP32 based system controller with serial interface for issuing commands. Provides functionality to:
@@ -18,13 +26,31 @@ ESP32 based system controller with serial interface for issuing commands. Provid
 \end{itemize}
 
 \subsection{Environmental Monitor}
+
+\begin{itemize}
+    \item Auto sleeping, button wake upon
+    \item Circuit-Python implementation
+\end{itemize}
+
 \subsection{Temperature Logger}
 
 \section{Electronic Design}
 
+\begin{itemize}
+    \item full circuit
+    \item pcb
+    \item any and all adjustment found and made during implementation
+\end{itemize}
+
 \subsection{Motor Driving}
 
 \subsection{Setup and Requirements}
+
+\begin{itemize}
+    \item characterised skipping issue at 100Hz, 180Hz-200hz in single step
+    \item implemted micro stepping to solve
+\end{itemize}
+
 //TODO rewrite
 
 Driving firmware was implemented on an ESP32 to validate its ability in producing the required pulse train step signal. The controller was required to produce N steps (pulses) at a set average speed, and ramp up and down that pulse speed at the head and tail of that signal.
@@ -54,5 +80,6 @@ Figure \ref{fig:code}:a shows a successfully produced signal of 200 pulses with 
 \end{figure}
 
 \subsection{Pipette Triggering}
-
+//TODO
 \subsection{Environmental Monitoring}
+//TODO

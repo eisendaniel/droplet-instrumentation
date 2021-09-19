@@ -1,20 +1,35 @@
 \chapter{Evaluation}\label{C:eval}
 
+\section{Droplet Volume}
+Something the previous system could not achieve was dispensing a variety of volumes.
+Use e-pipettes programmable volume to investigate the limits of this project.
+\begin{itemize}
+    \item How large a droplet can be held on to? (prelim: 8uL)
+    \item How large (over above) can reliably self release (w/out touch down)
+    \item How small a droplet can be dispensed (e-pipette has draw-back).
+\end{itemize}    
 
 \section{Mechanical Stability}
-
+Perform Motor driving parameter sweep to optimise mechanical performance according to requirements; 
+of minimising pipette tip overshoot and settling time.
 \subsection{Procedure}
 \begin{itemize}
-    \item
-    \item
-    \item
+    \item Position tip at -1/4 revolution before zero point
+    \item Set Speed/acceleration values
+    \item Swing to zero position
+    \item Repeat for value sleep=1rev/s, acc=1/rev/s/s $\rightarrow$  speep=2rev/s, acc=10/rev/s/s
+    \item Note: acceleration is the ramp down at end/start of motion so is what we care most about
+    \item Camera captured motion 
 \end{itemize}
 
 \subsection{Results}
 
+//insert generated figures of tip position
+
+//generated trend lines/aggregated data (settle, overshoot) from data.
+
 \section{Stepper Motor Driving}
 
-\section{Droplet Volume}
 
 \section{Repeatability and Reliability}
 

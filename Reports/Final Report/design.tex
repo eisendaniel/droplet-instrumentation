@@ -6,8 +6,8 @@ From this there is a number of requirements to consider:
 
 \begin{itemize}
     \item \textbf{Mechanical Stability}:
+    \item \textbf{\dots}
     \item \textbf{System Expandability}:
-    \item \textbf{text}
 \end{itemize}
 
 \section{System Overview}
@@ -20,9 +20,24 @@ From this there is a number of requirements to consider:
 
 \section{Mechanical Design}
 
+\begin{itemize}
+    \item Discuss requirements for minimising settling time, vibrations, oscillations.overshoot of the pipette motion 
+\end{itemize}
+
 \subsection{Rotating Pipette Mount}
 
+\begin{itemize}
+    \item 3D printed pipette clamp
+    \item Laser cut Tower mounted
+    \item motor interface and stage fastening  
+\end{itemize}
+
 \subsection{Z micrometer Control}
+\begin{itemize}
+    \item Requirements: micrometer motion/extension as its turn
+    \item Sliding motor shaft to knob required (2 passed)
+    \item How it imposed restrictions on the system (freedom of motion)  
+\end{itemize}
 
 \section{Electronic Design}
 
@@ -56,4 +71,15 @@ The DRV8825 was ultimately chosen.
 
 \subsection{Pipette Triggering}
 
+//TODO maybe move to implementation
+\begin{itemize}
+    \item Signal requirements that lead to a trigger environmental
+    \item interfacing the controller with the board
+\end{itemize}
+
 \subsection{Environmental Monitoring}
+\begin{itemize} 
+    \item What will be measured?
+    \item Power (battery?)
+    \item Sleep the conserve
+\end{itemize}
