@@ -36,7 +36,7 @@ void init_steppers()
     R_stage.setAccelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
     R_stage.setDecelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
 
-    Z_stage.setSpeedInStepsPerSecond(10 * REV_STEPS);
+    Z_stage.setSpeedInStepsPerSecond(6 * REV_STEPS);
     Z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
     Z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
 }
