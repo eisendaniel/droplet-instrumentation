@@ -14,9 +14,11 @@ displayio.release_displays()
 # Create sensor object, using the board's default I2C bus.
 i2c = I2C()  # uses board.SCL and board.SDA
 
-A_btn_alarm = alarm.pin.PinAlarm(pin=D9, value=False, pull= True)
-B_btn_alarm = alarm.pin.PinAlarm(pin=D6, value=False) #pulled up in hardware
-C_btn_alarm = alarm.pin.PinAlarm(pin=D5, value=False, pull= True)
+A_btn = digitalio.DigitalInOut(D9)
+A_btn.pull = digitalio.Pull.UP
+B_btn = digitalio.DigitalInOut(D6) #pulled up in hardware
+C_btn = digitalio.DigitalInOut(D5)
+C_btn.pull = digitalio.Pull.UP
 
 bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c, address=0x77)
 # change this to match the location's pressure (hPa) at sea level
@@ -34,6 +36,14 @@ display = adafruit_displayio_sh1107.SH1107(
 )
 
 def deep_sleep():
+    A_btn.deinit()
+    B_btn.deinit()
+    C_btn.deinit()
+    
+    A_btn_alarm = alarm.pin.PinAlarm(pin=D9, value=False, pull= True)
+    B_btn_alarm = alarm.pin.PinAlarm(pin=D6, value=False) #pulled up in hardware
+    C_btn_alarm = alarm.pin.PinAlarm(pin=D5, value=False, pull= True)
+    
     display.sleep()
     bme280.mode = adafruit_bme280.MODE_SLEEP
     alarm.exit_and_deep_sleep_until_alarms(A_btn_alarm,B_btn_alarm,C_btn_alarm)
@@ -45,6 +55,9 @@ def main():
     sleep_time = 1
 
     while True:
+        if (False in [A_btn.value, B_btn.value, C_btn.value]):
+            timer = init_timer
+        
         screen = displayio.Group()
 
         color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
@@ -88,4 +101,3 @@ def main():
             deep_sleep()
 
 main()
-
