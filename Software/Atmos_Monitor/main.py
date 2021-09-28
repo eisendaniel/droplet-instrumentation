@@ -36,14 +36,17 @@ display = adafruit_displayio_sh1107.SH1107(
 )
 
 def deep_sleep():
+    #release GPIO pins
     A_btn.deinit()
     B_btn.deinit()
     C_btn.deinit()
     
+    #bind wakeup alarm pins
     A_btn_alarm = alarm.pin.PinAlarm(pin=D9, value=False, pull= True)
     B_btn_alarm = alarm.pin.PinAlarm(pin=D6, value=False) #pulled up in hardware
     C_btn_alarm = alarm.pin.PinAlarm(pin=D5, value=False, pull= True)
     
+    #enter sleep mode for all devices
     display.sleep()
     bme280.mode = adafruit_bme280.MODE_SLEEP
     alarm.exit_and_deep_sleep_until_alarms(A_btn_alarm,B_btn_alarm,C_btn_alarm)
@@ -53,11 +56,13 @@ def main():
     init_timer = 60
     timer = init_timer
     sleep_time = 1
-
+    
+    
     while True:
+        #clear timer w/ btn press
         if (False in [A_btn.value, B_btn.value, C_btn.value]):
             timer = init_timer
-        
+
         screen = displayio.Group()
 
         color_bitmap = displayio.Bitmap(WIDTH, HEIGHT, 1)
@@ -96,7 +101,7 @@ def main():
 
         time.sleep(sleep_time)
         timer -= sleep_time
-
+        
         if (timer <= 0):
             deep_sleep()
 
