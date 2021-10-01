@@ -3,7 +3,11 @@
 %% $Date: 2016/06/10 03:41:54 $
 %% $Author: kevin $
 
-\documentclass[11pt, a4paper, twoside, openright]{report}
+\documentclass[11pt
+              , a4paper
+              , oneside
+              ]{report}
+
 
 \usepackage{float} % lets you have non-floating floats
 \usepackage{url} % for typesetting urls
@@ -13,9 +17,6 @@
 \usepackage{hyperref}
 \usepackage{titlesec}
 
-
-\titleformat{\chapter}[hang] 
-{\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter:}{1em}{} 
 %
 %  We don't want figures to float so we define
 %
@@ -29,7 +30,7 @@
 
 %% This file can be used for creating a wide range of reports
 %%  across various Schools
-%% 
+%%
 %% Set up some things, mostly for the front page, for your specific document
 %
 % Current options are:
@@ -40,13 +41,13 @@
 %                          (see below)
 % [font|image]            Use a font or an image for the VUW logo
 %                          The font option will only work on ECS systems
-% 
+%
 \usepackage[image,ecs]{vuwproject}
 
 % You should specifiy your supervisor here with
 \supervisor{Dr. Gideon Gouws}
 % use \supervisors if there is more than one supervisor
- 
+
 \otherdegree{Bachelor of Engineering with Honours}
 
 % Unless you've used the bschonscomp or mcompsci
@@ -57,11 +58,14 @@
 % Comment this out if you want the date printed.
 \date{}
 
+
 \begin{document}
 
 % Make the page numbering roman, until after the contents, etc.
-\frontmatter
+%\frontmatter
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{abstract}
@@ -77,31 +81,30 @@
 
 \maketitle
 
-\include{acknowledge}
-
 \tableofcontents
-% we want a list of the figures we defined
-\listof{fig}{Figures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \mainmatter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\include{introduction.tex}
-\include{background.tex}
-\include{init_evaluation.tex}
-\include{design.tex}
-\include{implementation.tex}
-\include{evaluation.tex}
-\include{conclude_future.tex}
+% individual chapters included here
+\include{introduction}
+\include{background}
+\include{initial_evaluation}
+\include{design}
+\include{implementation}
+\include{evaluation}
+\include{conclusions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \backmatter
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{ieeetran}
-\bibliography{sample}
-
-\include{appendix.tex}
+\bibliographystyle{ieeetr}
+\bibliography{bib}
 
 \end{document}

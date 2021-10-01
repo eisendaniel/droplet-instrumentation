@@ -1,4 +1,5 @@
-\chapter{Background}\label{C:back}
+\chapter{Background and Related Work}\label{C:back}
+
 
 \section{Instrumentation and the Experiment}
 Cover consideration with this kind of instrumentation/experimental measurement system and how it applied to this experimental application.
@@ -27,4 +28,3 @@ The typical topology of a stepper driving system (based around the step/directio
 Stepper motors typically have a step size specification (e.g. 1.8° or 200 steps per revolution), which applies to full steps. Step/direction drivers usually provide a 'microstepping' mode which increases the resolution by allowing intermediate step locations, which are achieved by energising the coils with intermediate current levels \cite{step_book}.
 
 The last major consideration in driving steppers is controlling the start-up and stopping speeds for the controller's provided pulse train to the driver. As the motor is a mechanical device in the real world, expecting a perfect impulse response will lead to driving failure. Inertia ratio is critical to stepper motor acceleration \cite{step_book}. Too great a difference in inertia ratio between system and motor risks missed steps or stalling the coils. So when starting a stepper motor, acceleration and deceleration should happen through pulses to the motor that start slowly and gradually quicken in a process called ramping.
-
