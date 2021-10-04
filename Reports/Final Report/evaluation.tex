@@ -1,5 +1,18 @@
 \chapter{Evaluation}\label{C:eval}
 
+\section{Mechanical Stability}
+Perform Motor driving parameter sweep to optimise mechanical performance according to requirements; 
+of minimising pipette tip overshoot and settling time.
+\subsection{Procedure}
+\begin{itemize}
+    \item Position tip at -1/4 revolution before zero point
+    \item Set Speed/acceleration values
+    \item Swing to zero position
+    \item Repeat for value sleep=1rev/s, acc=1/rev/s/s $\rightarrow$  speed=2rev/s, acc=10/rev/s/s
+    \item Note: acceleration is the ramp down at end/start of motion so is what we care most about
+    \item Camera captured motion 
+\end{itemize}
+
 \section{Droplet Volume}
 Something the previous system could not achieve was dispensing a variety of volumes.
 Use e-pipettes programmable volume to investigate the limits of this project.
@@ -9,27 +22,11 @@ Use e-pipettes programmable volume to investigate the limits of this project.
     \item How small a droplet can be dispensed (e-pipette has draw-back).
 \end{itemize}    
 
-\section{Mechanical Stability}
-Perform Motor driving parameter sweep to optimise mechanical performance according to requirements; 
-of minimising pipette tip overshoot and settling time.
-\subsection{Procedure}
-\begin{itemize}
-    \item Position tip at -1/4 revolution before zero point
-    \item Set Speed/acceleration values
-    \item Swing to zero position
-    \item Repeat for value sleep=1rev/s, acc=1/rev/s/s $\rightarrow$  speep=2rev/s, acc=10/rev/s/s
-    \item Note: acceleration is the ramp down at end/start of motion so is what we care most about
-    \item Camera captured motion 
-\end{itemize}
-
 \subsection{Results}
 
 //insert generated figures of tip position
 
 //generated trend lines/aggregated data (settle, overshoot) from data.
-
-\section{Stepper Motor Driving}
-
 
 \section{Repeatability and Reliability}
 
@@ -44,3 +41,7 @@ This section aims to produce the main set of comparable results for evaluating t
     \item \textbf{Capture:} Begin data collection and automated dispense.
     \item \textbf{Repeat: } Minimum of 5 times. Each time carefully cleaning substrate surface to minimised up measured factors. 
 \end{itemize}
+
+\subsection{Analysis}
+
+To show the system successfully increases the consistency of droplet position,
