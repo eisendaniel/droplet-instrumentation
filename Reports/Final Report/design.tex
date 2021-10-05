@@ -1,16 +1,19 @@
 \chapter{Design}\label{C:des}
 
 \section{Project Specifications and Justifications}
-
-The design process uses the goals of the experiment and the results of the initial evaluation to inform what and how various subsystems are designed.
+Given the results of the initial evaluation the project can now be constrained. It's main goals are to eliminate volume variation, control for droplet position, enable automation to reduced time between consecutive runs. It will not control, but provide data-logging for the environmental effectors; temperature, humidity, pressure. 
 
 From this there is a number of requirements to consider:
 
 \begin{itemize}
     \item \textbf{Mechanical Stability}:
-    \item \textbf{\dots}
+    \item \textbf{Droplet Position Repeatability}
+    \item \textbf{Consistent Volume}
+    \item \textbf{Process Automation}
     \item \textbf{System Expandability}:
 \end{itemize}
+
+The project will be evaluated on its ability to control for volume and positional accuracy and repeatability as well as how it improves automation, provides environmental data and allows extension.  
 
 \section{System Overview}
 
@@ -25,6 +28,10 @@ From this there is a number of requirements to consider:
 \begin{itemize}
     \item Discuss requirements for minimising settling time, vibrations, oscillations.overshoot of the pipette motion 
 \end{itemize}
+
+The electronic pipette formfactor is very 'organic', so the clamping mechanism to fit it to the tower plate itself was challenging to design to successfully restrict its rotation and backlash.  
+The base design used to accomplish this was a 3D-printed ring clamp meant to be tightened and fit to the unique form of the pipette body. A variety of ring sizes and gap distance were printed and test fitted. From this I determined that a ring diameter of 32mm and a gap of 6mm fits and deforms to the shape of the pipette. However, there was still some rotation and slip so a notch was cut into the acrylic to slot the pipettes support rest and a second ring clamp attached lower down of the body. 
+
 
 \subsection{Rotating Pipette Mount}
 
@@ -41,7 +48,19 @@ From this there is a number of requirements to consider:
     \item How it imposed restrictions on the system (freedom of motion)  
 \end{itemize}
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/z_control.png}
+\end{figure}
+
 \section{Electronic Design}
+
+\subsection{Motors}
+The motion required for the motors in this system is to provide rotation about the vertical axis to the mounted pipette, to swing from above the substrate to out of the camera view and over a refill reservoir, as well as continuous rotation to interface the Z axis control for droplet depositing and possible refilling.  
+
+Stepper motors allow for both precise position control without the need for a feedback system and are capable of continuous rotation. In comparison, brushed/brushless DC motors require encoders for positional control and servos may do either but not both continuous rotation and positioning.
+
+NEMA17 standard sized steppers were chosen to best fit the dimensions of the XYZ optical stage (60mm plate to 40mm motor frame) with room for fastening hardware. That left two choices for the top R stage motor; full size 38mm high frame or shorter pancake frame. Even through the pancake frame would reduce the overall height of the system, the shaft length available for this motor is less only 7mm and would greatly restrict the mounting options of the tower to the motor. For this reason 2 NEMA17x38mm Stepper motors were chosen. 
 
 \subsection{Motor Driving}
 
@@ -71,13 +90,7 @@ The DRV8825 was ultimately chosen.
     \item It ranked above the DRV8834 due to it configuration pins (to set microstepping mode) as it provide all 3 pins without the requirement to leave pins floating as a setting thus allowing for full software control.
 \end{itemize}
 
-\subsection{Pipette Triggering}
-
-//TODO maybe move to implementation
-\begin{itemize}
-    \item Signal requirements that lead to a trigger environmental
-    \item interfacing the controller with the board
-\end{itemize}
+\subsection{Volume Control: ePipette}
 
 \subsection{Environmental Monitoring}
 \begin{itemize} 
