@@ -1,0 +1,41 @@
+\begin{thebibliography}{1}
+
+\bibitem{step_app}
+``Implementing a step-direction interface-based stepper motor controller,''
+  {\em Application Note AC413}, pp.~1--9, 2014.
+
+\bibitem{step_book}
+``Stepping motors and their microprocessor controls, second edition takashi
+  kenjo \& akira sugawara, 1994 oxford, oxford university press isbn 0 19
+  859385 6,'' {\em European Journal of Engineering Education}, vol.~20, no.~3,
+  pp.~386--386, 1995.
+
+\bibitem{measure_only}
+E.~Gatapova, A.~Semenov, D.~Zaitsev, and O.~Kabov, ``Evaporation of a sessile
+  water drop on a heated surface with controlled wettability,'' {\em Colloids
+  and Surfaces A Physicochemical and Engineering Aspects}, vol.~441,
+  pp.~776--785, 01 2014.
+
+\bibitem{non_newt}
+J.~H. Moon, D.~Kim, and S.~Lee, ``Spreading and receding characteristics of a
+  non-newtonian droplet impinging on a heated surface,'' {\em Experimental
+  Thermal and Fluid Science}, vol.~57, 09 2014.
+
+\bibitem{fixed_pump}
+P.~Hänichen, A.~Bender, B.~Voß, T.~Gambaryan-Roisman, and P.~Stephan, ``Drop
+  evaporation of hydrocarbon fluids with deposit formation,'' {\em
+  International Journal of Heat and Mass Transfer}, vol.~128, pp.~115--124, 01
+  2019.
+
+\bibitem{motors}
+M.~Frasão, A.~Oliveira, and R.~Gonçalves~dos Santos, ``Determination of
+  nukiyama and leidenfrost temperatures for hydrocarbons using the droplet
+  evaporation method,'' 03 2018.
+
+\bibitem{duel_rig}
+S.~David, K.~Sefiane, and L.~Tadrist, ``Experimental investigation of the
+  effect of thermal properties of the substrate in the wetting and evaporation
+  of sessile drops,'' {\em Colloids and Surfaces A: Physicochemical and
+  Engineering Aspects}, vol.~298, pp.~108--114, 04 2007.
+
+\end{thebibliography}
