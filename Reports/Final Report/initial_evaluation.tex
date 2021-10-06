@@ -21,9 +21,9 @@ This would be perfectly fine, however the results this manual process yields had
 
 \newpage
 \section{Repeatability and Reliability}
-To identify more precisely the drawbacks in the performance of the prior setup and inform the requirements of the project, previously collected data was first analysed. 
+To identify more precisely the drawbacks in the performance of the prior setup and inform the requirements of the project, previously collected data was first analysed.
 
-The data was taken from a series of five droplet runs, and was analysed to quantify the systems repeatability and reliability and to compare the affect of the drop morphology and position with the resulting temperature evolution. 
+The data was taken from a series of five droplet runs, and was analysed to quantify the systems repeatability and reliability and to compare the affect of the drop morphology and position with the resulting temperature evolution.
 
 \begin{figure}[h]
     \begin{center}
@@ -34,7 +34,7 @@ The data was taken from a series of five droplet runs, and was analysed to quant
 
 First analysis is the image data. The substrate itself has a mark to represent the position of the thermocouple, this is used as a the main reference to quantify the droplet position. Reference images set calibration at 120.14 pixels/mm and 109.2 pixels/mm for the top down and profile cameras respectively, and was used to measure the droplet centre offset and angle (from reference point) as well as the height, width and contact angles of the droplet on the substrate.
 
-Seen above, the quite substantial positional variation between the runs. Ranging [0.71:2.01]mm offset and [-16:-123]$^\circ$ angle. 
+Seen above, the quite substantial positional variation between the runs. Ranging [0.71:2.01]mm offset and [-16:-123]$^\circ$ angle.
 
 
 \begin{equation}
@@ -54,34 +54,34 @@ From the data extracted from the profile camera (height, width, contact angle) t
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|l|l|}
-    \hline
-    \textit{\textbf{Droplet}} & \textit{Offset(mm)} & \textit{Volume(uL)}  \\ \hline
-    \cellcolor[HTML]{9698ED}1 & 0.7506              & 16.55 \\ \hline
-    \cellcolor[HTML]{E9AD3F}2 & 0.7164              & 17.91 \\ \hline
-    \cellcolor[HTML]{C0C0C0}3 & 0.9402              & 17.89 \\ \hline
-    \cellcolor[HTML]{FFFC9E}4 & 2.0104              & 17.57 \\ \hline
-    \cellcolor[HTML]{79CD5D}5 & 0.8258              & 16.21 \\ \hline
-    \cellcolor[HTML]{FFFFFF}\textbf{\textit{Variance}} &\textit{0.2964}        & \textit{0.6288}  \\ \hline
+        \hline
+        \textit{\textbf{Droplet}}                          & \textit{Offset(mm)} & \textit{Volume(uL)} \\ \hline
+        \cellcolor[HTML]{9698ED}1                          & 0.7506              & 16.55               \\ \hline
+        \cellcolor[HTML]{E9AD3F}2                          & 0.7164              & 17.91               \\ \hline
+        \cellcolor[HTML]{C0C0C0}3                          & 0.9402              & 17.89               \\ \hline
+        \cellcolor[HTML]{FFFC9E}4                          & 2.0104              & 17.57               \\ \hline
+        \cellcolor[HTML]{79CD5D}5                          & 0.8258              & 16.21               \\ \hline
+        \cellcolor[HTML]{FFFFFF}\textbf{\textit{Variance}} & \textit{0.2964}     & \textit{0.6288}     \\ \hline
     \end{tabular}
-    \end{table}
+\end{table}
 
 \section{Summery}
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|l|l|}
-    \hline
-    \textbf{Effector} & \textbf{Likelihood} & \textbf{Effect Strength}\\ \hline
-    Position          &HIGH                &HIGH                      \\ \hline
-    Volume            &MODERATE            &HIGH                      \\ \hline
-    Contact angle*    &MODERATE            &HIGH                          \\ \hline
-    Humidity          &LOW                 &HIGH                          \\ \hline
-    Temperature       &LOW                 &HIGH                          \\ \hline
-    Pressure          &MODERATE            &MODERATE                          \\ \hline
-\end{tabular}
+        \hline
+        \textbf{Effector} & \textbf{Likelihood} & \textbf{Effect Strength} \\ \hline
+        Position          & HIGH                & HIGH                     \\ \hline
+        Volume            & MODERATE            & HIGH                     \\ \hline
+        Contact angle*    & MODERATE            & HIGH                     \\ \hline
+        Humidity          & LOW                 & HIGH                     \\ \hline
+        Temperature       & LOW                 & HIGH                     \\ \hline
+        Pressure          & MODERATE            & MODERATE                 \\ \hline
+    \end{tabular}
 \end{table}
 \textit{\small{*Contact angle is more a function of the surface cleaning of the substrate, and is only representative of the surface area of contact with the substrate}} \\
 
 //TODO rewrite in prog
-The focus of the project is now twofold. Firstly on the automation of the process to allow for faster, pre-programmed runs to be carried out easier, and secondly to improve on the repeatability and reliability of the results by controlling the procedural factors of the experiment. 
+The focus of the project is now twofold. Firstly on the automation of the process to allow for faster, pre-programmed runs to be carried out easier, and secondly to improve on the repeatability and reliability of the results by controlling the procedural factors of the experiment.
 
 An electronic pipette will be used to dispense a precise volume, and motorised stages will be used to provide pre-programmed, repeatable motion. The environmental factors however are not to be ignored, though controlling them is outside of the scope of this project. They will, however, be monitored, and this project will implement data collection of temperature, atmospheric pressure and humidity so these factors can be correlated to any remaining variation in data.
