@@ -15,22 +15,17 @@ From this there is a number of requirements to consider:
 
 The project will be evaluated on how it meets the above Specifications, its ability to control for volume and positional accuracy and repeatability as well as how it adds/improves automation, provides environmental data and allows extension.
 
-\section{System Overview}
 
-\begin{figure}[h]
-    \begin{center}
-        \includegraphics[width=0.5\textwidth]{img/ED_block_diag.png}
-    \end{center}
-\end{figure}
+\section{Volume Control}
+
+In order 
+
 
 \section{Mechanical Design}
 
 \begin{itemize}
     \item Discuss requirements for minimising settling time, vibrations, oscillations.overshoot of the pipette motion
 \end{itemize}
-
-The electronic pipette formfactor is very 'organic', so the clamping mechanism to fit it to the tower plate itself was challenging to design to successfully restrict its rotation and backlash.
-The base design used to accomplish this was a 3D-printed ring clamp meant to be tightened and fit to the unique form of the pipette body. A variety of ring sizes and gap distance were printed and test fitted. From this I determined that a ring diameter of 32mm and a gap of 6mm fits and deforms to the shape of the pipette. However, there was still some rotation and slip so a notch was cut into the acrylic to slot the pipettes support rest and a second ring clamp attached lower down of the body.
 
 
 \subsection{Rotating Pipette Mount}
@@ -41,17 +36,24 @@ The base design used to accomplish this was a 3D-printed ring clamp meant to be 
     \item motor interface and stage fastening
 \end{itemize}
 
+The electronic pipette formfactor is very 'organic', so the clamping mechanism to fit it to the tower plate itself was challenging to design to successfully restrict its rotation and backlash.
+The base design used to accomplish this was a 3D-printed ring clamp meant to be tightened and fit to the unique form of the pipette body. A variety of ring sizes and gap distance were printed and test fitted. From this it was determined that a ring diameter of 32mm and a gap of 6mm fits and deforms to the shape of the pipette. However, there was still some rotation and slip so a notch was cut into the acrylic to slot the pipettes support rest and a second ring clamp (36mm) attached lower down of the body.
+
 \subsection{Z micrometer Control}
-\begin{itemize}
-    \item Requirements: micrometer motion/extension as its turn
-    \item Sliding motor shaft to knob required (2 passed)
-    \item How it imposed restrictions on the system (freedom of motion)
-\end{itemize}
+
+In order to control the the height of the pipette tip; to enable automated refilling and to place the dispensed droplet on to the substrate the Z height of the optical stage needs to be motorised. The Z height has a manual control in the form of an adjustment micrometer that allows for 10mm of travel, but this present the first problem in design.
+The micrometer travels linearly throughout the adjustment, i.e. if the stage raises 10mm the knob will retract 10mm also. Due to this a custom shaft coupler is required to interface a fixed motor to the moving knob.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{img/z_control.png}
+    \caption{Z driving motor and sliding shaft coupler}
+    \label{fig:z_coup}
 \end{figure}
+
+The figure above[\ref{fig:z_coup}] shows the assembled design. One end of the coupler is an extended c-clamp that mates with the knurls knobs of the micrometer and the other is a solid piece with 4 M3 clearance holes. These holes interface with a universal shaft-hub mount with 4 M3 machine screws that transfer the motors rotation and allow the coupler and knob to slide away over the course of a movement.
+
+The key limitation of this design is that is constrains the XY position of the stage to a single setting. This is due to the motor being fastened to the breadboard baseplate more stability, alignment and vibration reduction. Because of this it moves the fine positioning to the other stages in the setup; substrate stack and cameras. 
 
 \section{Electronic Design}
 
@@ -90,11 +92,15 @@ The DRV8825 was ultimately chosen.
     \item It ranked above the DRV8834 due to it configuration pins (to set microstepping mode) as it provide all 3 pins without the requirement to leave pins floating as a setting thus allowing for full software control.
 \end{itemize}
 
-\subsection{Volume Control: ePipette}
-
 \subsection{Environmental Monitoring}
-\begin{itemize}
-    \item What will be measured?
-    \item Power (battery?)
-    \item Sleep the conserve
-\end{itemize}
+
+Although the aim of thid
+
+
+\section{System Overview}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/ED_block_diag.png}
+    \includegraphics[width=0.4\textwidth]{img/full_mech.png}
+\end{figure}
