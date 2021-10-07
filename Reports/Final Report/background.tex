@@ -3,6 +3,18 @@
 \section{Droplet Impact \& Evaporation}
 Cover consideration with this kind of instrumentation/experimental measurement system and how it applied to this experimental application.
 
+\subsection{Other Approaches}
+//TODO: Go into greater detail to add context in the field of droplet instrumentation.
+
+In literature, there exists a variety of rigs for similar experiments. These were explored to gauge a range of what factors were controlled (and measured) and with what approaches. In summary:
+\begin{itemize}
+    \item Controlled environmental factors with basic box \cite{step_book} or measured factors only \cite{measure_only}.
+    \item Controlled for droplet position and volume with hard mounted pump plus needle, but lacks environmental control or automation, and there is no top view camera \cite{non_newt} \cite{fixed_pump}.
+    \item Incorporated stepper motor driven automation, but no environmental control or monitoring \cite{motors}.
+    \item Full environmental chamber and fixed droplet pump, but single camera, has separate uncontrolled rig for top view \cite{duel_rig}.
+\end{itemize}
+
+
 \section{Background on Stepper motor control}
 //TODO more passes for clarity.
 
@@ -15,14 +27,3 @@ The typical topology of a stepper driving system (based around the step/directio
 Stepper motors typically have a step size specification (e.g. 1.8° or 200 steps per revolution), which applies to full steps. Step/direction drivers usually provide a 'microstepping' mode which increases the resolution by allowing intermediate step locations, which are achieved by energising the coils with intermediate current levels \cite{step_book}.
 
 The last major consideration in driving steppers is controlling the start-up and stopping speeds for the controller's provided pulse train to the driver. As the motor is a mechanical device in the real world, expecting a perfect impulse response will lead to driving failure. Inertia ratio is critical to stepper motor acceleration \cite{step_book}. Too great a difference in inertia ratio between system and motor risks missed steps or stalling the coils. So when starting a stepper motor, acceleration and deceleration should happen through pulses to the motor that start slowly and gradually quicken in a process called ramping.
-
-\section{Other Approaches}
-//TODO: Go into greater detail to add context in the field of droplet instrumentation.
-
-In literature, there exists a variety of rigs for similar experiments. These were explored to gauge a range of what factors were controlled (and measured) and with what approaches. In summary:
-\begin{itemize}
-    \item Controlled environmental factors with basic box \cite{step_book} or measured factors only \cite{measure_only}.
-    \item Controlled for droplet position and volume with hard mounted pump plus needle, but lacks environmental control or automation, and there is no top view camera \cite{non_newt} \cite{fixed_pump}.
-    \item Incorporated stepper motor driven automation, but no environmental control or monitoring \cite{motors}.
-    \item Full environmental chamber and fixed droplet pump, but single camera, has separate uncontrolled rig for top view \cite{duel_rig}.
-\end{itemize}
