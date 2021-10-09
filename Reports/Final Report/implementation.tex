@@ -26,29 +26,9 @@
     \includegraphics[width=0.4\textwidth]{img/new_stack.jpg}
 \end{figure}
 
-\section{Software}
-
-//Insert Serial Command Table (maybe only appendix)
-
-\subsection{Motorised Dispensing Controller}
-ESP32 based system controller with serial interface for issuing commands. Provides functionality to:
-\begin{itemize}
-    \item Motorised stages, height and angular position
-    \item e-Pipette droplet dispensing
-\end{itemize}
-
-\subsection{Environmental Monitor}
-
-\begin{itemize}
-    \item Auto sleeping, button wake upon
-    \item Circuit-Python implementation
-\end{itemize}
-
-\subsection{LabView Temperature Logger}
-
 \section{Electronic Design}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{img/schem.png}
     \includegraphics[width=0.4\textwidth]{img/control_pcb.jpg}
@@ -98,10 +78,38 @@ Figure \ref{fig:code}:a shows a successfully produced signal of 200 pulses with 
 \end{figure}
 
 \subsection{Pipette Triggering}
-//TODO
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/trig_brd.png}
+    \caption{E-Pipette dispensing trigger switch daughter board with exposed pads}
+\end{figure}
+
 \subsection{Environmental Monitoring}
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{img/env_mon.png}
+    \caption{Implemented Environmental Monitor}
 \end{figure}
+
+\section{Software}
+
+//Insert Serial Command Table (maybe only appendix)
+
+\subsection{Motorised Dispensing Controller}
+ESP32 based system controller with serial interface for issuing commands. Provides functionality to:
+\begin{itemize}
+    \item Motorised stages, height and angular position
+    \item e-Pipette droplet dispensing
+\end{itemize}
+
+\subsection{Environmental Monitor}
+
+\begin{itemize}
+    \item Auto sleeping, button wake upon
+    \item Circuit-Python implementation
+\end{itemize}
+
+\subsection{LabView Temperature Logger}
+
