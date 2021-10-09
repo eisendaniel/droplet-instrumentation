@@ -1,7 +1,5 @@
 \chapter{Implementation}\label{C:imp}
 
-
-//TODO rename sections to reflect work done
 \section{Mechanical Design}
 
 \begin{itemize}
@@ -11,6 +9,10 @@
 \end{itemize}
 
 \subsection{Rotating Pipette Mount}
+
+C-clamps design did not fundamentally change from initial design, and remained the duel clamping system with matched internal circumferences. To obtain the required internal circumference of the clamps from the asymmetric body of the pipette, a length of string was used to at the points of intended fastening. The clamping pressure then deformed the initially circular parts to the ergonomic form of the pipette body.
+
+Parts were rapidly iterated to lock in acceptable thickness, M3 hole tolerance (self tapped) and structural rigidity 
 
 \subsection{Z micrometer Control}
 \begin{itemize}
@@ -46,7 +48,7 @@
 
 \begin{itemize}
     \item characterised skipping issue at 100Hz, 180Hz-200hz in single step
-    \item implemted micro stepping to solve
+    \item implemented micro stepping to solve
 \end{itemize}
 
 //TODO rewrite
@@ -95,14 +97,18 @@ Figure \ref{fig:code}:a shows a successfully produced signal of 200 pulses with 
 
 \section{Software}
 
-//Insert Serial Command Table (maybe only appendix)
 
-\subsection{Motorised Dispensing Controller}
+\subsection{Instrumentation Controller}
 ESP32 based system controller with serial interface for issuing commands. Provides functionality to:
 \begin{itemize}
     \item Motorised stages, height and angular position
     \item e-Pipette droplet dispensing
 \end{itemize}
+
+\begin{figure*}[h]
+    \centering
+    \includegraphics[width=0.4\textwidth]{img/software.png}
+\end{figure*}
 
 \subsection{Environmental Monitor}
 
