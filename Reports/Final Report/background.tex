@@ -1,29 +1,24 @@
 \chapter{Background and Related Work}\label{C:back}
 
 \section{Droplet Impact \& Evaporation}
-Cover consideration with this kind of instrumentation/experimental measurement system and how it applied to this experimental application.
+Droplet Impact and Evaporation experiments have a consistent list of instrumentation requirements and variable considerations. At its core is the substrate upon which the droplet is deposited, this can be held at a variety of temperatures, have differencing surface and material properties that all affect the temperature evolution and physical interaction between the droplet and its surface. Secondly is the method of droplet dispensing or deposition, and third is the method through the which the experiment controls for, account for, or just records the variety of affecting factors.      
 
 \subsection{Other Approaches}
-//TODO: Go into greater detail to add context in the field of droplet instrumentation.
-
 In literature, there exists a variety of rigs for similar experiments. These were explored to gauge a range of what factors were controlled (and measured) and with what approaches. In summary:
 \begin{itemize}
     \item Controlled environmental factors with basic box \cite{step_book} or measured factors only \cite{measure_only}.
-    \item Controlled for droplet position and volume with hard mounted pump plus needle, but lacks environmental control or automation, and there is no top view camera \cite{non_newt} \cite{fixed_pump}.
+    \item Controlled for droplet position and volume with hard-mounted pump plus needle, but lacks environmental control or automation, and there is no top-view camera \cite{non_newt} \cite{fixed_pump}.
     \item Incorporated stepper motor driven automation, but no environmental control or monitoring \cite{motors}.
-    \item Full environmental chamber and fixed droplet pump, but single camera, has separate uncontrolled rig for top view \cite{duel_rig}.
+    \item Full environmental chamber and fixed droplet pump, but the single camera, has the separate uncontrolled rig for top view \cite{duel_rig}.
 \end{itemize}
 
-
 \section{Background on Stepper motor control}
-//TODO more passes for clarity.
-
 This section will cover the background of controlling bipolar stepper motors via a step/direction style driver setup, as its concepts will be mentioned later in the report. This is a focused background on the key considerations and requirements when designing for and operating this specific subset, and by no means applicable to all driving and specific motor choices.
 
 The stepper motors provide precise positioning and are capable of moving their rotor to a specified position and holding that position at a wide range of load torques. This capability makes the stepper motors popular in optics, medical instruments, factory automation, and industrial equipment.
 
-The typical topology of a stepper driving system (based around the step/direction method) consists of a controller, driver, and stepper motor. The controller provides a direction signal and step pulses, while the driver converts these signals into actual electrical power and supplies them to the motor. The stepper motor moves in steps, each step covering one step angle, which can be described as the rotor displacement corresponding to one step pulse \cite{step_app}.
+The typical topology of a stepper driving system (based around the step/direction method) consists of a controller, driver, and stepper motor. The controller provides a direction  signal and step pulses, while the driver converts these signals into actual electrical power and supplies them to the motor. The stepper motor moves in steps, each step covering one step angle, which can be described as the rotor displacement corresponding to one step pulse \cite{step_app}.
 
 Stepper motors typically have a step size specification (e.g. 1.8° or 200 steps per revolution), which applies to full steps. Step/direction drivers usually provide a 'microstepping' mode which increases the resolution by allowing intermediate step locations, which are achieved by energising the coils with intermediate current levels \cite{step_book}.
 
-The last major consideration in driving steppers is controlling the start-up and stopping speeds for the controller's provided pulse train to the driver. As the motor is a mechanical device in the real world, expecting a perfect impulse response will lead to driving failure. Inertia ratio is critical to stepper motor acceleration \cite{step_book}. Too great a difference in inertia ratio between system and motor risks missed steps or stalling the coils. So when starting a stepper motor, acceleration and deceleration should happen through pulses to the motor that start slowly and gradually quicken in a process called ramping.
+The last major consideration in driving steppers is controlling the start-up and stopping speeds for the controller's provided pulse train to the driver. As the motor is a mechanical device in the real world, expecting a perfect impulse response will lead to driving failure. Inertia ratio is critical to stepper motor acceleration \cite{step_book}. Too great a difference in inertia ratio between system and motor risks missed steps or stalling the coils. So when starting a stepper motor, acceleration and deceleration should happen through pulses to the motor that starts slowly and gradually quicken in a process called ramping.

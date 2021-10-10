@@ -1,24 +1,24 @@
 \chapter{Design}\label{C:des}
 
 \section{Project Specifications and Justifications}
-Given the results of the initial evaluation the project can now be constrained. It's main goals are to eliminate volume variation, control for droplet position, enable automation to reduced time between consecutive runs. It will not control, but provide data-logging for the environmental effectors; temperature, humidity, pressure.
+Given the results of the initial evaluation, the project can now be constrained. Its main goals are to eliminate volume variation, control for droplet position, enable automation to reduced time between consecutive runs. It will not control, but provide data-logging for the environmental effectors; temperature, humidity, pressure.
 
 From this there is a number of requirements to consider:
 
 \begin{itemize}
-    \item \textbf{Mechanical Stability}:
-    \item \textbf{Droplet Position Repeatability}: 
-    \item \textbf{Consistent and Variable Volume}: 
-    \item \textbf{Process Automation}: 
-    \item \textbf{System Expandability}:
+    \item \textbf{Mechanical Stability}
+    \item \textbf{Droplet Position Repeatability}
+    \item \textbf{Consistent and Variable Volume}
+    \item \textbf{Process Automation}
+    \item \textbf{System Expandability}
 \end{itemize}
 
-The project will be evaluated on how it meets the above Specifications, its ability to control for volume and positional accuracy and repeatability as well as how it adds/improves automation, provides environmental data and allows extension.
+The project will be evaluated on how it meets the above Specifications, its ability to control for volume and positional accuracy and repeatability as well as how it adds/improves automation, provides environmental data and allows an extension.
 
 
 \section{Drop Dispensing and Volume Control}
 
-At the systems core is the liquid droplet dispensing hardware. The two core limitations of the initial setups manual syringe were fixed volume dispensing and the observed inconsistency in drop volume. In order to address these, alternative solution is required to provide a core that allows the rest of project to control and automate positioning, dispensing and liquid refilling. It was decided early on that the bulk of custom design would be focused on the motorisation hardware, custom mounting, and the driving software so the dispenser would be handled by a pre-existing product. The product selected for this is single channel electronic pipette from Labnet, P3600L-10. 
+At the core of the system is the liquid droplet dispensing hardware. The two core limitations of the initial setups manual syringe were fixed volume dispensing and the observed inconsistency in drop volume. In order to address these, an alternative solution is required to provide a core that allows the rest of the project to control and automate positioning, dispensing and liquid refilling. It was decided early on that the bulk of custom design would be focused on the motorisation hardware, custom mounting, and the driving software so the dispenser would be handled by a pre-existing product. The product selected for this is a single channel electronic pipette from Labnet, P3600L-10. 
 
 \begin{figure}[h]
     \centering
@@ -27,49 +27,49 @@ At the systems core is the liquid droplet dispensing hardware. The two core limi
     \label{fig:pip_dia}
 \end{figure}
 
-This product comes recalibrated and verified to dispense a droplet at a specified volume with at an accuracy of $\pm 4.0\rightarrow \pm 1.0 \%/\mu L$ over a the selection range of $0.5\mu L \; to \; 10\mu L$. This range represents the full range the pipette itself is capable of drawing and dispensing, configured via the front panel [see \ref{fig:pip_dia}], but an evaluation of the integrated system is required to confirm the mechanical stability is high enough prevent a high volume drop from prematurely detaching, as well as if its capable of depositing the minimum volume on the substrate.
+This product comes recalibrated and verified to dispense a droplet at a specified volume with an accuracy of $\pm 4.0\rightarrow \pm 1.0 \%/\mu L$ over the selection range of $0.5\mu L \; to \; 10\mu L$. This range represents the full range the pipette itself is capable of drawing and dispensing, configured via the front panel [see \ref{fig:pip_dia}], but an evaluation of the integrated system is required to confirm the mechanical stability is high enough to prevent a high volume drop from prematurely detaching, as well as if its capable of depositing the minimum volume on the substrate.
 
 
-Liquid refilling and dispensing is handled via the button on the back [\ref{fig:pip_dia}] and to enable the instrumentation to centrally control this, the planned approach was to break out the underlying switch contacts as GPIO inputs. The full process and results will be fully explored in this reports implementation system.
+Liquid refilling and dispensing are handled via the button on the back [\ref{fig:pip_dia}] and to enable the instrumentation to centrally control this, the planned approach was to break out the underlying switch contacts as GPIO inputs. The full process and results will be fully explored in this reports implementation system.
 
 
 \section{Mechanical Design}
 
 The goals for the mechanical aspects of this project are to provide a mounting interface to allow for the movement and positioning of the electronic pipette, mount to the optical XYZ stages, and transfer the driving force from the stepper motors to the instrumentations mechanisms.
 
-All mechanisms share the requirements to fit compactly and correctly on the optical breadboard baseplate. Be designed in such a way to minimise backlash and prevent vibrations from propergating and resonating through the system. As this could interfere with droplet dispensing; increasing pipette tip overshoot and settling times, causes prematurely drop detachment and generally decreasing the key performance metrics.
+All mechanisms share the requirements to fit compactly and correctly on the optical breadboard baseplate. Be designed in such a way as to minimise backlash and prevent vibrations from propagating and resonating through the system. As this could interfere with droplet dispensing; increasing pipette tip overshoot and settling times, causes prematurely drop detachment and generally decreasing the key performance metrics.
 
 \subsection{Rotating Pipette Mount}
 
-The first half of the main assembly is Pipette Stage. In order to manoeuvre the pipette from reservoir to substrate stack, the pipette needs to be held at specific height and angle to roughly match the central stage (as it is Z adjustable) and rotate between these two points.
+The first half of the main assembly is Pipette Stage. In order to manoeuvre the pipette from the reservoir to substrate stack, the pipette needs to be held at a specific height and angle to roughly match the central stage (as it is Z adjustable) and rotate between these two points.
 
 To achieve the mounting stage consists of three main parts: 
 \begin{itemize}
-    \item Pipette clamping and Angled mount: Responsible with securely fastening the e-pipette at the correct angle.
-    \item Laser Cut Mounting Tower: Sets pipette height and connects pipette to motor.
+    \item Pipette clamping and Angled mount: Responsible for securely fastening the e-pipette at the correct angle.
+    \item Laser Cut Mounting Tower: Sets pipette height and connects pipette to the motor.
     \item Motor shaft interface and Stage Fastening: Rotation is directly driven via the motor, thus the assembly is mounted to the motor shaft. 
 \end{itemize}
 
 Dimensional Specifications: Pipette height of 130mm (from breadboard) and angle of 36.25 degrees.
-These specification are used to derive the full dimensions of the following assemblies.
+These specifications are used to derive the full dimensions of the following assemblies.
 
-The electronic pipette formfactor is ergonomic-hand to fit in human hand-so the clamping mechanism to fit it to the tower plate itself was challenging to design to successfully restrict its rotation and backlash. 3D printed PLA c-clamps were the perused approach to capitalise on the materials ability to deform and to aid in rapid implementation and testing.
+The electronic pipette form-factor is ergonomic-hand to fit in human hand-so the clamping mechanism to fit it to the tower plate itself was challenging to design to successfully restrict its rotation and backlash. 3D printed PLA c-clamps were the perused approach to capitalise on the materials ability to deform and to aid in rapid implementation and testing.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.4\textwidth]{img/pip_clamp.png}
     \includegraphics[width=0.4\textwidth]{img/tower_mount.png}
-    \caption{Left: Pipette Clamps and Tower, Right: Towers base mounting to motor shaft}
+    \caption{Left: Pipette Clamps and Tower, Right: Towers base mounting to the motor shaft}
     \label{fig:tower}
 \end{figure}
 
-The base design used to accomplish this was a 3D-printed ring clamp [Left:\ref{fig:tower}] meant to be tightened and fit to the unique form of the pipette body. A variety of ring sizes and gap distance were printed and test fitted. From this it was determined that a ring diameter of 32mm and a gap of 6mm fits and deforms to the shape of the pipette. However, there was still some rotation and slip so a notch was cut into the acrylic angle plate [Left:\ref{fig:tower}] to slot the pipettes support rest and a second ring clamp (36mm) attached lower down of the body.
+The base design used to accomplish this was a 3D-printed ring clamp [Left:\ref{fig:tower}] meant to be tightened and fit to the unique form of the pipette body. A variety of ring sizes and gap distances were printed and test fitted. From this, it was determined that a ring diameter of 32mm and a gap of 6mm fits and deforms to the shape of the pipette. However, there was still some rotation and slip so a notch was cut into the acrylic angle plate [Left:\ref{fig:tower}] to slot the pipettes support rest and a second ring clamp (36mm) attached lower down of the body.
 
- //TODO More detail on motor mounting?
+To connect the tower assembly to the motor and optical stage\dots
 
 \subsection{Z micrometer Control}
 
-In order to control the the height of the pipette tip; to enable automated refilling and to place the dispensed droplet on to the substrate the Z height of the optical stage needs to be motorised. The Z height has a manual control in the form of an adjustment micrometer that allows for 10mm of travel, but this present the first problem in design.
+In order to control the height of the pipette tip; to enable automated refilling and to place the dispensed droplet onto the substrate the Z height of the optical stage needs to be motorised. The Z height has a manual control in the form of an adjustment micrometer that allows for 10mm of travel, but this presents the first problem in design.
 The micrometer travels linearly throughout the adjustment, i.e. if the stage raises 10mm the knob will retract 10mm also. Due to this a custom shaft coupler is required to interface a fixed motor to the moving knob.
 
 \begin{figure}[h]
@@ -79,7 +79,7 @@ The micrometer travels linearly throughout the adjustment, i.e. if the stage rai
     \label{fig:z_coup}
 \end{figure}
 
-The figure above[\ref{fig:z_coup}] shows the assembled design. One end of the coupler is an extended c-clamp that mates with the knurls knobs of the micrometer and the other is a solid piece with 4 M3 clearance holes. These holes interface with a universal shaft-hub mount with 4 M3 machine screws that transfer the motors rotation and allow the coupler and knob to slide away over the course of a movement.
+The figure above[\ref{fig:z_coup}] shows the assembled design. One end of the coupler is an extended c-clamp that mates with the knurls knobs of the micrometer and the other is a solid piece with 4 M3 clearance holes. These holes interface with a universal shaft-hub mount with 4 M3 machine screws that transfer the rotation of the motor and allow the coupler and knob to slide away over the course of a movement.
 
 The key limitation of this design is that is constrains the XY position of the stage to a single setting. This is due to the motor being fastened to the breadboard baseplate more stability, alignment and vibration reduction. Because of this it moves the fine positioning to the other stages in the setup; substrate stack and cameras. 
 
@@ -90,12 +90,12 @@ The motion required for the motors in this system is to provide rotation about t
 
 Stepper motors allow for both precise position control without the need for a feedback system and are capable of continuous rotation. In comparison, brushed/brushless DC motors require encoders for positional control and servos may do either but not both continuous rotation and positioning.
 
-NEMA17 standard sized steppers were chosen to best fit the dimensions of the XYZ optical stage (60mm plate to 40mm motor frame) with room for fastening hardware. That left two choices for the top R stage motor; full size 38mm high frame or shorter pancake frame. Even through the pancake frame would reduce the overall height of the system, the shaft length available for this motor is less only 7mm and would greatly restrict the mounting options of the tower to the motor. For this reason 2 NEMA17x38mm Stepper motors were chosen.
+NEMA17 standard-sized steppers were chosen to best fit the dimensions of the XYZ optical stage (60mm plate to 40mm motor frame) with room for fastening hardware. That left two choices for the top R stage motor; full size 38mm high frame or shorter pancake frame. Even though the pancake frame would reduce the overall height of the system, the shaft length available for this motor is less only 7mm and would greatly restrict the mounting options of the tower to the motor. For this reason, 2 NEMA17x38mm Stepper motors were chosen.
 
 \subsection{Motor Driving}
 
 \subsubsection*{The Requirements}
-To drive the selected stepper motors, discrete step/direction style micro stepping drivers were chosen. This allows for the design to be flexible with its electronics placed to accommodate the experimental needs. Allows for a fairly agnostic choice for controller to supply the control signals, and standardised pinouts allow for requirement flexibility and replacements.
+To drive the selected stepper motors, discrete step/direction style micro stepping drivers were chosen. This allows for the design to be flexible with its electronics placed to accommodate the experimental needs. Allows for a fairly agnostic choice for the controller to supply the control signals, and standardised pinouts allow for requirement flexibility and replacements.
 
 \begin{table}[h]
     \centering
@@ -115,22 +115,24 @@ Main consideration for device choice are: micro step resolution, driving current
 \subsubsection*{The Choice}
 The DRV8825 was ultimately chosen.
 \begin{itemize}
-    \item High microstepping resolution, lower than the STPIN820 but cheap high resolution driver are prone to step skipping \cite{step_book}
-    \item Highest driving current as torque requirements are unknown for this design the headroom is nice even if it isn't use, especially as it will run cooler at lower power draw.
-    \item It ranked above the DRV8834 due to it configuration pins (to set microstepping mode) as it provide all 3 pins without the requirement to leave pins floating as a setting thus allowing for full software control.
+    \item High microstepping resolution, lower than the STPIN820 but cheap high-resolution driver is prone to step skipping \cite{step_book}
+    \item Highest driving current as torque requirements are unknown for this design the headroom is nice even if it isn't used, especially as it will run cooler at lower power draw.
+    \item It ranked above the DRV8834 due to it configuration pins (to set microstepping mode) as it provides all 3 pins without the requirement to leave pins floating as a setting thus allowing for full software control.
 \end{itemize}
 
 \newpage
 \subsection{Environmental Monitoring}
 
-Although the aim of this project is to only control the position and volume of the droplet in the experiment, to at least fully address the list of affector [covered in \ref{C:init_eval}] the environmental factors recorded are: \textbf{Temperature, Barometric Pressure, Relative Humidity}.
+Although the aim of this project is to only control the position and volume of the droplet in the experiment, to at least fully address the list of affecters [covered in \ref{C:init_eval}] the environmental factors recorded are: \textbf{Temperature, Barometric Pressure, Relative Humidity}.
 
-As this section of the project doesn't note share resources with the main motorised assembly it key design considerations were simplicity and function.
+As this section of the project doesn't note share resources with the main motorised assembly it key design considerations was simplicity and function.
 Therefore, the environmental monitor is not required to have any integration with the main controller or data logging capabilities.
 
-To meets these requirements the monitor was decided to be a low power microcontroller + OLED display stack that polled environmental sensor peripherals. This would be battery powered and utilised low power sleep modes to extend lifetimes
+To meets these requirements the monitor was decided to be a low power microcontroller + OLED display stack that polled environmental sensor peripherals. This would be battery powered and utilised low power sleep modes to extend lifetimes.
 
-To facilitate ease
+To facilitate ease of implementation the microcontroller + display combo was chosen to be an Adafruit feather and OLED stack. specifically the RP2040 for its low power capabilities and JST LiPO battery connector.
+
+Sensor options considered were the discrete LPS22/25 for pressure and DHT11/22 for humidity and temperature or the fully integrated BME280 for all measurements. 
 
 \section{System Overview}
 
@@ -138,4 +140,6 @@ To facilitate ease
     \centering
     \includegraphics[width=0.4\textwidth]{img/ED_block_diag.png}
     \includegraphics[width=0.4\textwidth]{img/full_mech.png}
+    \caption{Left: Instrumentation Architecture, Right: Full CAD Design and Layout on optical breadboard}
+    \label{fig:sys_des}
 \end{figure}

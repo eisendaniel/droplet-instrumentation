@@ -1,10 +1,32 @@
 \chapter{Conclusions and Future Work}\label{C:conclusion}
 
-\section{Conclusion}
+\section{Conclusions}
+
+The aims of this project were to control for variations in droplet morphology; droplet position and volume, providing an improvement over the previous system. Produce an extendable platform that enabled the experimental process to be automated/centrally controlled to speed up the procedure. Provide a data collection system for uncontrolled factors. 
+These goals were chosen with the hypothesis that improving the system's performance in these aspects would carry through to an improvement in the inconsistent results observed in the previous iteration of the system.  
+
+To control for droplet volume and provide a method for variable volume, this project utilised a pre-calibrated electronic pipette as the central droplet dispensing tool that is interfaced with to provide remote GPIO control. Automation, user control and positional control was achieved via a serial command-driven stepper motor controller that drove the motion of a micrometer controlled XYZ stage mounted upon an optical breadboard.   
+
+\subsection*{Successes}
+The use of a pre-calibrated electronic pipette eliminates volume variation to a point beyond the scope of this projects ability to measure, but more importantly, the mechanical system was confirmed to be stable enough to support the full variable volume range from 0.5 to 10 microlitres.
+
+The stepper motor driving system parameters were successfully tuned to reduced pipette tip settling oscillation below 1mm in 1s and achieves consistent and exact positioning. This precision in instrumentation control resulted in the reduction in droplet positional offset  variance from 0.296mm to 0.018mm.
+
+From initial analysis of the collected temperature profiles, this project can preliminarily confirm the hypothesis that improved positional and volume consistency will result in greater consistency in experimental results. Though more data is needed.
+
+The firmware and controller implemented fully supports input of predefined command sequences that allows a user to quickly run the same complex experimental procedure much time, with the exact same instrumentation performance.   
+
+\subsection*{Drawbacks}
+Major drawbacks of the resulting design include the XY positional locking of the pipette stage due to static Z motor mounting on the breadboard. This results in any required adjustment to the camera, substrate and reservoir to be carried out to fit the pipette stage position.
+
+This implementation lacks auto-homing to set zero position, and additionally due to the permanent magnetic pole of the stepper motor stator combined with the drivers micro steppers, the user can request an invalid holding position as home. This cannot be maintained due to current limits and will snap away from it. This should however be evident in the setup stage of the experiment.  
 
 \section{Future Work}
+As stated this project produced an extendable platform from which a variety of features can be implemented.
 \begin{itemize}
-    \item User Friendly Graphical Control to interface with serial command controller
-    \item 
-    \item 
+    \item User-Friendly Graphical Control to interface with serial command controller. As of now, there exists a LabVIEW script that can interface with the serial input of the controller but more in-depth user-friendly version would be a great step up in the usability of the system.
+    \item Due to the projects nature combined with an inopportune COVID19 lockdown the integration of homing switches to automate setup was planned but not implemented. This addition would increase setup speed and usability.
+    \item Utilise included GPIO breakout header to synchronise external data acquisition
+    \item Further investigate Temperature evolution with varied volume, substrates, cleaning techniques
+    \item Add enclosure to isolate air currents and further control variables.
 \end{itemize}
