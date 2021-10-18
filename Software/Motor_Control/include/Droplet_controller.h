@@ -59,7 +59,7 @@ void command_loop()
     else //read and send sequence
     {
         //read
-        Serial.println("Start sequence sequence on commands");
+        Serial.println("Start sequence of commands");
         char buffer[512] = "";
         while (strncmp(input, "END", 3))
         {
@@ -107,9 +107,9 @@ void execute_command(char *input)
         }
         else if (!strcmp(command, "R")) //rotate stage
         {
-            float rots = atof(strtok_r(NULL, " ", &end_instr));
-            R_stage.moveRelativeInSteps(long(REV_STEPS * rots));
-            Serial.printf("Rotated %.4f revolutions\n", rots);
+            float degs = atof(strtok_r(NULL, " ", &end_instr));
+            R_stage.moveRelativeInSteps(long(REV_STEPS * (degs / 360.0)));
+            Serial.printf("Rotated %.4f degrees \n", degs);
         }
         else if (!strcmp(command, "Z")) //raise stage
         {
