@@ -6,10 +6,10 @@
 const uint8_t INPUT_SIZE = 30;
 
 // IO pin assignments
-const uint8_t R_MOTOR_STEP_PIN = 19;
-const uint8_t R_MOTOR_DIRECTION_PIN = 18;
-const uint8_t Z_MOTOR_STEP_PIN = 23;
-const uint8_t Z_MOTOR_DIRECTION_PIN = 22;
+const uint8_t R_MOTOR_STEP_PIN = 18;
+const uint8_t R_MOTOR_DIRECTION_PIN = 19;
+const uint8_t Z_MOTOR_STEP_PIN = 22;
+const uint8_t Z_MOTOR_DIRECTION_PIN = 23;
 const uint8_t DROP_TRIG = 4;
 
 //motor config

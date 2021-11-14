@@ -1,0 +1,329 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 3
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:LED D?
+U 1 1 618D8C7E
+P 6050 4525
+F 0 "D?" V 5997 4605 50  0000 L CNN
+F 1 "LED" V 6088 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 6050 4525 50  0001 C CNN
+F 3 "~" H 6050 4525 50  0001 C CNN
+	1    6050 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8C84
+P 6050 4175
+F 0 "R?" H 6120 4221 50  0000 L CNN
+F 1 "100" H 6120 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5980 4175 50  0001 C CNN
+F 3 "~" H 6050 4175 50  0001 C CNN
+	1    6050 4175
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 618D8C90
+P 6200 4725
+F 0 "#PWR?" H 6200 4475 50  0001 C CNN
+F 1 "GND" H 6205 4552 50  0000 C CNN
+F 2 "" H 6200 4725 50  0001 C CNN
+F 3 "" H 6200 4725 50  0001 C CNN
+	1    6200 4725
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 4325 6050 4375
+$Comp
+L Device:LED D?
+U 1 1 618D8C97
+P 6350 4525
+F 0 "D?" V 6297 4605 50  0000 L CNN
+F 1 "LED" V 6388 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 6350 4525 50  0001 C CNN
+F 3 "~" H 6350 4525 50  0001 C CNN
+	1    6350 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8C9D
+P 6350 4175
+F 0 "R?" H 6420 4221 50  0000 L CNN
+F 1 "100" H 6420 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 6280 4175 50  0001 C CNN
+F 3 "~" H 6350 4175 50  0001 C CNN
+	1    6350 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6350 4325 6350 4375
+Wire Wire Line
+	6050 4675 6050 4700
+Wire Wire Line
+	6050 4700 6200 4700
+Wire Wire Line
+	6350 4700 6350 4675
+Wire Wire Line
+	6200 4700 6200 4725
+Connection ~ 6200 4700
+Wire Wire Line
+	6200 4700 6350 4700
+Wire Wire Line
+	6050 4025 6050 4000
+Wire Wire Line
+	6350 4000 6350 4025
+$Comp
+L Device:LED D?
+U 1 1 618D8CB0
+P 5750 4525
+F 0 "D?" V 5697 4605 50  0000 L CNN
+F 1 "LED" V 5788 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 5750 4525 50  0001 C CNN
+F 3 "~" H 5750 4525 50  0001 C CNN
+	1    5750 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8CB6
+P 5750 4175
+F 0 "R?" H 5820 4221 50  0000 L CNN
+F 1 "100" H 5820 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5680 4175 50  0001 C CNN
+F 3 "~" H 5750 4175 50  0001 C CNN
+	1    5750 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5750 4325 5750 4375
+Wire Wire Line
+	5750 4675 5750 4700
+Wire Wire Line
+	5750 4025 5750 4000
+Connection ~ 6050 4000
+Connection ~ 6050 4700
+Wire Wire Line
+	5750 4000 6050 4000
+Wire Wire Line
+	5750 4700 6050 4700
+$Comp
+L Device:LED D?
+U 1 1 618D8CC3
+P 5450 4525
+F 0 "D?" V 5397 4605 50  0000 L CNN
+F 1 "LED" V 5488 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 5450 4525 50  0001 C CNN
+F 3 "~" H 5450 4525 50  0001 C CNN
+	1    5450 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8CC9
+P 5450 4175
+F 0 "R?" H 5520 4221 50  0000 L CNN
+F 1 "100" H 5520 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5380 4175 50  0001 C CNN
+F 3 "~" H 5450 4175 50  0001 C CNN
+	1    5450 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5450 4325 5450 4375
+Wire Wire Line
+	5450 4675 5450 4700
+Wire Wire Line
+	5450 4025 5450 4000
+Wire Wire Line
+	5450 4000 5750 4000
+Wire Wire Line
+	5450 4700 5750 4700
+Connection ~ 5750 4000
+Connection ~ 5750 4700
+$Comp
+L Device:LED D?
+U 1 1 618D8CD6
+P 5150 4525
+F 0 "D?" V 5097 4605 50  0000 L CNN
+F 1 "LED" V 5188 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 5150 4525 50  0001 C CNN
+F 3 "~" H 5150 4525 50  0001 C CNN
+	1    5150 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8CDC
+P 5150 4175
+F 0 "R?" H 5220 4221 50  0000 L CNN
+F 1 "100" H 5220 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 5080 4175 50  0001 C CNN
+F 3 "~" H 5150 4175 50  0001 C CNN
+	1    5150 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	5150 4325 5150 4375
+Wire Wire Line
+	5150 4675 5150 4700
+Wire Wire Line
+	5150 4025 5150 4000
+Wire Wire Line
+	5150 4000 5450 4000
+Wire Wire Line
+	5150 4700 5450 4700
+$Comp
+L Device:LED D?
+U 1 1 618D8CE7
+P 6650 4525
+F 0 "D?" V 6597 4605 50  0000 L CNN
+F 1 "LED" V 6688 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 6650 4525 50  0001 C CNN
+F 3 "~" H 6650 4525 50  0001 C CNN
+	1    6650 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8CED
+P 6650 4175
+F 0 "R?" H 6720 4221 50  0000 L CNN
+F 1 "100" H 6720 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 6580 4175 50  0001 C CNN
+F 3 "~" H 6650 4175 50  0001 C CNN
+	1    6650 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6650 4325 6650 4375
+Wire Wire Line
+	6650 4700 6650 4675
+Wire Wire Line
+	6650 4000 6650 4025
+Wire Wire Line
+	6350 4000 6650 4000
+Wire Wire Line
+	6350 4700 6650 4700
+$Comp
+L Device:LED D?
+U 1 1 618D8CF8
+P 6950 4525
+F 0 "D?" V 6897 4605 50  0000 L CNN
+F 1 "LED" V 6988 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 6950 4525 50  0001 C CNN
+F 3 "~" H 6950 4525 50  0001 C CNN
+	1    6950 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8CFE
+P 6950 4175
+F 0 "R?" H 7020 4221 50  0000 L CNN
+F 1 "100" H 7020 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 6880 4175 50  0001 C CNN
+F 3 "~" H 6950 4175 50  0001 C CNN
+	1    6950 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6950 4325 6950 4375
+Wire Wire Line
+	6950 4700 6950 4675
+Wire Wire Line
+	6950 4000 6950 4025
+Wire Wire Line
+	6650 4000 6950 4000
+Wire Wire Line
+	6650 4700 6950 4700
+$Comp
+L Device:LED D?
+U 1 1 618D8D09
+P 7250 4525
+F 0 "D?" V 7197 4605 50  0000 L CNN
+F 1 "LED" V 7288 4605 50  0000 L CNN
+F 2 "LED_THT:LED_D3.0mm_Clear" H 7250 4525 50  0001 C CNN
+F 3 "~" H 7250 4525 50  0001 C CNN
+	1    7250 4525
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R R?
+U 1 1 618D8D0F
+P 7250 4175
+F 0 "R?" H 7320 4221 50  0000 L CNN
+F 1 "100" H 7320 4130 50  0000 L CNN
+F 2 "Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder" V 7180 4175 50  0001 C CNN
+F 3 "~" H 7250 4175 50  0001 C CNN
+	1    7250 4175
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7250 4325 7250 4375
+Wire Wire Line
+	7250 4700 7250 4675
+Wire Wire Line
+	7250 4000 7250 4025
+Wire Wire Line
+	6950 4000 7250 4000
+Wire Wire Line
+	6950 4700 7250 4700
+Connection ~ 5450 4000
+Connection ~ 5450 4700
+Connection ~ 6650 4700
+Connection ~ 6350 4700
+Connection ~ 6950 4700
+Connection ~ 6950 4000
+Connection ~ 6650 4000
+Connection ~ 6350 4000
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 618D8D22
+P 7600 4325
+F 0 "H?" H 7700 4371 50  0000 L CNN
+F 1 "MountingHole" H 7700 4280 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 7600 4325 50  0001 C CNN
+F 3 "~" H 7600 4325 50  0001 C CNN
+	1    7600 4325
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 618D8D28
+P 7600 4500
+F 0 "H?" H 7700 4546 50  0000 L CNN
+F 1 "MountingHole" H 7700 4455 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 7600 4500 50  0001 C CNN
+F 3 "~" H 7600 4500 50  0001 C CNN
+	1    7600 4500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Mechanical:MountingHole H?
+U 1 1 618D8D2E
+P 7600 4150
+F 0 "H?" H 7700 4196 50  0000 L CNN
+F 1 "MountingHole" H 7700 4105 50  0000 L CNN
+F 2 "MountingHole:MountingHole_2.7mm_M2.5" H 7600 4150 50  0001 C CNN
+F 3 "~" H 7600 4150 50  0001 C CNN
+	1    7600 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6050 4000 6350 4000
+$EndSCHEMATC

@@ -909,7 +909,7 @@ Wire Wire Line
 	5000 1950 5150 1950
 Connection ~ 5000 1950
 Text Notes 3650 5550 0    50   ~ 0
-Controller\n
+Test Points\n
 $Comp
 L Driver_Motor:Pololu_Breakout_DRV8825 A2
 U 1 1 60BC6775

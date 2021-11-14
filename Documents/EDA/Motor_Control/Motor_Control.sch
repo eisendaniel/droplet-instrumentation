@@ -141,7 +141,6 @@ Wire Wire Line
 	7050 5300 6950 5300
 Wire Wire Line
 	7050 4900 7000 4900
-NoConn ~ 7050 5500
 $Comp
 L power:+3V3 #PWR06
 U 1 1 60BC6790
@@ -208,7 +207,6 @@ F 3 "" H 7550 3400 50  0001 C CNN
 	1    7550 3400
 	1    0    0    -1  
 $EndComp
-NoConn ~ 7050 3050
 $Comp
 L power:+3V3 #PWR05
 U 1 1 60BBC613
@@ -921,4 +919,14 @@ F 3 "https://www.pololu.com/product/2133" H 7550 4600 50  0001 C CNN
 	1    7450 4900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	6950 2950 6950 3050
+Wire Wire Line
+	6950 3050 7050 3050
+Connection ~ 6950 2950
+Wire Wire Line
+	6950 5400 6950 5500
+Wire Wire Line
+	6950 5500 7050 5500
+Connection ~ 6950 5400
 $EndSCHEMATC
