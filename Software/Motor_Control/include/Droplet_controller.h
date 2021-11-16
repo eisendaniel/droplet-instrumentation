@@ -53,7 +53,7 @@ void command_loop()
 
     if (strncmp(input, "SEQ", 3))
     { //not sequence
-        Serial.printf("Executing %s", input);
+        Serial.printf("Executing %s\n", input);
         execute_command(input);
     }
     else //read and send sequence
