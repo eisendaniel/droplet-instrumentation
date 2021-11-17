@@ -8,8 +8,12 @@ const uint8_t INPUT_SIZE = 30;
 // IO pin assignments
 const uint8_t R_MOTOR_STEP_PIN = 18;
 const uint8_t R_MOTOR_DIRECTION_PIN = 19;
+const uint8_t R_HOME = 17;
+
 const uint8_t Z_MOTOR_STEP_PIN = 22;
 const uint8_t Z_MOTOR_DIRECTION_PIN = 23;
+const uint8_t Z_HOME = 16;
+
 const uint8_t DROP_TRIG = 4;
 
 //motor config
@@ -22,9 +26,25 @@ ESP_FlexyStepper Z_stage;
 
 bool pipette_down = true;
 
+void go_home();
 void init_steppers();
 void execute_command(char *input);
 void command_loop();
+
+void go_home()
+{
+    Serial.println("Homeing Z Stage...");
+    if (R_stage.moveToHomeInSteps(-1, REV_STEPS, REV_STEPS * 2.0 * 10.0, Z_HOME))
+        Serial.println("Z stage successfully homed");
+    else
+        Serial.println("Z stage failed to Home");
+
+    Serial.println("Homeing R Stage...");
+    if (R_stage.moveToHomeInSteps(-1, 0.5 * REV_STEPS, REV_STEPS, R_HOME))
+        Serial.println("R stage successfully homed");
+    else
+        Serial.println("R stage failed to Home");
+}
 
 void init_steppers()
 {
@@ -32,13 +52,15 @@ void init_steppers()
     R_stage.connectToPins(R_MOTOR_STEP_PIN, R_MOTOR_DIRECTION_PIN);
     Z_stage.connectToPins(Z_MOTOR_STEP_PIN, Z_MOTOR_DIRECTION_PIN);
 
-    R_stage.setSpeedInStepsPerSecond(2 * REV_STEPS);
-    R_stage.setAccelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
-    R_stage.setDecelerationInStepsPerSecondPerSecond(5 * REV_STEPS);
+    R_stage.setSpeedInStepsPerSecond(2.0 * REV_STEPS);
+    R_stage.setAccelerationInStepsPerSecondPerSecond(5.0 * REV_STEPS);
+    R_stage.setDecelerationInStepsPerSecondPerSecond(5.0 * REV_STEPS);
 
-    Z_stage.setSpeedInStepsPerSecond(6 * REV_STEPS);
-    Z_stage.setAccelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
-    Z_stage.setDecelerationInStepsPerSecondPerSecond(100 * REV_STEPS);
+    Z_stage.setSpeedInStepsPerSecond(6.0 * REV_STEPS);
+    Z_stage.setAccelerationInStepsPerSecondPerSecond(100.0 * REV_STEPS);
+    Z_stage.setDecelerationInStepsPerSecondPerSecond(100.0 * REV_STEPS);
+
+    go_home();
 }
 
 void command_loop()
@@ -63,13 +85,14 @@ void command_loop()
         char buffer[512] = "";
         while (strncmp(input, "END", 3))
         {
+            Serial.println("Input next command in sequence");
             while (!Serial.available())
                 ;
             size = Serial.readBytes(input, INPUT_SIZE);
             input[size] = 0;
             strcat(buffer, input);
-            Serial.println("Input next command in sequence");
         }
+        printf("Sequence: %s\n", buffer);
 
         //process
         char *end_buf;
@@ -136,6 +159,10 @@ void execute_command(char *input)
                 pipette_down = !pipette_down;
                 delay(2000);
             }
+        }
+        else if (!strcmp(command, "HOME"))
+        {
+            go_home();
         }
     }
 }

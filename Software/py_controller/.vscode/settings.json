@@ -1,0 +1,12 @@
+{
+    "spellright.language": [
+        "English (Australian)"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext",
+        "c",
+        "python"
+    ]
+}
