@@ -34,13 +34,19 @@ void command_loop();
 void go_home()
 {
     Serial.println("Homeing Z Stage...");
-    if (R_stage.moveToHomeInSteps(-1, REV_STEPS, REV_STEPS * 2.0 * 10.0, Z_HOME))
+    if (Z_stage.moveToHomeInSteps(1, (float)REV_STEPS, (long)(REV_STEPS * 2.0 * 12.0), Z_HOME))
+    {
         Serial.println("Z stage successfully homed");
+        Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 10.0));
+    }
     else
+    {
         Serial.println("Z stage failed to Home");
+        return;
+    }
 
     Serial.println("Homeing R Stage...");
-    if (R_stage.moveToHomeInSteps(-1, 0.5 * REV_STEPS, REV_STEPS, R_HOME))
+    if (R_stage.moveToHomeInSteps(-1, (float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
         Serial.println("R stage successfully homed");
     else
         Serial.println("R stage failed to Home");
@@ -60,7 +66,7 @@ void init_steppers()
     Z_stage.setAccelerationInStepsPerSecondPerSecond(100.0 * REV_STEPS);
     Z_stage.setDecelerationInStepsPerSecondPerSecond(100.0 * REV_STEPS);
 
-    go_home();
+    // go_home();
 }
 
 void command_loop()
@@ -131,14 +137,14 @@ void execute_command(char *input)
         else if (!strcmp(command, "R")) //rotate stage
         {
             float degs = atof(strtok_r(NULL, " ", &end_instr));
-            R_stage.moveRelativeInSteps(long(REV_STEPS * (degs / 360.0)));
-            Serial.printf("Rotated %.4f degrees \n", degs);
+            R_stage.moveToPositionInSteps(long(REV_STEPS * (degs / 360.0)));
+            Serial.printf("Rotated to %.4f degrees \n", degs);
         }
         else if (!strcmp(command, "Z")) //raise stage
         {
             float mm = atof(strtok_r(NULL, " ", &end_instr)); //
-            Z_stage.moveRelativeInSteps(long(REV_STEPS * -2.0 * mm));
-            Serial.printf("Moved Z %.4f mm\n", mm);
+            Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * mm));
+            Serial.printf("Moved Z to %.4f mm\n", mm);
         }
         else if (!strcmp(command, "DEL")) //delay
         {
@@ -163,6 +169,11 @@ void execute_command(char *input)
         else if (!strcmp(command, "HOME"))
         {
             go_home();
+        }
+        else if (!strcmp(command, "OVERRIDEHOME"))
+        {
+            R_stage.setCurrentPositionAsHomeAndStop();
+            Z_stage.setCurrentPositionAsHomeAndStop();
         }
     }
 }
