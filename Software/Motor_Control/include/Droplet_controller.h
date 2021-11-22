@@ -31,26 +31,7 @@ void init_steppers();
 void execute_command(char *input);
 void command_loop();
 
-void go_home()
-{
-    Serial.println("Homeing Z Stage...");
-    if (Z_stage.moveToHomeInSteps(1, (float)REV_STEPS, (long)(REV_STEPS * 2.0 * 12.0), Z_HOME))
-    {
-        Serial.println("Z stage successfully homed");
-        Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 10.0));
-    }
-    else
-    {
-        Serial.println("Z stage failed to Home");
-        return;
-    }
 
-    Serial.println("Homeing R Stage...");
-    if (R_stage.moveToHomeInSteps(-1, (float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
-        Serial.println("R stage successfully homed");
-    else
-        Serial.println("R stage failed to Home");
-}
 
 void init_steppers()
 {
@@ -176,6 +157,27 @@ void execute_command(char *input)
             Z_stage.setCurrentPositionAsHomeAndStop();
         }
     }
+}
+
+void go_home()
+{
+    Serial.println("Homeing Z Stage...");
+    if (Z_stage.moveToHomeInSteps(1, (float)REV_STEPS, (long)(REV_STEPS * 2.0 * 12.0), Z_HOME))
+    {
+        Serial.println("Z stage successfully homed");
+        Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 5.0));
+    }
+    else
+    {
+        Serial.println("Z stage failed to Home");
+        return;
+    }
+
+    Serial.println("Homeing R Stage...");
+    if (R_stage.moveToHomeInSteps(-1, (float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
+        Serial.println("R stage successfully homed");
+    else
+        Serial.println("R stage failed to Home");
 }
 
 #endif //DROP_CONTROLLER

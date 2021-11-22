@@ -71,7 +71,7 @@ class Widget(QtWidgets.QWidget):
         self.Z_val = QtWidgets.QDoubleSpinBox()
         self.Z_val.setMinimum(0.0)
         self.Z_val.setMaximum(10.0)
-        self.Z_val.setValue(10.0)
+        self.Z_val.setValue(5.0)
         self.DEL_val = QtWidgets.QDoubleSpinBox()
         self.R_btn = QtWidgets.QPushButton(
             text="Rotate (deg)", clicked=(lambda: self.send_cmd("R "+str(self.R_val.value()))))
