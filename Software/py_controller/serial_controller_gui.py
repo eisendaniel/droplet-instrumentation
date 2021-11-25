@@ -39,6 +39,8 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.start(2000)
 
         self.pip_engaged = True
+        self.res_pos = 55
+        self.drop_pos = 172
 
         # Initialise tab screen
         self.tabs = QtWidgets.QTabWidget()
@@ -63,7 +65,7 @@ class Widget(QtWidgets.QWidget):
         self.serial_monitor.setFontFamily("Monospace")
 
         self.home_btn = QtWidgets.QPushButton(
-            text="Home", clicked=(lambda: self.send_cmd("HOME "))
+            text="Home Motor Positions", clicked=(lambda: self.send_cmd("HOME "))
         )
         self.R_val = QtWidgets.QDoubleSpinBox()
         self.R_val.setMinimum(0.0)
@@ -80,13 +82,17 @@ class Widget(QtWidgets.QWidget):
         self.DEL_btn = QtWidgets.QPushButton(
             text="Delay (ms)", clicked=(lambda: self.send_cmd("DEL "+str(self.DEL_val.value()))))
         self.PIP_btn = QtWidgets.QPushButton(
-            text="Pipette", clicked=self.send_P)
+            text="Trigger Pipette", clicked=self.send_P)
 
         self.record_seq = QtWidgets.QPushButton(
             text="Record Sequence",
             checkable=True,
             toggled=self.record_toggled
         )
+
+        self.res_btn = QtWidgets.QPushButton(text = f"Go to Reservoir ({self.res_pos}°)", clicked=(lambda: self.send_cmd(f"R {self.res_pos}")))
+        self.drop_btn = QtWidgets.QPushButton(text = f"Go to Droplet Stage ({self.drop_pos}°)", clicked=(lambda: self.send_cmd(f"R {self.drop_pos}")))
+        self.reset_btn = QtWidgets.QPushButton(text = "Reset Saved Positions", clicked=self.init_reset)
 
         self.com_select = QtWidgets.QComboBox()
         self.com_select.setDuplicatesEnabled(False)
@@ -107,6 +113,10 @@ class Widget(QtWidgets.QWidget):
         self.Motors.layout.addWidget(self.send_btn,       0, 2, 1, 1)
         self.Motors.layout.addWidget(self.do_ts,          0, 3, 1, 1)
         self.Motors.layout.addWidget(self.serial_monitor, 1, 0, 1, 4)
+
+        self.Motors.layout.addWidget(self.reset_btn,      3, 0, 1, 1)
+        self.Motors.layout.addWidget(self.res_btn,        4, 0, 1, 1)
+        self.Motors.layout.addWidget(self.drop_btn,       5, 0, 1, 1)
 
         self.Motors.layout.addWidget(self.home_btn,       2, 1, 1, 2)
         self.Motors.layout.addWidget(self.R_val,          3, 1, 1, 1)
@@ -134,7 +144,41 @@ class Widget(QtWidgets.QWidget):
             readyRead=self.receive
         )
 
-    # Callback Slots
+    @QtCore.pyqtSlot()
+    def init_reset(self):
+        if not self.res_btn.isChecked():
+            self.res_btn.setText("Set Reservoir Position")
+            self.res_btn.setCheckable(True)
+            self.res_btn.setChecked(True)
+            self.res_btn.clicked.disconnect()
+            self.res_btn.clicked.connect(lambda: self.reset_pos(True))
+            self.res_reset = True
+
+        if not self.drop_btn.isChecked():
+            self.drop_btn.setText("Set Droplet Position")
+            self.drop_btn.setCheckable(True)
+            self.drop_btn.setChecked(True)
+            self.drop_btn.clicked.disconnect()
+            self.drop_btn.clicked.connect(lambda: self.reset_pos(False))
+            self.drop_reset = True
+
+    @QtCore.pyqtSlot()
+    def reset_pos(self, isReservoir):
+        if isReservoir:
+            self.res_pos = self.R_val.value()
+            self.res_btn.setText(f"Go to Reservoir ({self.res_pos}°)")
+            self.res_btn.setCheckable(False)
+            self.res_reset = False
+            self.res_btn.clicked.disconnect()
+            self.res_btn.clicked.connect(lambda: self.send_cmd(f"R {self.res_pos}"))
+        else:
+            self.drop_pos = self.R_val.value()
+            self.drop_btn.setText(f"Go to Droplet Stage ({self.drop_pos}°)")
+            self.drop_btn.setCheckable(False)
+            self.drop_reset = False
+            self.drop_btn.clicked.disconnect()
+            self.drop_btn.clicked.connect(lambda: self.send_cmd(f"R {self.drop_pos}"))
+
     @QtCore.pyqtSlot()
     def receive(self):
         while self.serial.canReadLine():

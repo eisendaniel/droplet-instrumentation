@@ -174,7 +174,7 @@ void go_home()
     }
 
     Serial.println("Homeing R Stage...");
-    if (R_stage.moveToHomeInSteps(-1, (float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
+    if (R_stage.moveToHomeInSteps(-1, 0.25*(float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
         Serial.println("R stage successfully homed");
     else
         Serial.println("R stage failed to Home");
