@@ -8,5 +8,6 @@
         "plaintext",
         "c",
         "python"
-    ]
+    ],
+    "python.formatting.provider": "black"
 }
