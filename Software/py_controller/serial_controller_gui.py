@@ -51,8 +51,8 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.start(2000)
 
         self.pip_engaged = True
-        self.res_pos = 55
-        self.drop_pos = 172
+        self.res_pos = 56
+        self.drop_pos = 172.4
 
         # Initialise tab screen
         self.tabs = QtWidgets.QTabWidget()
@@ -78,7 +78,7 @@ class Widget(QtWidgets.QWidget):
         )
         self.R_val = QtWidgets.QDoubleSpinBox()
         self.R_val.setMinimum(0.0)
-        self.R_val.setMaximum(340.0)
+        self.R_val.setMaximum(180.0)
         self.Z_val = QtWidgets.QDoubleSpinBox()
         self.Z_val.setMinimum(0.0)
         self.Z_val.setMaximum(10.0)
@@ -97,7 +97,7 @@ class Widget(QtWidgets.QWidget):
             clicked=(lambda: self.send_cmd("DEL " + str(self.DEL_val.value()))),
         )
         self.PIP_btn = QtWidgets.QPushButton(
-            text="Trigger Pipette", clicked=self.send_P
+            text="Refill Pipette", clicked=self.send_P
         )
 
         self.record_seq = QtWidgets.QPushButton(
@@ -228,7 +228,12 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def send_P(self):
-        cmd = "PIP " + ("UP" if self.pip_engaged else "DOWN")
+        if self.pip_engaged:
+            cmd = "PIP UP"
+            self.PIP_btn.setText("Dispense Droplet")
+        else:
+            cmd = "PIP DOWN"
+            self.PIP_btn.setText("Refill Pipette")
         if self.record_seq.isChecked():
             self.raw_input.setText(self.raw_input.text() + cmd + "; ")
         else:
