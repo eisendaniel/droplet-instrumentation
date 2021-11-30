@@ -51,6 +51,7 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.start(2000)
 
         self.pip_engaged = True
+        self.tip_pos = 10
         self.res_pos = 56
         self.drop_pos = 172.4
 
@@ -76,6 +77,8 @@ class Widget(QtWidgets.QWidget):
         self.home_btn = QtWidgets.QPushButton(
             text="Home Motor Positions", clicked=(lambda: self.send_cmd("HOME "))
         )
+        self.home_btn.setStyleSheet("QPushButton {background-color: #ff9f6b}")
+
         self.R_val = QtWidgets.QDoubleSpinBox()
         self.R_val.setMinimum(0.0)
         self.R_val.setMaximum(180.0)
@@ -96,25 +99,29 @@ class Widget(QtWidgets.QWidget):
             text="Delay (ms)",
             clicked=(lambda: self.send_cmd("DEL " + str(self.DEL_val.value()))),
         )
-        self.PIP_btn = QtWidgets.QPushButton(
-            text="Refill Pipette", clicked=self.send_P
-        )
+        self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=self.send_P)
 
         self.record_seq = QtWidgets.QPushButton(
             text="Record Sequence", checkable=True, toggled=self.record_toggled
         )
+        self.record_seq.setStyleSheet("QPushButton:checked{color: #ffffff; background-color: #ff0000}")
 
-        self.res_btn = QtWidgets.QPushButton(
-            text=f"Go to Reservoir ({self.res_pos}°)",
-            clicked=(lambda: self.send_cmd(f"R {self.res_pos}")),
-        )
         self.drop_btn = QtWidgets.QPushButton(
             text=f"Go to Droplet Stage ({self.drop_pos}°)",
             clicked=(lambda: self.send_cmd(f"R {self.drop_pos}")),
         )
+        self.res_btn = QtWidgets.QPushButton(
+            text=f"Go to Reservoir ({self.res_pos}°)",
+            clicked=(lambda: self.send_cmd(f"R {self.res_pos}")),
+        )
+        self.tip_btn = QtWidgets.QPushButton(
+            text=f"Go to Tip Change ({self.tip_pos}°)",
+            clicked=(lambda: self.send_cmd(f"R {self.tip_pos}")),
+        )
         self.reset_btn = QtWidgets.QPushButton(
             text="Reset Saved Positions", clicked=self.init_reset
         )
+        self.reset_btn.setStyleSheet("QPushButton {background-color: #cccccc}")
 
         self.com_select = QtWidgets.QComboBox()
         self.com_select.setDuplicatesEnabled(False)
@@ -127,31 +134,48 @@ class Widget(QtWidgets.QWidget):
         self.connection_btn = QtWidgets.QPushButton(
             text="Connect", checkable=True, toggled=self.on_toggled
         )
+        self.connection_btn.setStyleSheet("QPushButton:checked{background-color: #00f000}")
 
-        self.Motors.layout = QtWidgets.QGridLayout()  # row, col, r_span, c_span
-        self.Motors.layout.addWidget(self.raw_input, 0, 0, 1, 2)
-        self.Motors.layout.addWidget(self.send_btn, 0, 2, 1, 1)
-        self.Motors.layout.addWidget(self.do_ts, 0, 3, 1, 1)
-        self.Motors.layout.addWidget(self.serial_monitor, 1, 0, 1, 4)
+        MotorTabLayout = QtWidgets.QVBoxLayout()
+        MotorTabLayout.addWidget(QtWidgets.QLabel("Droplet Stage Motor Control"))
 
-        self.Motors.layout.addWidget(self.reset_btn, 2, 1, 1, 2)
-        self.Motors.layout.addWidget(self.res_btn, 3, 1, 1, 1)
-        self.Motors.layout.addWidget(self.drop_btn, 3, 2, 1, 1)
+        MoniterLayout = QtWidgets.QGridLayout()
+        MoniterLayout.addWidget(self.raw_input, 0, 0, 1, 2)
+        MoniterLayout.addWidget(self.send_btn, 0, 2, 1, 1)
+        MoniterLayout.addWidget(self.do_ts, 0, 3, 1, 1)
+        MoniterLayout.addWidget(self.serial_monitor, 1, 0, 1, 4)
 
-        self.Motors.layout.addWidget(self.home_btn, 4, 1, 1, 2)
-        self.Motors.layout.addWidget(self.R_val, 5, 1, 1, 1)
-        self.Motors.layout.addWidget(self.R_btn, 5, 2, 1, 1)
-        self.Motors.layout.addWidget(self.Z_val, 6, 1, 1, 1)
-        self.Motors.layout.addWidget(self.Z_btn, 6, 2, 1, 1)
-        self.Motors.layout.addWidget(self.DEL_val, 7, 1, 1, 1)
-        self.Motors.layout.addWidget(self.DEL_btn, 7, 2, 1, 1)
-        self.Motors.layout.addWidget(self.record_seq, 8, 1, 1, 1)
-        self.Motors.layout.addWidget(self.PIP_btn, 8, 2, 1, 1)
+        ProcedureLayout = QtWidgets.QVBoxLayout()
+        ProcedureLayout.setContentsMargins(128,0,128,0)
+        ProcedureLayout.addWidget(self.home_btn)
+        ProcedureLayout.addWidget(self.reset_btn)
+        ProcedureLayout.addWidget(self.drop_btn)
+        ProcedureLayout.addWidget(self.res_btn)
+        ProcedureLayout.addWidget(self.tip_btn)
 
-        self.Motors.layout.addWidget(self.connection_btn, 9, 0, 1, 4)
-        self.Motors.layout.addWidget(self.com_select, 10, 0, 1, 2)
-        self.Motors.layout.addWidget(self.baud_select, 10, 2, 1, 2)
-        self.Motors.setLayout(self.Motors.layout)
+        CommandLayout = QtWidgets.QGridLayout()
+        CommandLayout.setContentsMargins(128,0,128,0)
+        CommandLayout.addWidget(self.R_val, 0, 0, 1, 1)
+        CommandLayout.addWidget(self.R_btn, 0, 1, 1, 1)
+        CommandLayout.addWidget(self.Z_val, 1, 0, 1, 1)
+        CommandLayout.addWidget(self.Z_btn, 1, 1, 1, 1)
+        CommandLayout.addWidget(self.DEL_val, 2, 0, 1, 1)
+        CommandLayout.addWidget(self.DEL_btn, 2, 1, 1, 1)
+        CommandLayout.addWidget(self.record_seq, 3, 0, 1, 1)
+        CommandLayout.addWidget(self.PIP_btn, 3, 1, 1, 1)
+
+        ConnectionLayout = QtWidgets.QGridLayout()
+        ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
+        ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
+        ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
+
+        MotorTabLayout.addLayout(MoniterLayout)
+        MotorTabLayout.addLayout(ProcedureLayout)
+        MotorTabLayout.addSpacing(16)
+        MotorTabLayout.addLayout(CommandLayout)
+        MotorTabLayout.addSpacing(16)
+        MotorTabLayout.addLayout(ConnectionLayout)
+        self.Motors.setLayout(MotorTabLayout)
 
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
@@ -172,33 +196,42 @@ class Widget(QtWidgets.QWidget):
             self.res_btn.setCheckable(True)
             self.res_btn.setChecked(True)
             self.res_btn.clicked.disconnect()
-            self.res_btn.clicked.connect(lambda: self.reset_pos(True))
-            self.res_reset = True
+            self.res_btn.clicked.connect(lambda: self.reset_pos("drop"))
 
         if not self.drop_btn.isChecked():
             self.drop_btn.setText("Set Droplet Position")
             self.drop_btn.setCheckable(True)
             self.drop_btn.setChecked(True)
             self.drop_btn.clicked.disconnect()
-            self.drop_btn.clicked.connect(lambda: self.reset_pos(False))
-            self.drop_reset = True
+            self.drop_btn.clicked.connect(lambda: self.reset_pos("res"))
+
+        if not self.tip_btn.isChecked():
+            self.tip_btn.setText("Set Tip Change Position")
+            self.tip_btn.setCheckable(True)
+            self.tip_btn.setChecked(True)
+            self.tip_btn.clicked.disconnect()
+            self.tip_btn.clicked.connect(lambda: self.reset_pos("tip"))
 
     @QtCore.pyqtSlot()
-    def reset_pos(self, isReservoir):
-        if isReservoir:
+    def reset_pos(self, pos):
+        if pos == "drop":
             self.res_pos = self.R_val.value()
             self.res_btn.setText(f"Go to Reservoir ({self.res_pos}°)")
             self.res_btn.setCheckable(False)
-            self.res_reset = False
             self.res_btn.clicked.disconnect()
             self.res_btn.clicked.connect(lambda: self.send_cmd(f"R {self.res_pos}"))
-        else:
+        elif pos == "res":
             self.drop_pos = self.R_val.value()
             self.drop_btn.setText(f"Go to Droplet Stage ({self.drop_pos}°)")
             self.drop_btn.setCheckable(False)
-            self.drop_reset = False
             self.drop_btn.clicked.disconnect()
             self.drop_btn.clicked.connect(lambda: self.send_cmd(f"R {self.drop_pos}"))
+        elif pos == "tip":
+            self.tip_pos = self.R_val.value()
+            self.tip_btn.setText(f"Go to Tip Change ({self.tip_pos}°)")
+            self.tip_btn.setCheckable(False)
+            self.tip_btn.clicked.disconnect()
+            self.tip_btn.clicked.connect(lambda: self.send_cmd(f"R {self.tip_pos}"))
 
     @QtCore.pyqtSlot()
     def receive(self):
