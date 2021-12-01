@@ -118,6 +118,8 @@ void execute_command(char *input)
         else if (!strcmp(command, "R")) //rotate stage
         {
             float degs = atof(strtok_r(NULL, " ", &end_instr));
+            Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 10));
+            Serial.printf("Moved Z to %.4f mm\n", 10.0f);  
             R_stage.moveToPositionInSteps(long(REV_STEPS * (degs / 360.0)));
             Serial.printf("Rotated to %.4f degrees \n", degs);
         }
@@ -174,7 +176,7 @@ void go_home()
     }
 
     Serial.println("Homeing R Stage...");
-    if (R_stage.moveToHomeInSteps(-1, 0.25*(float)REV_STEPS, long(1.2f*REV_STEPS), R_HOME))
+    if (R_stage.moveToHomeInSteps(-1, (float)(REV_STEPS/4), long(1.25f*REV_STEPS), R_HOME))
         Serial.println("R stage successfully homed");
     else
         Serial.println("R stage failed to Home");

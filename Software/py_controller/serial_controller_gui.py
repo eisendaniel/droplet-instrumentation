@@ -89,15 +89,15 @@ class Widget(QtWidgets.QWidget):
         self.DEL_val = QtWidgets.QDoubleSpinBox()
         self.R_btn = QtWidgets.QPushButton(
             text="Rotate (deg)",
-            clicked=(lambda: self.send_cmd("R " + str(self.R_val.value()))),
+            clicked=(lambda: self.send_cmd(f"R {self.R_val.value()}")),
         )
         self.Z_btn = QtWidgets.QPushButton(
             text="Set Height (mm)",
-            clicked=(lambda: self.send_cmd("Z " + str(self.Z_val.value()))),
+            clicked=(lambda: self.send_cmd(f"Z {self.Z_val.value()}")),
         )
         self.DEL_btn = QtWidgets.QPushButton(
             text="Delay (ms)",
-            clicked=(lambda: self.send_cmd("DEL " + str(self.DEL_val.value()))),
+            clicked=(lambda: self.send_cmd(f"DEL {self.DEL_val.value()}")),
         )
         self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=self.send_P)
 
@@ -254,6 +254,19 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def send_cmd(self, cmd):
+        sender = self.sender()
+        if sender in [self.R_btn, self.res_btn, self.tip_btn, self.drop_btn]:
+            self.Z_val.setValue(10.0)
+        if sender == self.res_btn:
+            self.R_val.setValue(self.res_pos)    
+        elif sender == self.tip_btn:
+            self.R_val.setValue(self.tip_pos)    
+        elif sender == self.drop_btn:
+            self.R_val.setValue(self.drop_pos)  
+        elif sender == self.home_btn:
+            self.R_val.setValue(0.0)
+            self.Z_val.setValue(5.0)
+
         if self.record_seq.isChecked():
             self.raw_input.setText(self.raw_input.text() + cmd + "; ")
         else:
