@@ -1,4 +1,5 @@
 import sys
+from typing import Sequence
 from PyQt5 import QtCore, QtWidgets, QtSerialPort
 from datetime import datetime
 
@@ -102,9 +103,11 @@ class Widget(QtWidgets.QWidget):
         self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=self.send_P)
 
         self.record_seq = QtWidgets.QPushButton(
-            text="Record Sequence", checkable=True, toggled=self.record_toggled
+            text="Custom Sequence", checkable=True, toggled=self.record_toggled
         )
-        self.record_seq.setStyleSheet("QPushButton:checked{color: #ffffff; background-color: #ff0000}")
+        self.record_seq.setStyleSheet(
+            "QPushButton:checked{color: #ffffff; background-color: #ff0000}"
+        )
 
         self.drop_btn = QtWidgets.QPushButton(
             text=f"Go to Droplet Stage ({self.drop_pos}°)",
@@ -123,6 +126,10 @@ class Widget(QtWidgets.QWidget):
         )
         self.reset_btn.setStyleSheet("QPushButton {background-color: #cccccc}")
 
+        self.exec_seq_btn = QtWidgets.QPushButton(
+            text="Execute Standard Sequence", clicked=self.send_seq
+        )
+
         self.com_select = QtWidgets.QComboBox()
         self.com_select.setDuplicatesEnabled(False)
         self.com_select.addItems(self.devices)
@@ -134,7 +141,9 @@ class Widget(QtWidgets.QWidget):
         self.connection_btn = QtWidgets.QPushButton(
             text="Connect", checkable=True, toggled=self.on_toggled
         )
-        self.connection_btn.setStyleSheet("QPushButton:checked{background-color: #00f000}")
+        self.connection_btn.setStyleSheet(
+            "QPushButton:checked{background-color: #00f000}"
+        )
 
         MotorTabLayout = QtWidgets.QVBoxLayout()
         MotorTabLayout.addWidget(QtWidgets.QLabel("Droplet Stage Motor Control"))
@@ -146,7 +155,7 @@ class Widget(QtWidgets.QWidget):
         MoniterLayout.addWidget(self.serial_monitor, 1, 0, 1, 4)
 
         ProcedureLayout = QtWidgets.QVBoxLayout()
-        ProcedureLayout.setContentsMargins(128,0,128,0)
+        ProcedureLayout.setContentsMargins(128, 0, 128, 0)
         ProcedureLayout.addWidget(self.home_btn)
         ProcedureLayout.addWidget(self.reset_btn)
         ProcedureLayout.addWidget(self.drop_btn)
@@ -154,7 +163,7 @@ class Widget(QtWidgets.QWidget):
         ProcedureLayout.addWidget(self.tip_btn)
 
         CommandLayout = QtWidgets.QGridLayout()
-        CommandLayout.setContentsMargins(128,0,128,0)
+        CommandLayout.setContentsMargins(128, 0, 128, 0)
         CommandLayout.addWidget(self.R_val, 0, 0, 1, 1)
         CommandLayout.addWidget(self.R_btn, 0, 1, 1, 1)
         CommandLayout.addWidget(self.Z_val, 1, 0, 1, 1)
@@ -169,8 +178,14 @@ class Widget(QtWidgets.QWidget):
         ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
         ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
 
+        SequenceLayout = QtWidgets.QVBoxLayout()
+        SequenceLayout.setContentsMargins(128, 0, 128, 0)
+        SequenceLayout.addWidget(self.exec_seq_btn)
+
         MotorTabLayout.addLayout(MoniterLayout)
         MotorTabLayout.addLayout(ProcedureLayout)
+        MotorTabLayout.addSpacing(16)
+        MotorTabLayout.addLayout(SequenceLayout)
         MotorTabLayout.addSpacing(16)
         MotorTabLayout.addLayout(CommandLayout)
         MotorTabLayout.addSpacing(16)
@@ -258,11 +273,11 @@ class Widget(QtWidgets.QWidget):
         if sender in [self.R_btn, self.res_btn, self.tip_btn, self.drop_btn]:
             self.Z_val.setValue(10.0)
         if sender == self.res_btn:
-            self.R_val.setValue(self.res_pos)    
+            self.R_val.setValue(self.res_pos)
         elif sender == self.tip_btn:
-            self.R_val.setValue(self.tip_pos)    
+            self.R_val.setValue(self.tip_pos)
         elif sender == self.drop_btn:
-            self.R_val.setValue(self.drop_pos)  
+            self.R_val.setValue(self.drop_pos)
         elif sender == self.home_btn:
             self.R_val.setValue(0.0)
             self.Z_val.setValue(5.0)
@@ -285,6 +300,13 @@ class Widget(QtWidgets.QWidget):
         else:
             self.serial.write(cmd.encode())
         self.pip_engaged = not self.pip_engaged
+
+    @QtCore.pyqtSlot(bool)
+    def send_seq(self):
+        
+        self.record_seq.toggle()
+        self.raw_input.setText(f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos}")
+        QtCore.QTimer.singleShot(1500, self.send_btn.click)
 
     @QtCore.pyqtSlot(bool)
     def record_toggled(self, checked):
