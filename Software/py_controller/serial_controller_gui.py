@@ -67,6 +67,9 @@ class Widget(QtWidgets.QWidget):
         self.tabs.addTab(self.Cameras, "Cameras")
         self.tabs.addTab(self.TODO, "TODO")
 
+        MotorTabLayout = QtWidgets.QVBoxLayout()
+
+        # Serial Moniter--------------------------------------------------------------------
         self.raw_input = QtWidgets.QLineEdit()
         self.raw_input.setPlaceholderText("Raw Input...")
         self.raw_input.returnPressed.connect(self.send_raw)
@@ -75,11 +78,60 @@ class Widget(QtWidgets.QWidget):
         self.serial_monitor = QtWidgets.QTextEdit(readOnly=True)
         self.serial_monitor.setFontFamily("Monospace")
 
+        MoniterLayout = QtWidgets.QGridLayout()
+        MoniterLayout.addWidget(self.raw_input, 0, 0, 1, 2)
+        MoniterLayout.addWidget(self.send_btn, 0, 2, 1, 1)
+        MoniterLayout.addWidget(self.do_ts, 0, 3, 1, 1)
+        MoniterLayout.addWidget(self.serial_monitor, 1, 0, 1, 4)
+        # ----------------------------------------------------------------------------------
+
+        # Position Setup--------------------------------------------------------------------
         self.home_btn = QtWidgets.QPushButton(
             text="Home Motor Positions", clicked=(lambda: self.send_cmd("HOME "))
         )
         self.home_btn.setStyleSheet("QPushButton {background-color: #ff9f6b}")
 
+        self.reset_btn = QtWidgets.QPushButton(
+            text="Reset Saved Positions", clicked=self.init_reset
+        )
+        self.reset_btn.setStyleSheet("QPushButton {background-color: #cccccc}")
+
+        self.drop_btn = QtWidgets.QPushButton(
+            text=f"Go to Droplet Stage ({self.drop_pos}°)",
+            clicked=(lambda: self.send_cmd(f"R {self.drop_pos}")),
+        )
+        self.drop_btn.setStyleSheet("QPushButton {background-color: #fff173}")
+        self.res_btn = QtWidgets.QPushButton(
+            text=f"Go to Reservoir ({self.res_pos}°)",
+            clicked=(lambda: self.send_cmd(f"R {self.res_pos}")),
+        )
+        self.res_btn.setStyleSheet("QPushButton {background-color: #73d3ff}")
+        self.tip_btn = QtWidgets.QPushButton(
+            text=f"Go to Tip Change ({self.tip_pos}°)",
+            clicked=(lambda: self.send_cmd(f"R {self.tip_pos}")),
+        )
+        self.tip_btn.setStyleSheet("QPushButton {background-color: #ff73e5}")
+
+        ProcedureLayout = QtWidgets.QVBoxLayout()
+        ProcedureLayout.setContentsMargins(128, 0, 128, 0)
+        ProcedureLayout.addWidget(self.home_btn)
+        ProcedureLayout.addWidget(self.reset_btn)
+        ProcedureLayout.addWidget(self.drop_btn)
+        ProcedureLayout.addWidget(self.res_btn)
+        ProcedureLayout.addWidget(self.tip_btn)
+        # ----------------------------------------------------------------------------------
+
+        # Standard Sequence-----------------------------------------------------------------
+        self.exec_seq_btn = QtWidgets.QPushButton(
+            text="Execute Standard Sequence", clicked=self.send_seq
+        )
+        self.exec_seq_btn.setStyleSheet("QPushButton {background-color: #73ff98; font-size: 16pt; color: #101010; padding: 8px}")
+        SequenceLayout = QtWidgets.QVBoxLayout()
+        SequenceLayout.setContentsMargins(128, 0, 128, 0)
+        SequenceLayout.addWidget(self.exec_seq_btn)
+        # ----------------------------------------------------------------------------------
+
+        # Manual Control--------------------------------------------------------------------
         self.R_val = QtWidgets.QDoubleSpinBox()
         self.R_val.setMinimum(0.0)
         self.R_val.setMaximum(180.0)
@@ -108,28 +160,19 @@ class Widget(QtWidgets.QWidget):
         self.record_seq.setStyleSheet(
             "QPushButton:checked{color: #ffffff; background-color: #ff0000}"
         )
+        CommandLayout = QtWidgets.QGridLayout()
+        CommandLayout.setContentsMargins(128, 0, 128, 0)
+        CommandLayout.addWidget(self.R_val, 0, 0, 1, 1)
+        CommandLayout.addWidget(self.R_btn, 0, 1, 1, 1)
+        CommandLayout.addWidget(self.Z_val, 1, 0, 1, 1)
+        CommandLayout.addWidget(self.Z_btn, 1, 1, 1, 1)
+        CommandLayout.addWidget(self.DEL_val, 2, 0, 1, 1)
+        CommandLayout.addWidget(self.DEL_btn, 2, 1, 1, 1)
+        CommandLayout.addWidget(self.record_seq, 3, 0, 1, 1)
+        CommandLayout.addWidget(self.PIP_btn, 3, 1, 1, 1)
+        # ----------------------------------------------------------------------------------
 
-        self.drop_btn = QtWidgets.QPushButton(
-            text=f"Go to Droplet Stage ({self.drop_pos}°)",
-            clicked=(lambda: self.send_cmd(f"R {self.drop_pos}")),
-        )
-        self.res_btn = QtWidgets.QPushButton(
-            text=f"Go to Reservoir ({self.res_pos}°)",
-            clicked=(lambda: self.send_cmd(f"R {self.res_pos}")),
-        )
-        self.tip_btn = QtWidgets.QPushButton(
-            text=f"Go to Tip Change ({self.tip_pos}°)",
-            clicked=(lambda: self.send_cmd(f"R {self.tip_pos}")),
-        )
-        self.reset_btn = QtWidgets.QPushButton(
-            text="Reset Saved Positions", clicked=self.init_reset
-        )
-        self.reset_btn.setStyleSheet("QPushButton {background-color: #cccccc}")
-
-        self.exec_seq_btn = QtWidgets.QPushButton(
-            text="Execute Standard Sequence", clicked=self.send_seq
-        )
-
+        # Serial Connection-----------------------------------------------------------------
         self.com_select = QtWidgets.QComboBox()
         self.com_select.setDuplicatesEnabled(False)
         self.com_select.addItems(self.devices)
@@ -144,43 +187,11 @@ class Widget(QtWidgets.QWidget):
         self.connection_btn.setStyleSheet(
             "QPushButton:checked{background-color: #00f000}"
         )
-
-        MotorTabLayout = QtWidgets.QVBoxLayout()
-        MotorTabLayout.addWidget(QtWidgets.QLabel("Droplet Stage Motor Control"))
-
-        MoniterLayout = QtWidgets.QGridLayout()
-        MoniterLayout.addWidget(self.raw_input, 0, 0, 1, 2)
-        MoniterLayout.addWidget(self.send_btn, 0, 2, 1, 1)
-        MoniterLayout.addWidget(self.do_ts, 0, 3, 1, 1)
-        MoniterLayout.addWidget(self.serial_monitor, 1, 0, 1, 4)
-
-        ProcedureLayout = QtWidgets.QVBoxLayout()
-        ProcedureLayout.setContentsMargins(128, 0, 128, 0)
-        ProcedureLayout.addWidget(self.home_btn)
-        ProcedureLayout.addWidget(self.reset_btn)
-        ProcedureLayout.addWidget(self.drop_btn)
-        ProcedureLayout.addWidget(self.res_btn)
-        ProcedureLayout.addWidget(self.tip_btn)
-
-        CommandLayout = QtWidgets.QGridLayout()
-        CommandLayout.setContentsMargins(128, 0, 128, 0)
-        CommandLayout.addWidget(self.R_val, 0, 0, 1, 1)
-        CommandLayout.addWidget(self.R_btn, 0, 1, 1, 1)
-        CommandLayout.addWidget(self.Z_val, 1, 0, 1, 1)
-        CommandLayout.addWidget(self.Z_btn, 1, 1, 1, 1)
-        CommandLayout.addWidget(self.DEL_val, 2, 0, 1, 1)
-        CommandLayout.addWidget(self.DEL_btn, 2, 1, 1, 1)
-        CommandLayout.addWidget(self.record_seq, 3, 0, 1, 1)
-        CommandLayout.addWidget(self.PIP_btn, 3, 1, 1, 1)
-
         ConnectionLayout = QtWidgets.QGridLayout()
         ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
         ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
         ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
-
-        SequenceLayout = QtWidgets.QVBoxLayout()
-        SequenceLayout.setContentsMargins(128, 0, 128, 0)
-        SequenceLayout.addWidget(self.exec_seq_btn)
+        # ----------------------------------------------------------------------------------
 
         MotorTabLayout.addLayout(MoniterLayout)
         MotorTabLayout.addLayout(ProcedureLayout)
@@ -204,6 +215,7 @@ class Widget(QtWidgets.QWidget):
             readyRead=self.receive,
         )
 
+    # Signal Slot Functions -----------------------------------------------------------------
     @QtCore.pyqtSlot()
     def init_reset(self):
         if not self.res_btn.isChecked():
@@ -303,9 +315,11 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot(bool)
     def send_seq(self):
-        
+
         self.record_seq.toggle()
-        self.raw_input.setText(f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos}")
+        self.raw_input.setText(
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos};"
+        )
         QtCore.QTimer.singleShot(1500, self.send_btn.click)
 
     @QtCore.pyqtSlot(bool)
@@ -344,7 +358,7 @@ class Widget(QtWidgets.QWidget):
                     self.connection_btn.setChecked(False)
         else:
             self.serial.close()
-
+    # ----------------------------------------------------------------------------------
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
