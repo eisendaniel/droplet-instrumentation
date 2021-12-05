@@ -121,14 +121,23 @@ class Widget(QtWidgets.QWidget):
         ProcedureLayout.addWidget(self.tip_btn)
         # ----------------------------------------------------------------------------------
 
-        # Standard Sequence-----------------------------------------------------------------
+        # Standard Sequences-----------------------------------------------------------------
         self.exec_seq_btn = QtWidgets.QPushButton(
-            text="Execute Standard Sequence", clicked=self.send_seq
+            text="Execute Preset Sequence", clicked=self.send_seq
         )
-        self.exec_seq_btn.setStyleSheet("QPushButton {background-color: #73ff98; font-size: 16pt; color: #101010; padding: 8px}")
+        self.exec_seq_btn.setStyleSheet(
+            "QPushButton {background-color: #73ff98; font-size: 16pt; color: #101010; padding: 8px}"
+        )
+
+        self.seq_sel_btn = QtWidgets.QComboBox()
+        self.seq_sel_btn.addItems(
+            ["Standard Deposit Sequence", "Large Volume Drop Sequence"]
+        )
+
         SequenceLayout = QtWidgets.QVBoxLayout()
         SequenceLayout.setContentsMargins(128, 0, 128, 0)
         SequenceLayout.addWidget(self.exec_seq_btn)
+        SequenceLayout.addWidget(self.seq_sel_btn)
         # ----------------------------------------------------------------------------------
 
         # Manual Control--------------------------------------------------------------------
@@ -316,10 +325,13 @@ class Widget(QtWidgets.QWidget):
     @QtCore.pyqtSlot(bool)
     def send_seq(self):
 
+        sequences = [
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; DEL 500; R {self.res_pos};",
+        ]
+
         self.record_seq.toggle()
-        self.raw_input.setText(
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos};"
-        )
+        self.raw_input.setText(sequences[self.seq_sel_btn.currentIndex()])
         QtCore.QTimer.singleShot(1500, self.send_btn.click)
 
     @QtCore.pyqtSlot(bool)
@@ -358,7 +370,9 @@ class Widget(QtWidgets.QWidget):
                     self.connection_btn.setChecked(False)
         else:
             self.serial.close()
+
     # ----------------------------------------------------------------------------------
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
