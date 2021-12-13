@@ -1,5 +1,4 @@
 import sys
-from typing import Sequence
 from PyQt5 import QtCore, QtWidgets, QtSerialPort
 from datetime import datetime
 
@@ -19,7 +18,7 @@ BAUDS = [
 ]
 
 
-def get_com_devices():
+def get_com_devices() -> list[str]:
     ports = QtSerialPort.QSerialPortInfo.availablePorts()
     return [p.systemLocation() for p in ports]
 
@@ -51,10 +50,10 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.timeout.connect(self.update_devs)
         self.update_timer.start(2000)
 
-        self.pip_engaged = True
-        self.tip_pos = 10
-        self.res_pos = 56
-        self.drop_pos = 172.4
+        self.pip_engaged: bool = True
+        self.tip_pos: float = 10.0
+        self.res_pos: float = 56.0
+        self.drop_pos: float = 172.4
 
         # Initialise tab screen
         self.tabs = QtWidgets.QTabWidget()
@@ -161,7 +160,7 @@ class Widget(QtWidgets.QWidget):
             text="Delay (ms)",
             clicked=(lambda: self.send_cmd(f"DEL {self.DEL_val.value()}")),
         )
-        self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=self.send_P)
+        self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=(lambda: self.send_cmd("PIP ")))
 
         self.record_seq = QtWidgets.QPushButton(
             text="Custom Sequence", checkable=True, toggled=self.record_toggled
@@ -171,10 +170,10 @@ class Widget(QtWidgets.QWidget):
         )
         CommandLayout = QtWidgets.QGridLayout()
         CommandLayout.setContentsMargins(128, 0, 128, 0)
-        CommandLayout.addWidget(self.R_val, 0, 0, 1, 1)
-        CommandLayout.addWidget(self.R_btn, 0, 1, 1, 1)
-        CommandLayout.addWidget(self.Z_val, 1, 0, 1, 1)
-        CommandLayout.addWidget(self.Z_btn, 1, 1, 1, 1)
+        CommandLayout.addWidget(self.Z_val, 0, 0, 1, 1)
+        CommandLayout.addWidget(self.Z_btn, 0, 1, 1, 1)
+        CommandLayout.addWidget(self.R_val, 1, 0, 1, 1)
+        CommandLayout.addWidget(self.R_btn, 1, 1, 1, 1)
         CommandLayout.addWidget(self.DEL_val, 2, 0, 1, 1)
         CommandLayout.addWidget(self.DEL_btn, 2, 1, 1, 1)
         CommandLayout.addWidget(self.record_seq, 3, 0, 1, 1)
@@ -191,7 +190,7 @@ class Widget(QtWidgets.QWidget):
         self.baud_select.setCurrentIndex(BAUDS.index("115200"))
 
         self.connection_btn = QtWidgets.QPushButton(
-            text="Connect", checkable=True, toggled=self.on_toggled
+            text="Connect", checkable=True, toggled=self.serial_connect
         )
         self.connection_btn.setStyleSheet(
             "QPushButton:checked{background-color: #00f000}"
@@ -200,21 +199,63 @@ class Widget(QtWidgets.QWidget):
         ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
         ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
         ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
+        
         # ----------------------------------------------------------------------------------
-
-        MotorTabLayout.addLayout(MoniterLayout)
+        # MotorTabLayout.addLayout(MoniterLayout)
         MotorTabLayout.addLayout(ProcedureLayout)
         MotorTabLayout.addSpacing(16)
         MotorTabLayout.addLayout(SequenceLayout)
         MotorTabLayout.addSpacing(16)
         MotorTabLayout.addLayout(CommandLayout)
         MotorTabLayout.addSpacing(16)
-        MotorTabLayout.addLayout(ConnectionLayout)
+        # MotorTabLayout.addLayout(ConnectionLayout)
         self.Motors.setLayout(MotorTabLayout)
+        # ----------------------------------------------------------------------------------
 
+        CameraTabLayout = QtWidgets.QVBoxLayout()
+        CameraTabLayout.setContentsMargins(128, 0, 128, 0)
+        CameraTabLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+
+        FPS_layout = QtWidgets.QHBoxLayout()
+        init_fps: list[float] = [30.0, 20.0, 10.0]
+        fps_inpts: list[QtWidgets.QDoubleSpinBox] = [QtWidgets.QDoubleSpinBox() for f in init_fps]
+        for n in range(3):
+            fps_inpts[n].setValue(init_fps[n])
+            FPS_layout.addWidget(fps_inpts[n])
+
+        Times_layout = QtWidgets.QHBoxLayout()
+        init_times: list[float] = [5.0, 5.0, 5.0]
+        time_inpts: list[QtWidgets.QDoubleSpinBox] = [QtWidgets.QDoubleSpinBox() for t in init_times]
+        for n in range(3):
+            time_inpts[n].setValue(init_times[n])
+            Times_layout.addWidget(time_inpts[n])
+
+        self.update_cam = QtWidgets.QPushButton(
+            text="Update Camera Settings", 
+            clicked=(lambda: self.send_cmd(f"SETCAM {fps_inpts[0].value()} {time_inpts[0].value()} {fps_inpts[1].value()} {time_inpts[1].value()} {fps_inpts[2].value()} {time_inpts[2].value()}"))
+            )
+        self.start_cam = QtWidgets.QPushButton(
+            text="Start Cameras",
+            clicked=(lambda: self.send_cmd("RUNCAM "))
+        )
+
+        CameraTabLayout.addSpacing(64)
+        CameraTabLayout.addWidget(QtWidgets.QLabel("Framerates (Hz):"))
+        CameraTabLayout.addLayout(FPS_layout)
+        CameraTabLayout.addWidget(QtWidgets.QLabel("Durations (s):"))
+        CameraTabLayout.addLayout(Times_layout)
+        CameraTabLayout.addWidget(self.update_cam)
+        CameraTabLayout.addSpacing(16)
+        CameraTabLayout.addWidget(self.start_cam)
+
+        self.Cameras.setLayout(CameraTabLayout)
+
+        # ----------------------------------------------------------------------------------
+        self.layout.addLayout(MoniterLayout)
         self.layout.addWidget(self.tabs)
+        self.layout.addLayout(ConnectionLayout)
         self.setLayout(self.layout)
-
+        # ----------------------------------------------------------------------------------
         # Open serial connection
         self.serial = QtSerialPort.QSerialPort(
             self.com_select.currentText(),
@@ -302,31 +343,27 @@ class Widget(QtWidgets.QWidget):
         elif sender == self.home_btn:
             self.R_val.setValue(0.0)
             self.Z_val.setValue(5.0)
+        elif sender == self.start_cam:
+            self.start_cam.setText("Restart Cameras")
+        elif sender == self.PIP_btn:
+            if self.pip_engaged:
+                cmd+= "UP"
+                self.PIP_btn.setText("Dispense Droplet")
+            else:
+                cmd+= "DOWN"
+                self.PIP_btn.setText("Refill Pipette")
+            self.pip_engaged = not self.pip_engaged
 
         if self.record_seq.isChecked():
             self.raw_input.setText(self.raw_input.text() + cmd + "; ")
         else:
             self.serial.write(cmd.encode())
-
-    @QtCore.pyqtSlot()
-    def send_P(self):
-        if self.pip_engaged:
-            cmd = "PIP UP"
-            self.PIP_btn.setText("Dispense Droplet")
-        else:
-            cmd = "PIP DOWN"
-            self.PIP_btn.setText("Refill Pipette")
-        if self.record_seq.isChecked():
-            self.raw_input.setText(self.raw_input.text() + cmd + "; ")
-        else:
-            self.serial.write(cmd.encode())
-        self.pip_engaged = not self.pip_engaged
 
     @QtCore.pyqtSlot(bool)
     def send_seq(self):
 
         sequences = [
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; Z 1; ADJ R -100; R {self.res_pos};",
             f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; DEL 500; R {self.res_pos};",
         ]
 
@@ -355,7 +392,7 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.start(2000)
 
     @QtCore.pyqtSlot(bool)
-    def on_toggled(self, checked):
+    def serial_connect(self, checked):
         self.connection_btn.setText("Disconnect" if checked else "Connect")
         if checked:
             if not self.serial.isOpen():
@@ -376,6 +413,7 @@ class Widget(QtWidgets.QWidget):
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle("Fusion")
     run = App()
     sys.exit(app.exec_())
 
