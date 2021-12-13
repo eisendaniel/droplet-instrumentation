@@ -18,7 +18,7 @@ BAUDS = [
 ]
 
 
-def get_com_devices() -> list[str]:
+def get_com_devices():
     ports = QtSerialPort.QSerialPortInfo.availablePorts()
     return [p.systemLocation() for p in ports]
 
@@ -50,10 +50,10 @@ class Widget(QtWidgets.QWidget):
         self.update_timer.timeout.connect(self.update_devs)
         self.update_timer.start(2000)
 
-        self.pip_engaged: bool = True
-        self.tip_pos: float = 10.0
-        self.res_pos: float = 56.0
-        self.drop_pos: float = 172.4
+        self.pip_engaged = True
+        self.tip_pos = 10.0
+        self.res_pos = 56.0
+        self.drop_pos = 172.4
 
         # Initialise tab screen
         self.tabs = QtWidgets.QTabWidget()
@@ -217,15 +217,15 @@ class Widget(QtWidgets.QWidget):
         CameraTabLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
 
         FPS_layout = QtWidgets.QHBoxLayout()
-        init_fps: list[float] = [30.0, 20.0, 10.0]
-        fps_inpts: list[QtWidgets.QDoubleSpinBox] = [QtWidgets.QDoubleSpinBox() for f in init_fps]
+        init_fps = [30.0, 20.0, 10.0]
+        fps_inpts = [QtWidgets.QDoubleSpinBox() for f in init_fps]
         for n in range(3):
             fps_inpts[n].setValue(init_fps[n])
             FPS_layout.addWidget(fps_inpts[n])
 
         Times_layout = QtWidgets.QHBoxLayout()
-        init_times: list[float] = [5.0, 5.0, 5.0]
-        time_inpts: list[QtWidgets.QDoubleSpinBox] = [QtWidgets.QDoubleSpinBox() for t in init_times]
+        init_times = [5.0, 5.0, 5.0]
+        time_inpts = [QtWidgets.QDoubleSpinBox() for t in init_times]
         for n in range(3):
             time_inpts[n].setValue(init_times[n])
             Times_layout.addWidget(time_inpts[n])
