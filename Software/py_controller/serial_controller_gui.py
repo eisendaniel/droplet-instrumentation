@@ -67,6 +67,8 @@ class Widget(QtWidgets.QWidget):
         self.tabs.addTab(self.TODO, "TODO")
 
         MotorTabLayout = QtWidgets.QVBoxLayout()
+        MotorTabLayout.setContentsMargins(128, 16, 128, 16)
+        # MotorTabLayout.setAlignment(QtCore.Qt.AlignVCenter)
 
         # Serial Moniter--------------------------------------------------------------------
         self.raw_input = QtWidgets.QLineEdit()
@@ -112,7 +114,6 @@ class Widget(QtWidgets.QWidget):
         self.tip_btn.setStyleSheet("QPushButton {background-color: #ff73e5}")
 
         ProcedureLayout = QtWidgets.QVBoxLayout()
-        ProcedureLayout.setContentsMargins(128, 0, 128, 0)
         ProcedureLayout.addWidget(self.home_btn)
         ProcedureLayout.addWidget(self.reset_btn)
         ProcedureLayout.addWidget(self.drop_btn)
@@ -134,7 +135,6 @@ class Widget(QtWidgets.QWidget):
         )
 
         SequenceLayout = QtWidgets.QVBoxLayout()
-        SequenceLayout.setContentsMargins(128, 0, 128, 0)
         SequenceLayout.addWidget(self.exec_seq_btn)
         SequenceLayout.addWidget(self.seq_sel_btn)
         # ----------------------------------------------------------------------------------
@@ -169,7 +169,6 @@ class Widget(QtWidgets.QWidget):
             "QPushButton:checked{color: #ffffff; background-color: #ff0000}"
         )
         CommandLayout = QtWidgets.QGridLayout()
-        CommandLayout.setContentsMargins(128, 0, 128, 0)
         CommandLayout.addWidget(self.Z_val, 0, 0, 1, 1)
         CommandLayout.addWidget(self.Z_btn, 0, 1, 1, 1)
         CommandLayout.addWidget(self.R_val, 1, 0, 1, 1)
@@ -214,7 +213,7 @@ class Widget(QtWidgets.QWidget):
 
         CameraTabLayout = QtWidgets.QVBoxLayout()
         CameraTabLayout.setContentsMargins(128, 0, 128, 0)
-        CameraTabLayout.setAlignment(QtCore.Qt.AlignmentFlag.AlignTop)
+        CameraTabLayout.setAlignment(QtCore.Qt.AlignVCenter)
 
         FPS_layout = QtWidgets.QHBoxLayout()
         init_fps = [30.0, 20.0, 10.0]
@@ -239,7 +238,6 @@ class Widget(QtWidgets.QWidget):
             clicked=(lambda: self.send_cmd("RUNCAM "))
         )
 
-        CameraTabLayout.addSpacing(64)
         CameraTabLayout.addWidget(QtWidgets.QLabel("Framerates (Hz):"))
         CameraTabLayout.addLayout(FPS_layout)
         CameraTabLayout.addWidget(QtWidgets.QLabel("Durations (s):"))
