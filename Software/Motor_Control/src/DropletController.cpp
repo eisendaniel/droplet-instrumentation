@@ -129,6 +129,10 @@ void execute_command(char *input)
         {
             start_triggers();
         }
+        else if (!strcmp(command, "STOPCAM")) 
+        {
+            init_triggers();
+        }
         else if (!strcmp(command, "SETCAM"))
         {
             config_triggers(end_instr);

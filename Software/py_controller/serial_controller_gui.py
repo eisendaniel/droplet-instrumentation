@@ -160,7 +160,9 @@ class Widget(QtWidgets.QWidget):
             text="Delay (ms)",
             clicked=(lambda: self.send_cmd(f"DEL {self.DEL_val.value()}")),
         )
-        self.PIP_btn = QtWidgets.QPushButton(text="Refill Pipette", clicked=(lambda: self.send_cmd("PIP ")))
+        self.PIP_btn = QtWidgets.QPushButton(
+            text="Refill Pipette", clicked=(lambda: self.send_cmd("PIP "))
+        )
 
         self.record_seq = QtWidgets.QPushButton(
             text="Custom Sequence", checkable=True, toggled=self.record_toggled
@@ -198,7 +200,7 @@ class Widget(QtWidgets.QWidget):
         ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
         ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
         ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
-        
+
         # ----------------------------------------------------------------------------------
         # MotorTabLayout.addLayout(MoniterLayout)
         MotorTabLayout.addLayout(ProcedureLayout)
@@ -226,16 +228,24 @@ class Widget(QtWidgets.QWidget):
         init_times = [5.0, 5.0, 5.0]
         time_inpts = [QtWidgets.QDoubleSpinBox() for t in init_times]
         for n in range(3):
+            time_inpts[n].setRange(0.0, 1000.0)
             time_inpts[n].setValue(init_times[n])
             Times_layout.addWidget(time_inpts[n])
 
+        time_inpts[2].setDisabled(True)
         self.update_cam = QtWidgets.QPushButton(
-            text="Update Camera Settings", 
-            clicked=(lambda: self.send_cmd(f"SETCAM {fps_inpts[0].value()} {time_inpts[0].value()} {fps_inpts[1].value()} {time_inpts[1].value()} {fps_inpts[2].value()} {time_inpts[2].value()}"))
-            )
+            text="Update Camera Settings",
+            clicked=(
+                lambda: self.send_cmd(
+                    f"SETCAM {fps_inpts[0].value()} {time_inpts[0].value()} {fps_inpts[1].value()} {time_inpts[1].value()} {fps_inpts[2].value()} {time_inpts[2].value()}"
+                )
+            ),
+        )
         self.start_cam = QtWidgets.QPushButton(
-            text="Start Cameras",
-            clicked=(lambda: self.send_cmd("RUNCAM "))
+            text="Start Cameras", clicked=(lambda: self.send_cmd("RUNCAM "))
+        )
+        self.stop_cam = QtWidgets.QPushButton(
+            text="Stop Cameras", clicked=(lambda: self.send_cmd("STOPCAM "))
         )
 
         CameraTabLayout.addWidget(QtWidgets.QLabel("Framerates (Hz):"))
@@ -245,6 +255,7 @@ class Widget(QtWidgets.QWidget):
         CameraTabLayout.addWidget(self.update_cam)
         CameraTabLayout.addSpacing(16)
         CameraTabLayout.addWidget(self.start_cam)
+        CameraTabLayout.addWidget(self.stop_cam)
 
         self.Cameras.setLayout(CameraTabLayout)
 
@@ -345,10 +356,10 @@ class Widget(QtWidgets.QWidget):
             self.start_cam.setText("Restart Cameras")
         elif sender == self.PIP_btn:
             if self.pip_engaged:
-                cmd+= "UP"
+                cmd += "UP"
                 self.PIP_btn.setText("Dispense Droplet")
             else:
-                cmd+= "DOWN"
+                cmd += "DOWN"
                 self.PIP_btn.setText("Refill Pipette")
             self.pip_engaged = not self.pip_engaged
 
@@ -361,7 +372,7 @@ class Widget(QtWidgets.QWidget):
     def send_seq(self):
 
         sequences = [
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; Z 1; ADJ R -100; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; Z {self.Z_val.value()+0.5}; ADJ R -100; R {self.res_pos};",
             f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; DEL 500; R {self.res_pos};",
         ]
 

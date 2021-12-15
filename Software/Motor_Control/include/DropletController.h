@@ -21,6 +21,7 @@ const uint8_t DROP_TRIG = 4;
 const uint8_t STEP_DIV = 32;
 const uint32_t REV_STEPS = 200 * STEP_DIV;
 
+
 void go_home(); 
 void init_steppers();
 void execute_command(char *input);
