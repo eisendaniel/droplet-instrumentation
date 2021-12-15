@@ -341,9 +341,9 @@ class Widget(QtWidgets.QWidget):
     @QtCore.pyqtSlot()
     def send_cmd(self, cmd):
         sender = self.sender()
-        if sender in [self.R_btn, self.res_btn, self.tip_btn, self.drop_btn]:
+        if sender in [self.R_btn, self.res_btn, self.tip_btn, self.drop_btn, self.exec_seq_btn]:
             self.Z_val.setValue(10.0)
-        if sender == self.res_btn:
+        if sender in [self.res_btn, self.exec_seq_btn]:
             self.R_val.setValue(self.res_pos)
         elif sender == self.tip_btn:
             self.R_val.setValue(self.tip_pos)
@@ -354,6 +354,8 @@ class Widget(QtWidgets.QWidget):
             self.Z_val.setValue(5.0)
         elif sender == self.start_cam:
             self.start_cam.setText("Restart Cameras")
+        elif sender in [self.update_cam, self.stop_cam]:
+            self.start_cam.setText("Start Cameras")
         elif sender == self.PIP_btn:
             if self.pip_engaged:
                 cmd += "UP"
