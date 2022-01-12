@@ -1,7 +1,18 @@
 import sys
 from PyQt5 import QtCore, QtWidgets, QtSerialPort
+import pyqtgraph as pg
+import numpy as np
 from datetime import datetime
 
+"""
+This is a pyqt based UI program designed as a unified control software for 
+the Droplet Instrumentation. It provides serial connection to the control brd and different tabs:
+* pre-set position control, automated sequences (custom and pre-set) and manual control
+* Camera triggering frame rate setting
+* NI-DaQMX thermocouple measurements
+"""
+
+# List of Serial BAUD rates for selection
 BAUDS = [
     "110",
     "300",
@@ -12,10 +23,17 @@ BAUDS = [
     "19200",
     "38400",
     "57600",
-    "115200",
+    "115200",  # controller firmware uses this
     "128000",
     "256000",
 ]
+
+
+"""
+@def get_com_devices
+@returns list(str) Ports
+Helper function for finding OS names of serial ports available for connection
+"""
 
 
 def get_com_devices():
@@ -23,53 +41,57 @@ def get_com_devices():
     return [p.systemLocation() for p in ports]
 
 
-class App(QtWidgets.QMainWindow):
+# main App window setup
+class Window(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        self.title = "Droplet Instrumentation Controller"
-        self.left = 64
-        self.top = 128
-        self.width = 600
-        self.height = 800
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        title = "Droplet Instrumentation Controller"
+        left = 64
+        top = 128
+        width = 600
+        height = 800
+        self.setWindowTitle(title)
+        self.setGeometry(left, top, width, height)
 
-        self.table_widget = Widget(self)
+        self.table_widget = Widget(self) #main UI widget
         self.setCentralWidget(self.table_widget)
 
         self.show()
 
 
+# define main UI structure
 class Widget(QtWidgets.QWidget):
     def __init__(self, parent):
         super(Widget, self).__init__(parent)
         self.layout = QtWidgets.QVBoxLayout(self)
 
         self.devices = get_com_devices()
+
+        # 2s timer for updating COM devices dropdown
         self.update_timer = QtCore.QTimer()
         self.update_timer.timeout.connect(self.update_devs)
         self.update_timer.start(2000)
 
+        # pipette state and preset positions
         self.pip_engaged = True
         self.tip_pos = 10.0
         self.res_pos = 56.0
         self.drop_pos = 172.4
 
-        # Initialise tab screen
+        # Initialise tabs
         self.tabs = QtWidgets.QTabWidget()
         self.Motors = QtWidgets.QWidget()
         self.Cameras = QtWidgets.QWidget()
-        self.TODO = QtWidgets.QWidget()
-        self.tabs.resize(600, 800)
+        self.DaQ = QtWidgets.QWidget()
 
         self.tabs.addTab(self.Motors, "Motors")
         self.tabs.addTab(self.Cameras, "Cameras")
-        self.tabs.addTab(self.TODO, "TODO")
+        self.tabs.addTab(self.DaQ, "Temperature")
 
         MotorTabLayout = QtWidgets.QVBoxLayout()
         MotorTabLayout.setContentsMargins(128, 16, 128, 16)
-        # MotorTabLayout.setAlignment(QtCore.Qt.AlignVCenter)
 
+        # ----------------------------------------------------------------------------------
         # Serial Moniter--------------------------------------------------------------------
         self.raw_input = QtWidgets.QLineEdit()
         self.raw_input.setPlaceholderText("Raw Input...")
@@ -180,36 +202,12 @@ class Widget(QtWidgets.QWidget):
         CommandLayout.addWidget(self.record_seq, 3, 0, 1, 1)
         CommandLayout.addWidget(self.PIP_btn, 3, 1, 1, 1)
         # ----------------------------------------------------------------------------------
-
-        # Serial Connection-----------------------------------------------------------------
-        self.com_select = QtWidgets.QComboBox()
-        self.com_select.setDuplicatesEnabled(False)
-        self.com_select.addItems(self.devices)
-        self.com_select.setCurrentIndex(self.com_select.count() - 1)
-        self.baud_select = QtWidgets.QComboBox()
-        self.baud_select.addItems(BAUDS)
-        self.baud_select.setCurrentIndex(BAUDS.index("115200"))
-
-        self.connection_btn = QtWidgets.QPushButton(
-            text="Connect", checkable=True, toggled=self.serial_connect
-        )
-        self.connection_btn.setStyleSheet(
-            "QPushButton:checked{background-color: #00f000}"
-        )
-        ConnectionLayout = QtWidgets.QGridLayout()
-        ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
-        ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
-        ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
-
-        # ----------------------------------------------------------------------------------
-        # MotorTabLayout.addLayout(MoniterLayout)
         MotorTabLayout.addLayout(ProcedureLayout)
         MotorTabLayout.addSpacing(16)
         MotorTabLayout.addLayout(SequenceLayout)
         MotorTabLayout.addSpacing(16)
         MotorTabLayout.addLayout(CommandLayout)
         MotorTabLayout.addSpacing(16)
-        # MotorTabLayout.addLayout(ConnectionLayout)
         self.Motors.setLayout(MotorTabLayout)
         # ----------------------------------------------------------------------------------
 
@@ -219,25 +217,25 @@ class Widget(QtWidgets.QWidget):
 
         FPS_layout = QtWidgets.QHBoxLayout()
         init_fps = [30.0, 20.0, 10.0]
-        fps_inpts = [QtWidgets.QDoubleSpinBox() for f in init_fps]
+        fps_inputs = [QtWidgets.QDoubleSpinBox() for f in init_fps]
         for n in range(3):
-            fps_inpts[n].setValue(init_fps[n])
-            FPS_layout.addWidget(fps_inpts[n])
+            fps_inputs[n].setValue(init_fps[n])
+            FPS_layout.addWidget(fps_inputs[n])
 
         Times_layout = QtWidgets.QHBoxLayout()
         init_times = [5.0, 5.0, 5.0]
-        time_inpts = [QtWidgets.QDoubleSpinBox() for t in init_times]
+        time_inputs = [QtWidgets.QDoubleSpinBox() for t in init_times]
         for n in range(3):
-            time_inpts[n].setRange(0.0, 1000.0)
-            time_inpts[n].setValue(init_times[n])
-            Times_layout.addWidget(time_inpts[n])
+            time_inputs[n].setRange(0.0, 1000.0)
+            time_inputs[n].setValue(init_times[n])
+            Times_layout.addWidget(time_inputs[n])
 
-        time_inpts[2].setDisabled(True)
+        time_inputs[2].setDisabled(True)
         self.update_cam = QtWidgets.QPushButton(
             text="Update Camera Settings",
             clicked=(
                 lambda: self.send_cmd(
-                    f"SETCAM {fps_inpts[0].value()} {time_inpts[0].value()} {fps_inpts[1].value()} {time_inpts[1].value()} {fps_inpts[2].value()} {time_inpts[2].value()}"
+                    f"SETCAM {fps_inputs[0].value()} {time_inputs[0].value()} {fps_inputs[1].value()} {time_inputs[1].value()} {fps_inputs[2].value()} {time_inputs[2].value()}"
                 )
             ),
         )
@@ -258,8 +256,58 @@ class Widget(QtWidgets.QWidget):
         CameraTabLayout.addWidget(self.stop_cam)
 
         self.Cameras.setLayout(CameraTabLayout)
+        # ----------------------------------------------------------------------------------
+        # Temperaure Graphing Layout-----------------------------------------------------------------
+
+        TemperatureTabLayout = QtWidgets.QVBoxLayout()
+
+        pg.setConfigOptions(antialias=True)
+        
+        self.temp_data = np.random.rand(1)
+
+        self.temp_plot = pg.plot()
+        self.temp_plot.setClipToView(True)
+        self.T1 = self.temp_plot.plot(self.temp_data,pen='r')
+
+        self.plot_timer = QtCore.QTimer()
+        self.plot_timer.timeout.connect(self.update_plot)
+        self.plot_timer.start(100)
+
+        #----
+        SaveLayout = QtWidgets.QHBoxLayout()
+        SaveLayout.setContentsMargins(128, 0, 128, 0)
+        savefile_btn = QtWidgets.QPushButton()
+        toggle_record = QtWidgets.QPushButton()
+        SaveLayout.addWidget(savefile_btn)
+        SaveLayout.addWidget(toggle_record)
+        
+        TemperatureTabLayout.addWidget(self.temp_plot)
+        TemperatureTabLayout.addLayout(SaveLayout)
+
+        self.DaQ.setLayout(TemperatureTabLayout)
+        # ----------------------------------------------------------------------------------
+        # Serial Connection Layout-----------------------------------------------------------------
+        self.com_select = QtWidgets.QComboBox()
+        self.com_select.setDuplicatesEnabled(False)
+        self.com_select.addItems(self.devices)
+        self.com_select.setCurrentIndex(self.com_select.count() - 1)
+        self.baud_select = QtWidgets.QComboBox()
+        self.baud_select.addItems(BAUDS)
+        self.baud_select.setCurrentIndex(BAUDS.index("115200"))
+
+        self.connection_btn = QtWidgets.QPushButton(
+            text="Connect", checkable=True, toggled=self.serial_connect
+        )
+        self.connection_btn.setStyleSheet(
+            "QPushButton:checked{background-color: #00f000}"
+        )
+        ConnectionLayout = QtWidgets.QGridLayout()
+        ConnectionLayout.addWidget(self.connection_btn, 0, 0, 1, 2)
+        ConnectionLayout.addWidget(self.com_select, 1, 0, 1, 1)
+        ConnectionLayout.addWidget(self.baud_select, 1, 1, 1, 1)
 
         # ----------------------------------------------------------------------------------
+        # Add all Layouts-------------------------------------------------------------------
         self.layout.addLayout(MoniterLayout)
         self.layout.addWidget(self.tabs)
         self.layout.addLayout(ConnectionLayout)
@@ -341,7 +389,13 @@ class Widget(QtWidgets.QWidget):
     @QtCore.pyqtSlot()
     def send_cmd(self, cmd):
         sender = self.sender()
-        if sender in [self.R_btn, self.res_btn, self.tip_btn, self.drop_btn, self.exec_seq_btn]:
+        if sender in [
+            self.R_btn,
+            self.res_btn,
+            self.tip_btn,
+            self.drop_btn,
+            self.exec_seq_btn,
+        ]:
             self.Z_val.setValue(10.0)
         if sender in [self.res_btn, self.exec_seq_btn]:
             self.R_val.setValue(self.res_pos)
@@ -400,7 +454,11 @@ class Widget(QtWidgets.QWidget):
         self.com_select.clear()
         self.com_select.addItems(self.devices)
         self.com_select.setCurrentIndex(i)
-        self.update_timer.start(2000)
+
+    @QtCore.pyqtSlot()
+    def update_plot(self):
+        self.temp_data = np.append(self.temp_data, np.random.rand(1))
+        self.T1.setData(self.temp_data)
 
     @QtCore.pyqtSlot(bool)
     def serial_connect(self, checked):
@@ -425,7 +483,7 @@ class Widget(QtWidgets.QWidget):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle("Fusion")
-    run = App()
+    run = Window()
     sys.exit(app.exec_())
 
 
