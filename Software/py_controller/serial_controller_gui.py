@@ -257,23 +257,24 @@ class Widget(QtWidgets.QWidget):
 
         self.Cameras.setLayout(CameraTabLayout)
         # ----------------------------------------------------------------------------------
-        # Temperaure Graphing Layout-----------------------------------------------------------------
+        # Temperaure Graphing Layout--------------------------------------------------------
 
         TemperatureTabLayout = QtWidgets.QVBoxLayout()
 
         pg.setConfigOptions(antialias=True)
         
-        self.temp_data = np.random.rand(1)
+        self.temp_data = np.random.rand(1)-0.5
+        self.time = np.array([0])
 
         self.temp_plot = pg.plot()
         self.temp_plot.setClipToView(True)
-        self.T1 = self.temp_plot.plot(self.temp_data,pen='r')
+        self.T1 = self.temp_plot.plot(self.time, self.temp_data,pen='r')
 
         self.plot_timer = QtCore.QTimer()
         self.plot_timer.timeout.connect(self.update_plot)
         self.plot_timer.start(100)
 
-        #----
+        
         SaveLayout = QtWidgets.QHBoxLayout()
         SaveLayout.setContentsMargins(128, 0, 128, 0)
         savefile_btn = QtWidgets.QPushButton()
@@ -286,7 +287,7 @@ class Widget(QtWidgets.QWidget):
 
         self.DaQ.setLayout(TemperatureTabLayout)
         # ----------------------------------------------------------------------------------
-        # Serial Connection Layout-----------------------------------------------------------------
+        # Serial Connection Layout----------------------------------------------------------
         self.com_select = QtWidgets.QComboBox()
         self.com_select.setDuplicatesEnabled(False)
         self.com_select.addItems(self.devices)
@@ -322,7 +323,7 @@ class Widget(QtWidgets.QWidget):
             readyRead=self.receive,
         )
 
-    # Signal Slot Functions -----------------------------------------------------------------
+    # Signal Slot Functions ----------------------------------------------------------------
     @QtCore.pyqtSlot()
     def init_reset(self):
         if not self.res_btn.isChecked():
@@ -457,8 +458,9 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def update_plot(self):
-        self.temp_data = np.append(self.temp_data, np.random.rand(1))
-        self.T1.setData(self.temp_data)
+        self.temp_data = np.append(self.temp_data, np.random.rand(1)-0.5)
+        self.time = np.append(self.time, self.time[-1]+(1.0/10.0))
+        self.T1.setData(self.time, self.temp_data)
 
     @QtCore.pyqtSlot(bool)
     def serial_connect(self, checked):
