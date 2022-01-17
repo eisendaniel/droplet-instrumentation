@@ -76,3 +76,5 @@ _minted*
 #*.out
 Reports/Preliminary Report/proj_report_outline_template.pdf
 Software/py_controller/.venv/*
+Software/py_controller/dist/*
+Software/py_controller/build/*
