@@ -1,8 +1,15 @@
 import sys
+
 from PyQt5 import QtCore, QtWidgets, QtSerialPort
 import pyqtgraph as pg
+
+import nidaqmx
+from nidaqmx.stream_readers import AnalogSingleChannelReader
+from nidaqmx.system.storage.persisted_task import PersistedTask
+
 import numpy as np
 from datetime import datetime
+
 
 """
 This is a pyqt based UI program designed as a unified control software for 
@@ -75,8 +82,8 @@ class Widget(QtWidgets.QWidget):
         # pipette state and preset positions
         self.pip_engaged = True
         self.tip_pos = 10.0
-        self.res_pos = 56.0
-        self.drop_pos = 172.4
+        self.res_pos = 180.0
+        self.drop_pos = 126.0
 
         # Initialise tabs
         self.tabs = QtWidgets.QTabWidget()
@@ -263,16 +270,20 @@ class Widget(QtWidgets.QWidget):
 
         pg.setConfigOptions(antialias=True)
         
-        self.temp_data = np.random.rand(1)-0.5
+        self.Temperature_Task = PersistedTask("Droplet_Temps").load()
+        self.Temperature_Reader = AnalogSingleChannelReader(self.Temperature_Task.in_stream)
+
+        self.temp_data = np.array([self.Temperature_Reader.read_one_sample()])
         self.time = np.array([0])
 
         self.temp_plot = pg.plot()
+        self.temp_plot.setDownsampling(mode='peak')
         self.temp_plot.setClipToView(True)
-        self.T1 = self.temp_plot.plot(self.time, self.temp_data,pen='r')
+        self.T1 = self.temp_plot.plot(self.time, self.temp_data)
 
         self.plot_timer = QtCore.QTimer()
         self.plot_timer.timeout.connect(self.update_plot)
-        self.plot_timer.start(100)
+        self.plot_timer.start(50)
 
         
         SaveLayout = QtWidgets.QHBoxLayout()
@@ -458,7 +469,8 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def update_plot(self):
-        self.temp_data = np.append(self.temp_data, np.random.rand(1)-0.5)
+        self.temp_data = np.append(self.temp_data, self.Temperature_Reader.read_one_sample())
+        
         self.time = np.append(self.time, self.time[-1]+(1.0/10.0))
         self.T1.setData(self.time, self.temp_data)
 
