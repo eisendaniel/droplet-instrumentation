@@ -1,14 +1,15 @@
 import sys
+from datetime import datetime
+
+import numpy as np
 
 from PyQt5 import QtCore, QtWidgets, QtSerialPort
 import pyqtgraph as pg
 
 import nidaqmx
-from nidaqmx.stream_readers import AnalogSingleChannelReader
+from nidaqmx.stream_readers import AnalogMultiChannelReader
 from nidaqmx.system.storage.persisted_task import PersistedTask
-
-import numpy as np
-from datetime import datetime
+from nidaqmx.constants import LoggingMode, LoggingOperation
 
 
 """
@@ -30,11 +31,13 @@ BAUDS = [
     "19200",
     "38400",
     "57600",
-    "115200",  # controller firmware uses this
+    "115200",  # controller firmware uses this value
     "128000",
     "256000",
 ]
 
+# color sequence for auto assigned chart line colors
+COLORS = ["r", "g", "b", "c", "m", "y", "k", "w"]
 
 """
 @def get_com_devices
@@ -46,6 +49,11 @@ Helper function for finding OS names of serial ports available for connection
 def get_com_devices():
     ports = QtSerialPort.QSerialPortInfo.availablePorts()
     return [p.systemLocation() for p in ports]
+
+
+def get_nimax_tasks():
+    local_sys = nidaqmx.system.system.System()
+    return local_sys.tasks.task_names
 
 
 # main App window setup
@@ -60,7 +68,7 @@ class Window(QtWidgets.QMainWindow):
         self.setWindowTitle(title)
         self.setGeometry(left, top, width, height)
 
-        self.table_widget = Widget(self) #main UI widget
+        self.table_widget = Widget(self)  # main UI widget
         self.setCentralWidget(self.table_widget)
 
         self.show()
@@ -268,33 +276,37 @@ class Widget(QtWidgets.QWidget):
 
         TemperatureTabLayout = QtWidgets.QVBoxLayout()
 
+        self.Temperature_Task = None
+        self.Temperature_Reader = None
+        self.data_slice = None
+        self.temp_data = None
+        self.logfilename = None
+
         pg.setConfigOptions(antialias=True)
-        
-        self.Temperature_Task = PersistedTask("Droplet_Temps").load()
-        self.Temperature_Reader = AnalogSingleChannelReader(self.Temperature_Task.in_stream)
+        self.T_chart = pg.plot()
+        self.T_chart.addLegend()
+        self.T_chart.setDownsampling(mode="peak")
+        self.T_chart.setClipToView(True)
+        self.T_curves = None
 
-        self.temp_data = np.array([self.Temperature_Reader.read_one_sample()])
-        self.time = np.array([0])
+        T_UILayout = QtWidgets.QGridLayout()
+        self.daq_btn = QtWidgets.QPushButton(
+            text="Start", checkable=True, toggled=self.daq_stop_start
+        )
+        self.daq_btn.setStyleSheet("QPushButton:checked{background-color: #f00000}")
+        self.TDMS_log = QtWidgets.QCheckBox(text="Log Data")
+        self.logfiledisplay = QtWidgets.QLabel("No log file selected...")
+        self.selectlog_btn = QtWidgets.QPushButton(
+            text="Select LogFile", clicked=self.select_logfile
+        )
 
-        self.temp_plot = pg.plot()
-        self.temp_plot.setDownsampling(mode='peak')
-        self.temp_plot.setClipToView(True)
-        self.T1 = self.temp_plot.plot(self.time, self.temp_data)
+        T_UILayout.addWidget(self.daq_btn, 0, 0, 1, 4)
+        T_UILayout.addWidget(self.TDMS_log, 0, 4, 1, 1)
+        T_UILayout.addWidget(self.logfiledisplay, 1, 0, 1, 4, QtCore.Qt.AlignRight)
+        T_UILayout.addWidget(self.selectlog_btn, 1, 4, 1, 1)
 
-        self.plot_timer = QtCore.QTimer()
-        self.plot_timer.timeout.connect(self.update_plot)
-        self.plot_timer.start(50)
-
-        
-        SaveLayout = QtWidgets.QHBoxLayout()
-        SaveLayout.setContentsMargins(128, 0, 128, 0)
-        savefile_btn = QtWidgets.QPushButton()
-        toggle_record = QtWidgets.QPushButton()
-        SaveLayout.addWidget(savefile_btn)
-        SaveLayout.addWidget(toggle_record)
-        
-        TemperatureTabLayout.addWidget(self.temp_plot)
-        TemperatureTabLayout.addLayout(SaveLayout)
+        TemperatureTabLayout.addWidget(self.T_chart)
+        TemperatureTabLayout.addLayout(T_UILayout)
 
         self.DaQ.setLayout(TemperatureTabLayout)
         # ----------------------------------------------------------------------------------
@@ -468,11 +480,82 @@ class Widget(QtWidgets.QWidget):
         self.com_select.setCurrentIndex(i)
 
     @QtCore.pyqtSlot()
-    def update_plot(self):
-        self.temp_data = np.append(self.temp_data, self.Temperature_Reader.read_one_sample())
-        
-        self.time = np.append(self.time, self.time[-1]+(1.0/10.0))
-        self.T1.setData(self.time, self.temp_data)
+    def select_logfile(self):
+        opt = QtWidgets.QFileDialog.Options()
+        opt |= QtWidgets.QFileDialog.DontConfirmOverwrite
+        filename, _ = QtWidgets.QFileDialog.getSaveFileName(
+            filter="*.tdms", options=opt
+        )
+        if filename == "":
+            if self.TDMS_log.isChecked():
+                self.TDMS_log.toggle()
+            return
+        self.logfilename = filename
+        self.logfiledisplay.setText(self.logfilename)
+
+    @QtCore.pyqtSlot(bool)
+    def daq_stop_start(self, checked):
+        self.daq_btn.setText("Stop" if checked else "Start")
+        if checked:  # Starting, init NIDaQ Tasks and Logging
+            self.selectlog_btn.setDisabled(True)
+            self.TDMS_log.setDisabled(True)
+
+            if (self.logfilename is None) and (self.TDMS_log.isChecked()):
+                self.select_logfile()
+
+            self.Temperature_Task = PersistedTask("Droplet_Temps").load()
+
+            log_state = (
+                LoggingMode.LOG_AND_READ
+                if self.TDMS_log.isChecked()
+                else LoggingMode.OFF
+            )
+            self.Temperature_Task.in_stream.configure_logging(
+                self.logfilename,
+                logging_mode=log_state,
+                group_name="run",
+                operation=LoggingOperation.OPEN_OR_CREATE,
+            )
+
+            self.Temperature_Reader = AnalogMultiChannelReader(
+                self.Temperature_Task.in_stream
+            )
+
+            frame_size = 1
+            self.Temperature_Task.register_every_n_samples_acquired_into_buffer_event(
+                frame_size, self.daq_callback
+            )
+            self.data_slice = np.zeros(
+                (self.Temperature_Task.number_of_channels, frame_size)
+            )
+
+            self.temp_data = np.array([[]] * self.Temperature_Task.number_of_channels)
+
+            self.T_chart.clear()
+            self.T_curves = []
+            for i in range(self.Temperature_Task.number_of_channels):
+                self.T_curves += [
+                    self.T_chart.plot(pen=COLORS[i], name=f"Temperature_{i}")
+                ]
+
+            self.Temperature_Task.start()
+        else:  # Halt and Close Task
+            self.selectlog_btn.setDisabled(False)
+            self.TDMS_log.setDisabled(False)
+            self.Temperature_Task.stop()
+            self.Temperature_Task.close()
+
+    def daq_callback(
+        self, task_handle, every_n_samples_event_type, number_of_samples, callbackdata
+    ):
+        self.Temperature_Reader.read_many_sample(
+            self.data_slice, number_of_samples_per_channel=number_of_samples
+        )
+        self.temp_data = np.append(self.temp_data, self.data_slice, axis=1)
+
+        for i, curve in enumerate(self.T_curves):
+            curve.setData(self.temp_data[i, :])
+        return 0
 
     @QtCore.pyqtSlot(bool)
     def serial_connect(self, checked):
