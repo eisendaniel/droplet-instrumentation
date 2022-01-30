@@ -63,7 +63,7 @@ class Window(QtWidgets.QMainWindow):
         title = "Droplet Instrumentation Controller"
         left = 64
         top = 128
-        width = 600
+        width = 800
         height = 800
         self.setWindowTitle(title)
         self.setGeometry(left, top, width, height)
@@ -73,6 +73,8 @@ class Window(QtWidgets.QMainWindow):
 
         self.show()
 
+class niDaQ(QtCore.QObject):
+    data_aquired = QtCore.pyqtSignal()
 
 # define main UI structure
 class Widget(QtWidgets.QWidget):
@@ -81,6 +83,9 @@ class Widget(QtWidgets.QWidget):
         self.layout = QtWidgets.QVBoxLayout(self)
 
         self.devices = get_com_devices()
+
+        self.niDaQ_dev = niDaQ()
+        self.niDaQ_dev.data_aquired.connect(self.update_graph)
 
         # 2s timer for updating COM devices dropdown
         self.update_timer = QtCore.QTimer()
@@ -545,6 +550,12 @@ class Widget(QtWidgets.QWidget):
             self.Temperature_Task.stop()
             self.Temperature_Task.close()
 
+    @QtCore.pyqtSlot()
+    def update_graph(self):
+        for i, curve in enumerate(self.T_curves):
+            curve.setData(self.temp_data[i, :])
+
+
     def daq_callback(
         self, task_handle, every_n_samples_event_type, number_of_samples, callbackdata
     ):
@@ -553,8 +564,8 @@ class Widget(QtWidgets.QWidget):
         )
         self.temp_data = np.append(self.temp_data, self.data_slice, axis=1)
 
-        for i, curve in enumerate(self.T_curves):
-            curve.setData(self.temp_data[i, :])
+        self.niDaQ_dev.data_aquired.emit()
+        
         return 0
 
     @QtCore.pyqtSlot(bool)
