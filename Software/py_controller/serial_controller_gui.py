@@ -63,7 +63,7 @@ class Window(QtWidgets.QMainWindow):
         title = "Droplet Instrumentation Controller"
         left = 64
         top = 128
-        width = 800
+        width = 600
         height = 800
         self.setWindowTitle(title)
         self.setGeometry(left, top, width, height)
@@ -73,8 +73,10 @@ class Window(QtWidgets.QMainWindow):
 
         self.show()
 
+
 class niDaQ(QtCore.QObject):
     data_aquired = QtCore.pyqtSignal()
+
 
 # define main UI structure
 class Widget(QtWidgets.QWidget):
@@ -94,9 +96,9 @@ class Widget(QtWidgets.QWidget):
 
         # pipette state and preset positions
         self.pip_engaged = True
-        self.tip_pos = 10.0
-        self.res_pos = 180.0
-        self.drop_pos = 126.0
+        self.tip_pos = 250.0
+        self.res_pos = 172.0
+        self.drop_pos = 84.0
 
         # Initialise tabs
         self.tabs = QtWidgets.QTabWidget()
@@ -173,23 +175,47 @@ class Widget(QtWidgets.QWidget):
 
         self.seq_sel_btn = QtWidgets.QComboBox()
         self.seq_sel_btn.addItems(
-            ["Standard Deposit Sequence", "Large Volume Drop Sequence"]
+            [
+                "Milk Deposit Sequence",
+                "Water Deposit Sequence",
+                "Large Volume Drop Sequence",
+            ]
         )
+        self.seq_Z_val = QtWidgets.QDoubleSpinBox()
+        self.seq_Z_val.setRange(0.0, 10.0)
+        self.seq_Z_val.setValue(2.0)
+        self.seq_Z_jump = QtWidgets.QDoubleSpinBox()
+        self.seq_Z_jump.setRange(0.0, 5.0)
+        self.seq_Z_jump.setSingleStep(0.1)
+        self.seq_Z_jump.setValue(0.5)
+
+        seq_setting_layout = QtWidgets.QHBoxLayout()
+        seq_setting_layout.addWidget(
+            QtWidgets.QLabel("Deposit Height (mm)"),
+            alignment=QtCore.Qt.AlignmentFlag.AlignRight,
+        )
+        seq_setting_layout.addWidget(self.seq_Z_val)
+        seq_setting_layout.addWidget(
+            QtWidgets.QLabel("Retraction Delta (mm)"),
+            alignment=QtCore.Qt.AlignmentFlag.AlignRight,
+        )
+        seq_setting_layout.addWidget(self.seq_Z_jump)
 
         SequenceLayout = QtWidgets.QVBoxLayout()
         SequenceLayout.addWidget(self.exec_seq_btn)
         SequenceLayout.addWidget(self.seq_sel_btn)
+        SequenceLayout.addLayout(seq_setting_layout)
         # ----------------------------------------------------------------------------------
 
         # Manual Control--------------------------------------------------------------------
         self.R_val = QtWidgets.QDoubleSpinBox()
-        self.R_val.setMinimum(0.0)
-        self.R_val.setMaximum(180.0)
+        self.R_val.setRange(0.0, 300.0)
         self.Z_val = QtWidgets.QDoubleSpinBox()
-        self.Z_val.setMinimum(0.0)
-        self.Z_val.setMaximum(10.0)
-        self.Z_val.setValue(5.0)
+        self.Z_val.setRange(0.0, 10.0)
+        self.Z_val.setValue(10.0)
         self.DEL_val = QtWidgets.QDoubleSpinBox()
+        self.DEL_val.setSingleStep(100.0)
+        self.DEL_val.setRange(0.0, 10000.0)
         self.R_btn = QtWidgets.QPushButton(
             text="Rotate (deg)",
             clicked=(lambda: self.send_cmd(f"R {self.R_val.value()}")),
@@ -236,14 +262,14 @@ class Widget(QtWidgets.QWidget):
         CameraTabLayout.setAlignment(QtCore.Qt.AlignVCenter)
 
         FPS_layout = QtWidgets.QHBoxLayout()
-        init_fps = [30.0, 20.0, 10.0]
+        init_fps = [10.0, 1.0, 0.1]
         fps_inputs = [QtWidgets.QDoubleSpinBox() for f in init_fps]
         for n in range(3):
             fps_inputs[n].setValue(init_fps[n])
             FPS_layout.addWidget(fps_inputs[n])
 
         Times_layout = QtWidgets.QHBoxLayout()
-        init_times = [5.0, 5.0, 5.0]
+        init_times = [6.0, 60.0, 0.0]
         time_inputs = [QtWidgets.QDoubleSpinBox() for t in init_times]
         for n in range(3):
             time_inputs[n].setRange(0.0, 1000.0)
@@ -434,7 +460,7 @@ class Widget(QtWidgets.QWidget):
             self.R_val.setValue(self.drop_pos)
         elif sender == self.home_btn:
             self.R_val.setValue(0.0)
-            self.Z_val.setValue(5.0)
+            self.Z_val.setValue(10.0)
         elif sender == self.start_cam:
             self.start_cam.setText("Restart Cameras")
         elif sender in [self.update_cam, self.stop_cam]:
@@ -457,8 +483,9 @@ class Widget(QtWidgets.QWidget):
     def send_seq(self):
 
         sequences = [
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; Z {self.Z_val.value()}; Z {self.Z_val.value()+0.5}; ADJ R -100; R {self.res_pos};",
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; PIP DOWN; DEL 500; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; Z {self.seq_Z_val.value()}; PIP DOWN; Z {self.seq_Z_val.value()+self.seq_Z_jump.value()}; ADJ R 100; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; PIP DOWN; Z {self.seq_Z_val.value()}; Z {self.seq_Z_val.value()+self.seq_Z_jump.value()}; ADJ R 100; R {self.res_pos};",
+            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; PIP DOWN; DEL 500; R {self.res_pos};",
         ]
 
         self.record_seq.toggle()
@@ -555,7 +582,6 @@ class Widget(QtWidgets.QWidget):
         for i, curve in enumerate(self.T_curves):
             curve.setData(self.temp_data[i, :])
 
-
     def daq_callback(
         self, task_handle, every_n_samples_event_type, number_of_samples, callbackdata
     ):
@@ -565,7 +591,7 @@ class Widget(QtWidgets.QWidget):
         self.temp_data = np.append(self.temp_data, self.data_slice, axis=1)
 
         self.niDaQ_dev.data_aquired.emit()
-        
+
         return 0
 
     @QtCore.pyqtSlot(bool)
