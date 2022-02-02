@@ -85,6 +85,8 @@ class Widget(QtWidgets.QWidget):
         self.layout = QtWidgets.QVBoxLayout(self)
 
         self.devices = get_com_devices()
+        self.control_brd = QtSerialPort.QSerialPort()
+        self.atmos_moniter = QtSerialPort.QSerialPort()
 
         self.niDaQ_dev = niDaQ()
         self.niDaQ_dev.data_aquired.connect(self.update_graph)
@@ -369,13 +371,13 @@ class Widget(QtWidgets.QWidget):
         self.setLayout(self.layout)
         # ----------------------------------------------------------------------------------
         # Open serial connection
-        self.serial = QtSerialPort.QSerialPort(
-            self.com_select.currentText(),
-            baudRate=QtSerialPort.QSerialPort.BaudRate(
-                int(self.baud_select.currentText())
-            ),
-            readyRead=self.receive,
-        )
+        # self.serial = QtSerialPort.QSerialPort(
+        #     self.com_select.currentText(),
+        #     baudRate=QtSerialPort.QSerialPort.BaudRate(
+        #         int(self.baud_select.currentText())
+        #     ),
+        #     readyRead=self.receive,
+        # )
 
     # Signal Slot Functions ----------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -424,8 +426,8 @@ class Widget(QtWidgets.QWidget):
 
     @QtCore.pyqtSlot()
     def receive(self):
-        while self.serial.canReadLine():
-            text = self.serial.readLine().data().decode()
+        while self.control_brd.canReadLine():
+            text = self.control_brd.readLine().data().decode()
             text = text.rstrip("\r\n")
             if self.do_ts.isChecked():
                 text = str(datetime.now()) + ": " + text
@@ -436,7 +438,7 @@ class Widget(QtWidgets.QWidget):
         if self.raw_input.text() == "!clear":
             self.serial_monitor.clear()
         else:
-            self.serial.write(self.raw_input.text().encode())
+            self.control_brd.write(self.raw_input.text().encode())
             if self.record_seq.isChecked():
                 QtCore.QTimer.singleShot(1500, self.record_seq.toggle)
         self.raw_input.clear()
@@ -477,7 +479,7 @@ class Widget(QtWidgets.QWidget):
         if self.record_seq.isChecked():
             self.raw_input.setText(self.raw_input.text() + cmd + "; ")
         else:
-            self.serial.write(cmd.encode())
+            self.control_brd.write(cmd.encode())
 
     @QtCore.pyqtSlot(bool)
     def send_seq(self):
@@ -496,9 +498,9 @@ class Widget(QtWidgets.QWidget):
     def record_toggled(self, checked):
         self.raw_input.clear()
         if checked:
-            self.serial.write("SEQ".encode())
+            self.control_brd.write("SEQ".encode())
         else:
-            self.serial.write("END".encode())
+            self.control_brd.write("END".encode())
 
     @QtCore.pyqtSlot()
     def update_devs(self):
@@ -598,18 +600,22 @@ class Widget(QtWidgets.QWidget):
     def serial_connect(self, checked):
         self.connection_btn.setText("Disconnect" if checked else "Connect")
         if checked:
-            if not self.serial.isOpen():
-                self.serial = QtSerialPort.QSerialPort(
+            self.baud_select.setDisabled(True)
+            self.com_select.setDisabled(True)
+            if not self.control_brd.isOpen():
+                self.control_brd = QtSerialPort.QSerialPort(
                     self.com_select.currentText(),
                     baudRate=QtSerialPort.QSerialPort.BaudRate(
                         int(self.baud_select.currentText())
                     ),
                     readyRead=self.receive,
                 )
-                if not self.serial.open(QtCore.QIODevice.ReadWrite):
+                if not self.control_brd.open(QtCore.QIODevice.ReadWrite):
                     self.connection_btn.setChecked(False)
         else:
-            self.serial.close()
+            self.baud_select.setDisabled(False)
+            self.com_select.setDisabled(False)
+            self.control_brd.close()
 
     # ----------------------------------------------------------------------------------
 
