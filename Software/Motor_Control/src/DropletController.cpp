@@ -146,7 +146,7 @@ void go_home()
     if (Z_stage.moveToHomeInSteps(1, (float)REV_STEPS, (long)(REV_STEPS * 2.0 * 12.0), Z_HOME))
     {
         Serial.println("Z stage successfully homed");
-        Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 5.0));
+        Z_stage.moveToPositionInSteps(long(REV_STEPS * -2.0 * 10.0));
     }
     else
     {

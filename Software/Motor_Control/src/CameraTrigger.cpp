@@ -4,8 +4,8 @@ bool active = false;
 uint8_t phase_i = 0;
 uint64_t phase_time = 0; //us
 
-double freqs[3] = {30.0, 20.0, 10.0}; //Hz
-uint64_t phases[3] = {(uint64_t)5e6, (uint64_t)5e6, (uint64_t)5e6};
+double freqs[3] = {10.0, 1.0, 0.1}; //Hz
+uint64_t phases[3] = {(uint64_t)6e6, (uint64_t)60e6, (uint64_t)5e6};
 
 void config_triggers(char *token_end)
 {
