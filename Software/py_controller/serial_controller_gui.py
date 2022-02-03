@@ -88,6 +88,9 @@ class Widget(QtWidgets.QWidget):
         self.control_brd = QtSerialPort.QSerialPort()
         self.atmos_moniter = QtSerialPort.QSerialPort()
 
+        self.atmos = []
+        self.connect_atmos()
+
         self.niDaQ_dev = niDaQ()
         self.niDaQ_dev.data_aquired.connect(self.update_graph)
 
@@ -370,14 +373,25 @@ class Widget(QtWidgets.QWidget):
         self.layout.addLayout(ConnectionLayout)
         self.setLayout(self.layout)
         # ----------------------------------------------------------------------------------
-        # Open serial connection
-        # self.serial = QtSerialPort.QSerialPort(
-        #     self.com_select.currentText(),
-        #     baudRate=QtSerialPort.QSerialPort.BaudRate(
-        #         int(self.baud_select.currentText())
-        #     ),
-        #     readyRead=self.receive,
-        # )
+
+    def connect_atmos(self):
+        self.atmos_moniter = QtSerialPort.QSerialPort(
+            "/dev/ttyACM0",
+            baudRate=QtSerialPort.QSerialPort.BaudRate(69),
+            readyRead=self.read_atmos,
+        )
+        self.atmos_moniter.open(QtCore.QIODevice.ReadWrite)
+
+    @QtCore.pyqtSlot()
+    def read_atmos(self):
+        try:
+            self.atmos = list(
+                map(float, self.atmos_moniter.readLine().data().decode().split(","))
+            )
+        except ValueError:
+            pass
+
+    # ----------------------------------------------------------------------------------
 
     # Signal Slot Functions ----------------------------------------------------------------
     @QtCore.pyqtSlot()
@@ -544,10 +558,11 @@ class Widget(QtWidgets.QWidget):
                 if self.TDMS_log.isChecked()
                 else LoggingMode.OFF
             )
+
             self.Temperature_Task.in_stream.configure_logging(
                 self.logfilename,
                 logging_mode=log_state,
-                group_name="run",
+                group_name=f"Run @ : {self.atmos[0]}°C, {self.atmos[1]}%, {self.atmos[2]} hPa",
                 operation=LoggingOperation.OPEN_OR_CREATE,
             )
 
