@@ -113,7 +113,7 @@ void execute_command(char *input)
                 digitalWrite(DROP_TRIG, HIGH);
                 Serial.printf("Triggered Pippette\n");
                 pipette_down = !pipette_down;
-                delay(2000);
+                delay(200);
             }
         }
         else if (!strcmp(command, "HOME"))

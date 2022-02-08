@@ -11,6 +11,7 @@ from nidaqmx.stream_readers import AnalogMultiChannelReader
 from nidaqmx.system.storage.persisted_task import PersistedTask
 from nidaqmx.constants import LoggingMode, LoggingOperation
 
+ENV_MONITER_LOG = False
 
 """
 This is a pyqt based UI program designed as a unified control software for 
@@ -63,8 +64,8 @@ class Window(QtWidgets.QMainWindow):
         title = "Droplet Instrumentation Controller"
         left = 64
         top = 128
-        width = 600
-        height = 800
+        width = 540
+        height = 960
         self.setWindowTitle(title)
         self.setGeometry(left, top, width, height)
 
@@ -86,15 +87,16 @@ class Widget(QtWidgets.QWidget):
 
         self.devices = get_com_devices()
         self.control_brd = QtSerialPort.QSerialPort()
-        self.atmos_moniter = QtSerialPort.QSerialPort()
 
-        self.atmos = []
-        self.connect_atmos()
+        if ENV_MONITER_LOG:
+            self.atmos_moniter = QtSerialPort.QSerialPort()
+            self.atmos = [np.NaN, np.NaN, np.NaN]
+            # self.connect_atmos()
 
         self.niDaQ_dev = niDaQ()
         self.niDaQ_dev.data_aquired.connect(self.update_graph)
 
-        # 2s timer for updating COM devices dropdown
+        # 2s timer for updating COM devices drop-down
         self.update_timer = QtCore.QTimer()
         self.update_timer.timeout.connect(self.update_devs)
         self.update_timer.start(2000)
@@ -119,7 +121,7 @@ class Widget(QtWidgets.QWidget):
         MotorTabLayout.setContentsMargins(128, 16, 128, 16)
 
         # ----------------------------------------------------------------------------------
-        # Serial Moniter--------------------------------------------------------------------
+        # Serial Monitor--------------------------------------------------------------------
         self.raw_input = QtWidgets.QLineEdit()
         self.raw_input.setPlaceholderText("Raw Input...")
         self.raw_input.returnPressed.connect(self.send_raw)
@@ -172,43 +174,50 @@ class Widget(QtWidgets.QWidget):
 
         # Standard Sequences-----------------------------------------------------------------
         self.exec_seq_btn = QtWidgets.QPushButton(
-            text="Execute Preset Sequence", clicked=self.send_seq
+            text="Run Standard Sequence", clicked=self.send_seq
         )
         self.exec_seq_btn.setStyleSheet(
             "QPushButton {background-color: #73ff98; font-size: 16pt; color: #101010; padding: 8px}"
         )
 
-        self.seq_sel_btn = QtWidgets.QComboBox()
-        self.seq_sel_btn.addItems(
-            [
-                "Milk Deposit Sequence",
-                "Water Deposit Sequence",
-                "Large Volume Drop Sequence",
-            ]
-        )
-        self.seq_Z_val = QtWidgets.QDoubleSpinBox()
-        self.seq_Z_val.setRange(0.0, 10.0)
-        self.seq_Z_val.setValue(2.0)
+        self.seq_Z_dispense = QtWidgets.QDoubleSpinBox()
+        self.seq_Z_dispense.setRange(0.0, 10.0)
+        self.seq_Z_dispense.setSingleStep(0.1)
+        self.seq_Z_dispense.setValue(2.5)
+        self.seq_Z_deposit = QtWidgets.QDoubleSpinBox()
+        self.seq_Z_deposit.setRange(0.0, 10.0)
+        self.seq_Z_deposit.setSingleStep(0.1)
+        self.seq_Z_deposit.setValue(0.0)
+
         self.seq_Z_jump = QtWidgets.QDoubleSpinBox()
         self.seq_Z_jump.setRange(0.0, 5.0)
         self.seq_Z_jump.setSingleStep(0.1)
-        self.seq_Z_jump.setValue(0.5)
+        self.seq_Z_jump.setValue(2.5)
+        self.seq_dispense_del = QtWidgets.QDoubleSpinBox()
+        self.seq_dispense_del.setRange(0.0, 10000)
+        self.seq_dispense_del.setSingleStep(100.0)
+        self.seq_dispense_del.setValue(0.0)
 
-        seq_setting_layout = QtWidgets.QHBoxLayout()
+        seq_setting_layout = QtWidgets.QGridLayout()
         seq_setting_layout.addWidget(
-            QtWidgets.QLabel("Deposit Height (mm)"),
-            alignment=QtCore.Qt.AlignmentFlag.AlignRight,
+            QtWidgets.QLabel("Dispense Height (mm)"), 0, 0, 1, 1
         )
-        seq_setting_layout.addWidget(self.seq_Z_val)
+        seq_setting_layout.addWidget(self.seq_Z_dispense, 0, 1, 1, 1)
         seq_setting_layout.addWidget(
-            QtWidgets.QLabel("Retraction Delta (mm)"),
-            alignment=QtCore.Qt.AlignmentFlag.AlignRight,
+            QtWidgets.QLabel("Dispense Delay (ms)"), 0, 2, 1, 1
         )
-        seq_setting_layout.addWidget(self.seq_Z_jump)
+        seq_setting_layout.addWidget(self.seq_dispense_del, 0, 3, 1, 1)
+        seq_setting_layout.addWidget(
+            QtWidgets.QLabel("Deposit Height (mm)"), 1, 0, 1, 1
+        )
+        seq_setting_layout.addWidget(self.seq_Z_deposit, 1, 1, 1, 1)
+        seq_setting_layout.addWidget(
+            QtWidgets.QLabel("Retraction delta (mm)"), 1, 2, 1, 1
+        )
+        seq_setting_layout.addWidget(self.seq_Z_jump, 1, 3, 1, 1)
 
         SequenceLayout = QtWidgets.QVBoxLayout()
         SequenceLayout.addWidget(self.exec_seq_btn)
-        SequenceLayout.addWidget(self.seq_sel_btn)
         SequenceLayout.addLayout(seq_setting_layout)
         # ----------------------------------------------------------------------------------
 
@@ -297,7 +306,7 @@ class Widget(QtWidgets.QWidget):
             text="Stop Cameras", clicked=(lambda: self.send_cmd("STOPCAM "))
         )
 
-        CameraTabLayout.addWidget(QtWidgets.QLabel("Framerates (Hz):"))
+        CameraTabLayout.addWidget(QtWidgets.QLabel("Frame rates (Hz):"))
         CameraTabLayout.addLayout(FPS_layout)
         CameraTabLayout.addWidget(QtWidgets.QLabel("Durations (s):"))
         CameraTabLayout.addLayout(Times_layout)
@@ -498,14 +507,14 @@ class Widget(QtWidgets.QWidget):
     @QtCore.pyqtSlot(bool)
     def send_seq(self):
 
-        sequences = [
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; Z {self.seq_Z_val.value()}; PIP DOWN; Z {self.seq_Z_val.value()+self.seq_Z_jump.value()}; ADJ R 100; R {self.res_pos};",
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; PIP DOWN; Z {self.seq_Z_val.value()}; Z {self.seq_Z_val.value()+self.seq_Z_jump.value()}; ADJ R 100; R {self.res_pos};",
-            f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 500; RUNCAM ; PIP DOWN; DEL 500; R {self.res_pos};",
-        ]
+        # safety
+        if (self.seq_Z_deposit.value() + self.seq_Z_jump.value()) > 10.0:
+            self.seq_Z_jump.setValue(0.0)
+
+        std_sequence = f"R {self.res_pos}; Z 0; PIP UP; R {self.drop_pos}; DEL 200; Z {self.seq_Z_dispense.value()}; RUNCAM ; PIP DOWN; DEL {self.seq_dispense_del.value()}; Z {self.seq_Z_deposit.value()}; Z {self.seq_Z_deposit.value()+self.seq_Z_jump.value()}; ADJ R 100; R {self.res_pos};"
 
         self.record_seq.toggle()
-        self.raw_input.setText(sequences[self.seq_sel_btn.currentIndex()])
+        self.raw_input.setText(std_sequence)
         QtCore.QTimer.singleShot(1500, self.send_btn.click)
 
     @QtCore.pyqtSlot(bool)
@@ -559,10 +568,15 @@ class Widget(QtWidgets.QWidget):
                 else LoggingMode.OFF
             )
 
+            if ENV_MONITER_LOG:
+                run_name = "Run"
+            else:
+                run_name = f"Run @ : {self.atmos[0]} degC, {self.atmos[1]}%, {self.atmos[2]} hPa"
+
             self.Temperature_Task.in_stream.configure_logging(
                 self.logfilename,
                 logging_mode=log_state,
-                group_name=f"Run @ : {self.atmos[0]}°C, {self.atmos[1]}%, {self.atmos[2]} hPa",
+                group_name=run_name,
                 operation=LoggingOperation.OPEN_OR_CREATE,
             )
 
